@@ -21,6 +21,24 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  // Add headers configuration for Keep-Alive
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Connection',
+            value: 'keep-alive'
+          },
+          {
+            key: 'Keep-Alive',
+            value: 'timeout=5, max=1000'
+          }
+        ],
+      },
+    ]
+  }
 }
 
 mergeConfig(nextConfig, userConfig)
@@ -46,3 +64,4 @@ function mergeConfig(nextConfig, userConfig) {
 }
 
 export default nextConfig
+

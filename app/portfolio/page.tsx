@@ -60,7 +60,7 @@ const projects: Project[] = [
   {
     id: 5,
     title: "توتال نیوز",
-    image: "/images/poertfolio/totalnews.webp",
+    image: "/images/portfolio/totalnews.webp",
     description: "پورتال خبری چندزبانه در حوزه حمل و نقل و لجستیک",
     highlights: ["پشتیبانی از ۴ زبان", "سیستم مدیریت محتوا", "خبرنامه هوشمند"],
     fullViewUrl: "https://totalnews.com.tr/",

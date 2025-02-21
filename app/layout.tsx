@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Vazirmatn } from "next/font/google"
 import BottomNavbar from "@/components/BottomNavbar"
 import MovingBackground from "@/components/MovingBackground"
+import ScrollIndicator from "@/components/ScrollIndicator"
 import type React from "react"
 
 const vazirmatn = Vazirmatn({ subsets: ["arabic"] })
@@ -56,6 +57,7 @@ export default function RootLayout({
         <meta name="application-name" content="امیرحسین سلمانی" />
       </head>
       <body className={`${vazirmatn.className} bg-[#050301] text-dark-text`}>
+        <ScrollIndicator />
         <MovingBackground />
         <main className="min-h-screen pb-16">{children}</main>
         <BottomNavbar />

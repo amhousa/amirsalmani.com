@@ -7,10 +7,42 @@
   --background-rgb: 5, 3, 1;
 }
 
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
   direction: rtl;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(5, 3, 1, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 220, 130, 0.3);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 220, 130, 0.5);
+  box-shadow: 0 0 10px rgba(0, 220, 130, 0.5);
+}
+
+/* Firefox scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 220, 130, 0.3) rgba(5, 3, 1, 0.8);
 }
 
 /* Custom styles */
@@ -80,5 +112,28 @@ html {
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Add smooth transitions for interactive elements */
+a,
+button,
+input,
+textarea {
+  transition: all 0.3s ease;
+}
+
+/* Add hover effects for interactive elements */
+a:hover,
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Add focus styles */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 220, 130, 0.3);
 }
 

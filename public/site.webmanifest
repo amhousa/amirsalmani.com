@@ -1,0 +1,37 @@
+{
+  "name": "امیرحسین سلمانی",
+  "short_name": "AmirSalmani",
+  "description": "وبسایت شخصی امیرحسین سلمانی، توسعه‌دهنده فول‌استک",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#49117C",
+  "background_color": "#1a1a1a",
+  "display": "standalone",
+  "start_url": "/",
+  "orientation": "portrait",
+  "prefer_related_applications": false,
+  "scope": "/",
+  "shortcuts": [
+    {
+      "name": "نمونه کارها",
+      "short_name": "پورتفولیو",
+      "description": "مشاهده نمونه کارها",
+      "url": "/portfolio",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "وبلاگ",
+      "short_name": "بلاگ",
+      "description": "خواندن مقالات",
+      "url": "/blog",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    }
+  ]
+}
+

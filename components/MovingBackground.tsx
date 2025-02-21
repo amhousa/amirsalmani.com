@@ -1,81 +1,91 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useCallback } from "react"
 
 const MovingBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const animationFrameRef = useRef<number>()
+  const lastTimeRef = useRef<number>(0)
+  const FPS = 30 // Limit FPS to reduce main thread work
 
-  useEffect(() => {
+  const animate = useCallback((currentTime: number) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    // Set canvas size
-    const setCanvasSize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+    // Throttle frame rate
+    if (currentTime - lastTimeRef.current < 1000 / FPS) {
+      animationFrameRef.current = requestAnimationFrame(animate)
+      return
     }
-    setCanvasSize()
-    window.addEventListener("resize", setCanvasSize)
+    lastTimeRef.current = currentTime
 
-    // Create gradient points
+    // Clear canvas with base color
+    ctx.fillStyle = "#050301"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    // Use offscreen canvas for gradients
+    const offscreen = new OffscreenCanvas(canvas.width, canvas.height)
+    const offscreenCtx = offscreen.getContext("2d")
+    if (!offscreenCtx) return
+
+    // Draw gradients on offscreen canvas
     const gradients = [
       {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5,
+        x: canvas.width * 0.3 + Math.sin(currentTime * 0.0002) * 100,
+        y: canvas.height * 0.5 + Math.cos(currentTime * 0.0002) * 100,
         radius: 300,
         color: "#00DC82",
       },
       {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5,
+        x: canvas.width * 0.7 + Math.cos(currentTime * 0.0002) * 100,
+        y: canvas.height * 0.5 + Math.sin(currentTime * 0.0002) * 100,
         radius: 300,
         color: "#00B368",
       },
     ]
 
-    const animate = () => {
-      // Clear canvas with base color
-      ctx.fillStyle = "#050301"
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    gradients.forEach((gradient) => {
+      const grd = offscreenCtx.createRadialGradient(gradient.x, gradient.y, 0, gradient.x, gradient.y, gradient.radius)
+      grd.addColorStop(0, `${gradient.color}20`)
+      grd.addColorStop(1, "transparent")
 
-      // Update and draw gradients
-      gradients.forEach((gradient) => {
-        // Move gradient
-        gradient.x += gradient.dx
-        gradient.y += gradient.dy
+      offscreenCtx.fillStyle = grd
+      offscreenCtx.beginPath()
+      offscreenCtx.arc(gradient.x, gradient.y, gradient.radius, 0, Math.PI * 2)
+      offscreenCtx.fill()
+    })
 
-        // Bounce off edges
-        if (gradient.x < 0 || gradient.x > canvas.width) gradient.dx *= -1
-        if (gradient.y < 0 || gradient.y > canvas.height) gradient.dy *= -1
+    // Draw offscreen canvas to main canvas
+    ctx.drawImage(offscreen, 0, 0)
 
-        // Create radial gradient
-        const grd = ctx.createRadialGradient(gradient.x, gradient.y, 0, gradient.x, gradient.y, gradient.radius)
-        grd.addColorStop(0, `${gradient.color}20`)
-        grd.addColorStop(1, "transparent")
+    animationFrameRef.current = requestAnimationFrame(animate)
+  }, [])
 
-        // Draw gradient
-        ctx.fillStyle = grd
-        ctx.beginPath()
-        ctx.arc(gradient.x, gradient.y, gradient.radius, 0, Math.PI * 2)
-        ctx.fill()
-      })
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
 
-      requestAnimationFrame(animate)
+    const handleResize = () => {
+      if (canvas) {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+      }
     }
 
-    animate()
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    animationFrameRef.current = requestAnimationFrame(animate)
 
     return () => {
-      window.removeEventListener("resize", setCanvasSize)
+      window.removeEventListener("resize", handleResize)
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
     }
-  }, [])
+  }, [animate])
 
   return <canvas ref={canvasRef} className="fixed inset-0 -z-10" style={{ background: "#050301" }} />
 }

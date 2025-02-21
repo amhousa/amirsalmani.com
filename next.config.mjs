@@ -21,12 +21,24 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
-  // Add headers configuration for Keep-Alive
+  // Add performance optimizations
+  poweredByHeader: false,
+  compress: true,
+  reactStrictMode: true,
+  swcMinify: true, // Use SWC for minification
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  // Cache and performance headers
   async headers() {
     return [
       {
         source: '/:path*',
         headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          },
           {
             key: 'Connection',
             value: 'keep-alive'
@@ -37,6 +49,24 @@ const nextConfig = {
           }
         ],
       },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ],
+      },
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ],
+      }
     ]
   }
 }

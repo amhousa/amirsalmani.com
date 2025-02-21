@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 5, 3, 1;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  direction: rtl;
+}
+
+/* Custom styles */
+.text-brand-primary {
+  color: #00dc82;
+}
+
+.dark .text-brand-primary {
+  color: #00dc82;
+}
+
+.bg-brand-primary {
+  background-color: #00dc82;
+}
+
+.dark .bg-brand-primary {
+  background-color: #00dc82;
+}
+
+.border-brand-primary {
+  border-color: #00dc82;
+}
+
+.dark .border-brand-primary {
+  border-color: #00dc82;
+}
+
+.hover\:text-brand-primary:hover {
+  color: #00dc82;
+}
+
+.dark .hover\:text-brand-primary:hover {
+  color: #00dc82;
+}
+
+.focus\:ring-brand-primary:focus {
+  --tw-ring-color: #00dc82;
+}
+
+.dark .focus\:ring-brand-primary:focus {
+  --tw-ring-color: #00dc82;
+}
+
+.glass-effect {
+  background: rgba(5, 3, 1, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-effect-light {
+  background: rgba(5, 3, 1, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Add smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

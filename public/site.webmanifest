@@ -8,10 +8,20 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
-  "theme_color": "#49117C",
-  "background_color": "#1a1a1a",
+  "theme_color": "#050301",
+  "background_color": "#050301",
   "display": "standalone",
   "start_url": "/",
   "orientation": "portrait",
@@ -32,6 +42,9 @@
       "url": "/blog",
       "icons": [{ "src": "/icon.svg", "sizes": "any" }]
     }
-  ]
+  ],
+  "categories": ["business", "productivity", "technology"],
+  "lang": "fa",
+  "dir": "rtl"
 }
 

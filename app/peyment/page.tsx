@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Copy, ExternalLink } from "lucide-react"
-import QRCode from "qrcode.react"
 
 export default function Payment() {
   const searchParams = useSearchParams()
@@ -52,17 +51,6 @@ export default function Payment() {
         </div>
 
         <div className="bg-dark-bg border border-gray-800 rounded-2xl p-6 mb-8">
-          <div className="flex justify-center mb-6">
-            <QRCode
-              value={ethAddress}
-              size={200}
-              level="H"
-              includeMargin
-              renderAs="svg"
-              className="bg-white p-2 rounded-xl"
-            />
-          </div>
-
           <div className="relative mb-6">
             <input
               type="text"

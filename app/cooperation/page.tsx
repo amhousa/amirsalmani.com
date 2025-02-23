@@ -1,0 +1,201 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Check, ChevronDown, ChevronUp, Wallet } from "lucide-react"
+import Link from "next/link"
+
+const packages = [
+  {
+    name: "مشاوره اولیه",
+    price: "0.001",
+    currency: "ETH",
+    features: ["۳۰ دقیقه مشاوره آنلاین", "بررسی نیازها و اهداف", "ارائه راهکارهای پیشنهادی"],
+    description: "مناسب برای آشنایی اولیه و بررسی امکان همکاری",
+  },
+  {
+    name: "توسعه وب",
+    price: "0.05",
+    currency: "ETH",
+    features: [
+      "نرخ ساعتی پایه",
+      "توسعه فرانت‌اند و بک‌اند",
+      "بهینه‌سازی عملکرد",
+      "طراحی رابط کاربری",
+      "پشتیبانی ۳ ماهه رایگان",
+    ],
+    description: "مناسب برای پروژه‌های توسعه وب با تکنولوژی‌های مدرن",
+    popular: true,
+  },
+  {
+    name: "هوش مصنوعی",
+    price: "0.08",
+    currency: "ETH",
+    features: ["نرخ ساعتی پایه", "پیاده‌سازی مدل‌های هوش مصنوعی", "توسعه چت‌بات", "پردازش زبان طبیعی", "بهینه‌سازی عملکرد"],
+    description: "مناسب برای پروژه‌های هوش مصنوعی و یادگیری ماشین",
+  },
+]
+
+const faqs = [
+  {
+    question: "روند شروع همکاری چگونه است؟",
+    answer:
+      "پس از پرداخت هزینه مشاوره اولیه، یک جلسه ۳۰ دقیقه‌ای برگزار می‌شود. در این جلسه نیازها و اهداف پروژه بررسی شده و برآورد زمان و هزینه ارائه می‌شود.",
+  },
+  {
+    question: "آیا امکان پرداخت ریالی وجود دارد؟",
+    answer: "بله، برای پروژه‌های داخل ایران امکان پرداخت ریالی فراهم است. در جلسه مشاوره جزئیات بیشتر ارائه می‌شود.",
+  },
+  {
+    question: "مدت زمان اجرای پروژه چقدر است؟",
+    answer: "زمان اجرای پروژه بستگی به پیچیدگی و حجم کار دارد. در جلسه مشاوره اولیه، برآورد دقیق زمانی ارائه می‌شود.",
+  },
+  {
+    question: "چه تضمینی برای کیفیت کار وجود دارد؟",
+    answer:
+      "تمام پروژه‌ها با رعایت استانداردهای روز توسعه داده می‌شوند و ۳ ماه پشتیبانی رایگان دارند. همچنین پرداخت‌ها به صورت مرحله‌ای انجام می‌شود.",
+  },
+]
+
+export default function Cooperation() {
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
+  const [status, setStatus] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus("در حال پردازش...")
+
+    try {
+      const response = await fetch("/api/consultation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber }),
+      })
+
+      if (response.ok) {
+        setStatus("درخواست شما با موفقیت ثبت شد. به زودی با شما تماس خواهیم گرفت.")
+        setPhoneNumber("")
+      } else {
+        throw new Error("خطا در ثبت درخواست")
+      }
+    } catch (error) {
+      setStatus("متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
+    }
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <section className="text-center mb-16">
+        <h1 className="text-4xl font-bold mb-4 text-brand-primary">شرایط همکاری</h1>
+        <p className="text-lg mb-8 text-gray-300">
+          با بیش از ۵ سال تجربه در توسعه وب و هوش مصنوعی، آماده همکاری در پروژه‌های شما هستم.
+        </p>
+      </section>
+
+      {/* Packages */}
+      <section className="grid md:grid-cols-3 gap-8 mb-16">
+        {packages.map((pkg, index) => (
+          <motion.div
+            key={pkg.name}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className={`relative rounded-2xl p-6 ${
+              pkg.popular
+                ? "bg-brand-primary bg-opacity-10 border-2 border-brand-primary"
+                : "bg-dark-bg border border-gray-800"
+            }`}
+          >
+            {pkg.popular && (
+              <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-brand-primary text-white px-4 py-1 rounded-full text-sm">
+                پرطرفدار
+              </span>
+            )}
+            <h3 className="text-2xl font-bold mb-2 text-brand-primary">{pkg.name}</h3>
+            <div className="flex items-baseline mb-4">
+              <span className="text-3xl font-bold text-white">{pkg.price}</span>
+              <span className="text-gray-400 mr-2">{pkg.currency}</span>
+            </div>
+            <p className="text-gray-400 mb-6">{pkg.description}</p>
+            <ul className="space-y-3 mb-6">
+              {pkg.features.map((feature) => (
+                <li key={feature} className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-brand-primary mr-2" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href={`/payment?package=${pkg.name}&amount=${pkg.price}`}
+              className={`block w-full text-center py-3 rounded-xl transition-colors ${
+                pkg.popular
+                  ? "bg-brand-primary text-white hover:bg-brand-primary/90"
+                  : "bg-gray-800 text-white hover:bg-gray-700"
+              }`}
+            >
+              <Wallet className="inline-block w-5 h-5 mr-2 -mt-1" />
+              پرداخت و شروع
+            </Link>
+          </motion.div>
+        ))}
+      </section>
+
+      {/* Phone Number Form */}
+      <section className="max-w-md mx-auto mb-16">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold mb-4 text-brand-primary">دریافت مشاوره رایگان</h2>
+          <p className="text-gray-400">شماره تماس خود را وارد کنید تا در اولین فرصت با شما تماس بگیریم.</p>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="شماره تماس"
+              className="w-full px-4 py-3 bg-dark-bg border-2 border-gray-800 rounded-xl focus:outline-none focus:border-brand-primary text-white"
+              required
+              pattern="^(\+98|0)?9\d{9}$"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-brand-primary text-white px-6 py-3 rounded-xl hover:bg-opacity-90 transition-colors"
+          >
+            ثبت درخواست مشاوره
+          </button>
+        </form>
+        {status && <p className="mt-4 text-center text-gray-300">{status}</p>}
+      </section>
+
+      {/* FAQs */}
+      <section className="max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-8 text-center text-brand-primary">سؤالات متداول</h2>
+        <div className="space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border border-gray-800 rounded-xl overflow-hidden">
+              <button
+                className="w-full px-6 py-4 text-right bg-dark-bg flex justify-between items-center"
+                onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+              >
+                <span className="font-medium text-white">{faq.question}</span>
+                {openFaqIndex === index ? (
+                  <ChevronUp className="w-5 h-5 text-gray-400" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-gray-400" />
+                )}
+              </button>
+              {openFaqIndex === index && <div className="px-6 py-4 bg-dark-bg/50 text-gray-300">{faq.answer}</div>}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
+}
+

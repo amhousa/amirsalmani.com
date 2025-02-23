@@ -9,16 +9,16 @@ import Link from "next/link"
 const packages = [
   {
     name: "مشاوره اولیه",
-    priceUSD: 150,
-    priceETH: 0.05,
+    priceUSD: 10,
+    priceETH: 0.004,
     currency: "ETH",
     features: ["۳۰ دقیقه مشاوره آنلاین", "بررسی نیازها و اهداف", "ارائه راهکارهای پیشنهادی"],
     description: "مناسب برای آشنایی اولیه و بررسی امکان همکاری",
   },
   {
     name: "توسعه وب",
-    priceUSD: 1500,
-    priceETH: 0.5,
+    priceUSD: 150,
+    priceETH: 0.055,
     currency: "ETH",
     features: [
       "۱۰ ساعت برنامه‌نویسی",
@@ -32,8 +32,8 @@ const packages = [
   },
   {
     name: "هوش مصنوعی",
-    priceUSD: 2250,
-    priceETH: 0.75,
+    priceUSD: 200,
+    priceETH: 0.8,
     currency: "ETH",
     features: [
       "۱۵ ساعت برنامه‌نویسی",
@@ -115,7 +115,7 @@ export default function Cooperation() {
             transition={{ delay: index * 0.1 }}
             className={`relative rounded-2xl p-6 ${
               pkg.popular
-                ? "bg-brand-primary bg-opacity-10 border-2 border-brand-primary"
+                ? "bg-brand-primary bg-opacity-90 border-2 border-brand-primary"
                 : "bg-dark-bg border border-gray-800"
             }`}
           >
@@ -124,16 +124,20 @@ export default function Cooperation() {
                 پرطرفدار
               </span>
             )}
-            <h3 className="text-2xl font-bold mb-2 text-brand-primary">{pkg.name}</h3>
+            <h3 className={`text-2xl font-bold mb-2 ${pkg.popular ? "text-black" : "text-brand-primary"}`}>
+              {pkg.name}
+            </h3>
             <div className="flex items-baseline mb-4">
-              <span className="text-3xl font-bold text-white">${pkg.priceUSD}</span>
-              <span className="text-gray-400 mr-2 text-sm">({pkg.priceETH} ETH)</span>
+              <span className={`text-3xl font-bold ${pkg.popular ? "text-black" : "text-white"}`}>${pkg.priceUSD}</span>
+              <span className={`mr-2 text-sm ${pkg.popular ? "text-black/70" : "text-gray-400"}`}>
+                ({pkg.priceETH} ETH)
+              </span>
             </div>
-            <p className="text-gray-300 mb-6">{pkg.description}</p>
+            <p className={`mb-6 ${pkg.popular ? "text-black/80" : "text-gray-300"}`}>{pkg.description}</p>
             <ul className="space-y-3 mb-6">
               {pkg.features.map((feature) => (
-                <li key={feature} className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-brand-primary mr-2" />
+                <li key={feature} className={`flex items-center ${pkg.popular ? "text-black/90" : "text-gray-300"}`}>
+                  <Check className={`w-5 h-5 mr-2 ${pkg.popular ? "text-black" : "text-brand-primary"}`} />
                   {feature}
                 </li>
               ))}
@@ -141,9 +145,7 @@ export default function Cooperation() {
             <Link
               href={`/payment?package=${pkg.name}&amount=${pkg.priceETH}&usd=${pkg.priceUSD}`}
               className={`block w-full text-center py-3 rounded-xl transition-colors ${
-                pkg.popular
-                  ? "bg-brand-primary text-white hover:bg-brand-primary/90"
-                  : "bg-gray-800 text-white hover:bg-gray-700"
+                pkg.popular ? "bg-black text-white hover:bg-black/90" : "bg-gray-800 text-white hover:bg-gray-700"
               }`}
             >
               <Wallet className="inline-block w-5 h-5 mr-2 -mt-1" />

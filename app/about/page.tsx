@@ -17,7 +17,7 @@ const skills = [
 export default function About() {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-brand-purple">درباره من</h1>
+      <h1 className="text-3xl font-bold mb-6 text-brand-primary">درباره من</h1>
       <div className="flex flex-col md:flex-row items-center md:items-end gap-8">
         <div className="w-full md:w-auto">
           <Image
@@ -41,20 +41,26 @@ export default function About() {
             من عاشق یادگیری تکنولوژی‌های جدید و به اشتراک گذاشتن دانش خود با دیگران هستم. در وقت آزاد خود، در پروژه‌های
             متن باز مشارکت می‌کنم و مقالات آموزشی می‌نویسم.
           </p>
-          <h2 className="text-2xl font-bold mt-6 mb-4 text-brand-purple">مهارت‌ها</h2>
+          <h2 className="text-2xl font-bold mt-6 mb-4 text-brand-primary">مهارت‌ها</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {skills.map((skill) => (
               <div key={skill.name} className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-brand-purple flex items-center justify-center mr-4">
-                  <skill.icon className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 rounded-full bg-brand-primary/20 flex items-center justify-center mr-4">
+                  <skill.icon className="w-6 h-6 text-brand-primary" />
                 </div>
                 <div className="flex-grow">
                   <div className="flex justify-between mb-1">
                     <span className="font-semibold text-default">{skill.name}</span>
-                    <span className="text-default">{skill.level}%</span>
+                    <span className="text-brand-primary">{skill.level}%</span>
                   </div>
-                  <div className="h-2 bg-gray-700 rounded-full">
-                    <div className="h-full bg-brand-purple rounded-full" style={{ width: `${skill.level}%` }}></div>
+                  <div className="h-2 bg-black/20 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-brand-primary rounded-full transition-all duration-1000 ease-out"
+                      style={{
+                        width: `${skill.level}%`,
+                        boxShadow: "0 0 10px rgba(0, 220, 130, 0.5)",
+                      }}
+                    />
                   </div>
                 </div>
               </div>

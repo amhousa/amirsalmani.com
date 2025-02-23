@@ -31,6 +31,16 @@ const projects: Project[] = [
   },
   {
     id: 2,
+    title: "نیلرام - قاب‌های موسیقی",
+    image:
+      "/images/portfolio/nilram.webp",
+    description: "پلتفرم سفارش قاب‌های موسیقی با امکان شخصی‌سازی پیام‌های صوتی",
+    highlights: ["طراحی سه‌بعدی", "رابط کاربری لوکس", "سیستم سفارش آنلاین"],
+    fullViewUrl: "https://nilramgallery.ir",
+    category: "E-commerce",
+  },
+  {
+    id: 3,
     title: "کنترل پنل صنعتی کارما",
     image: "/images/portfolio/karma.webp",
     description: "سیستم مدیریت و کنترل تجهیزات صنعتی با رابط کاربری پیشرفته",
@@ -39,7 +49,7 @@ const projects: Project[] = [
     category: "Web Application",
   },
   {
-    id: 3,
+    id: 4,
     title: "صرافی ارز دیجیتال X",
     image:
       "/images/portfolio/x-exchange.webp",
@@ -49,7 +59,7 @@ const projects: Project[] = [
     category: "Web Application",
   },
   {
-    id: 4,
+    id: 5,
     title: "استارز هاب",
     image: "/images/portfolio/starshub.webp",
     description: "پلتفرم خرید و فروش ارز دیجیتال تلگرام با امکانات پیشرفته",
@@ -58,7 +68,7 @@ const projects: Project[] = [
     category: "Web Application",
   },
   {
-    id: 5,
+    id: 6,
     title: "توتال نیوز",
     image: "/images/portfolio/totalnews.webp",
     description: "پورتال خبری چندزبانه در حوزه حمل و نقل و لجستیک",
@@ -67,7 +77,7 @@ const projects: Project[] = [
     category: "Web Application",
   },
   {
-    id: 6,
+    id: 7,
     title: "گرین سورا",
     image: "/images/portfolio/greensora.webp",
     description: "وبسایت شرکت تولیدکننده محصولات پاکسازی آلودگی‌های نفتی",
@@ -76,7 +86,7 @@ const projects: Project[] = [
     category: "Landing Page",
   },
   {
-    id: 7,
+    id: 8,
     title: "تعمیرات سامسونگ کرج",
     image: "/images/portfolio/karajsamsung.webp",
     description: "وبسایت خدمات تعمیر لوازم خانگی سامسونگ در کرج",
@@ -85,7 +95,7 @@ const projects: Project[] = [
     category: "Landing Page",
   },
   {
-    id: 8,
+    id: 9,
     title: "جواهری گوهرآرا",
     image: "/images/portfolio/goharara.webp",
     description: "فروشگاه آنلاین جواهرات با طراحی لوکس و حرفه‌ای",
@@ -94,7 +104,7 @@ const projects: Project[] = [
     category: "E-commerce",
   },
   {
-    id: 9,
+    id: 10,
     title: "کیمیاکشت",
     image: "/images/portfolio/kimiakesht.webp",
     description: "فروشگاه آنلاین گیاهان و محصولات کشاورزی",
@@ -103,7 +113,7 @@ const projects: Project[] = [
     category: "E-commerce",
   },
   {
-    id: 10,
+    id: 11,
     title: "منوی آنلاین کافه یاد",
     image:
       "/images/portfolio/yadcafe.webp",
@@ -113,7 +123,7 @@ const projects: Project[] = [
     category: "E-commerce",
   },
   {
-    id: 11,
+    id: 12,
     title: "صفحه فرود نوآور",
     image:
       "/images/portfolio/noavar.webp",
@@ -123,7 +133,7 @@ const projects: Project[] = [
     category: "UI/UX Design",
   },
   {
-    id: 12,
+    id: 13,
     title: "بازی حافظه",
     image:
       "/images/portfolio/clever-monkey.webp",

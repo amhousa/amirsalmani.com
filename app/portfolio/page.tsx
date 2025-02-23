@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Info, ExternalLink } from "lucide-react"
+import { useState, useCallback, useEffect } from "react"
+import { Info, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { isMobile, isTablet } from "react-device-detect"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
@@ -145,8 +145,30 @@ export default function Portfolio() {
     // Add other projects here
   ]
 
+  const [activeProject, setActiveProject] = useState(0)
   const [showInfo, setShowInfo] = useState(false)
   const isTouchDevice = isMobile || isTablet
+
+  const nextProject = useCallback(() => {
+    setActiveProject((prev) => (prev + 1) % projects.length)
+    setShowInfo(false)
+  }, [projects.length])
+
+  const prevProject = useCallback(() => {
+    setActiveProject((prev) => (prev - 1 + projects.length) % projects.length)
+    setShowInfo(false)
+  }, [projects.length])
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") prevProject()
+      if (event.key === "ArrowLeft") nextProject()
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [nextProject, prevProject])
 
   const ProjectSection = ({ project }: { project: Project }) => {
     return (
@@ -166,6 +188,37 @@ export default function Portfolio() {
           <Info className="w-5 h-5 text-white group-hover:text-brand-primary transition-colors" />
           <span className="text-white group-hover:text-brand-primary transition-colors">مشاهده اطلاعات پروژه</span>
         </button>
+
+        {/* Navigation buttons */}
+        <div className="absolute inset-y-0 left-0 right-0 flex justify-between items-center px-6">
+          {/* Previous button */}
+          <motion.button
+            onClick={prevProject}
+            className="group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
+                     border border-white/10 hover:border-brand-primary/50 px-6 py-3 rounded-2xl transition-all duration-300"
+            whileHover={{ x: -5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronRight className="w-6 h-6 text-white group-hover:text-brand-primary transition-colors" />
+            <span className="hidden md:block text-white group-hover:text-brand-primary transition-colors">
+              پروژه قبلی
+            </span>
+          </motion.button>
+
+          {/* Next button */}
+          <motion.button
+            onClick={nextProject}
+            className="group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
+                     border border-white/10 hover:border-brand-primary/50 px-6 py-3 rounded-2xl transition-all duration-300"
+            whileHover={{ x: 5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="hidden md:block text-white group-hover:text-brand-primary transition-colors">
+              پروژه بعدی
+            </span>
+            <ChevronLeft className="w-6 h-6 text-white group-hover:text-brand-primary transition-colors" />
+          </motion.button>
+        </div>
 
         {/* Info panel */}
         <AnimatePresence>
@@ -235,13 +288,21 @@ export default function Portfolio() {
             />
           )}
         </AnimatePresence>
+
+        {/* Project counter */}
+        <div
+          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm 
+                       border border-white/10 px-4 py-2 rounded-xl text-white text-sm"
+        >
+          {activeProject + 1} / {projects.length}
+        </div>
       </div>
     )
   }
 
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
-      <ProjectSection project={projects[0]} />
+      <ProjectSection project={projects[activeProject]} />
     </div>
   )
 }

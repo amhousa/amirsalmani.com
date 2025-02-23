@@ -47,6 +47,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily" as const,
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/cooperation`,
+      lastModified: currentDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
   ]
 
   // Get blog posts
@@ -72,22 +78,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }
   })
-
-  // // Get language versions
-  // const languagePages = [
-  //   {
-  //     url: `${baseUrl}/en`,
-  //     lastModified: currentDate,
-  //     changeFrequency: "weekly" as const,
-  //     priority: 0.9,
-  //   },
-  //   {
-  //     url: `${baseUrl}/de`,
-  //     lastModified: currentDate,
-  //     changeFrequency: "weekly" as const,
-  //     priority: 0.9,
-  //   },
-  // ]
 
   // Combine all URLs
   return [...staticPages, ...blogPosts]

@@ -8,6 +8,7 @@ export default function Payment() {
   const searchParams = useSearchParams()
   const packageName = searchParams.get("package")
   const amount = searchParams.get("amount")
+  const usdAmount = searchParams.get("usd")
   const [copied, setCopied] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState("pending") // pending, success, failed
   const [timeLeft, setTimeLeft] = useState(900) // 15 minutes in seconds
@@ -43,8 +44,10 @@ export default function Payment() {
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2 text-brand-primary">پرداخت {packageName}</h1>
-          <p className="text-gray-400">
+          <p className="text-gray-300">
             لطفاً مبلغ {amount} ETH را به آدرس زیر ارسال کنید.
+            <br />
+            <span className="text-sm">معادل ${usdAmount}</span>
             <br />
             پس از تأیید تراکنش، با شما تماس خواهیم گرفت.
           </p>
@@ -70,10 +73,19 @@ export default function Payment() {
           </div>
 
           <div className="text-center">
-            <p className="text-xl font-bold text-white mb-2">
-              {amount} <span className="text-gray-400">ETH</span>
-            </p>
-            <p className="text-sm text-gray-400 mb-4">زمان باقی‌مانده: {formatTime(timeLeft)}</p>
+            <div className="mb-4">
+              <p className="text-2xl font-bold text-white mb-1">${usdAmount}</p>
+              <p className="text-lg text-gray-400">{amount} ETH</p>
+            </div>
+            <div className="w-full bg-gray-800 h-2 rounded-full mb-4">
+              <div
+                className="bg-brand-primary h-full rounded-full transition-all duration-300"
+                style={{
+                  width: `${Math.max(0, Math.min(100, (timeLeft / 900) * 100))}%`,
+                }}
+              />
+            </div>
+            <p className="text-sm text-gray-300 mb-4">زمان باقی‌مانده: {formatTime(timeLeft)}</p>
             <a
               href={`https://etherscan.io/address/${ethAddress}`}
               target="_blank"
@@ -86,7 +98,7 @@ export default function Payment() {
           </div>
         </div>
 
-        <div className="space-y-4 text-sm text-gray-400">
+        <div className="space-y-4 text-sm text-gray-300">
           <p>• پس از واریز وجه، تراکنش به صورت خودکار بررسی خواهد شد.</p>
           <p>• در صورت نیاز به راهنمایی با پشتیبانی تماس بگیرید.</p>
           <p>• مبلغ دقیقاً باید برابر با مقدار درخواستی باشد.</p>

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Check, ChevronDown, ChevronUp, Wallet } from "lucide-react"
@@ -10,17 +9,19 @@ import Link from "next/link"
 const packages = [
   {
     name: "مشاوره اولیه",
-    price: "0.001",
+    priceUSD: 150,
+    priceETH: 0.05,
     currency: "ETH",
     features: ["۳۰ دقیقه مشاوره آنلاین", "بررسی نیازها و اهداف", "ارائه راهکارهای پیشنهادی"],
     description: "مناسب برای آشنایی اولیه و بررسی امکان همکاری",
   },
   {
     name: "توسعه وب",
-    price: "0.05",
+    priceUSD: 1500,
+    priceETH: 0.5,
     currency: "ETH",
     features: [
-      "نرخ ساعتی پایه",
+      "۱۰ ساعت برنامه‌نویسی",
       "توسعه فرانت‌اند و بک‌اند",
       "بهینه‌سازی عملکرد",
       "طراحی رابط کاربری",
@@ -31,9 +32,16 @@ const packages = [
   },
   {
     name: "هوش مصنوعی",
-    price: "0.08",
+    priceUSD: 2250,
+    priceETH: 0.75,
     currency: "ETH",
-    features: ["نرخ ساعتی پایه", "پیاده‌سازی مدل‌های هوش مصنوعی", "توسعه چت‌بات", "پردازش زبان طبیعی", "بهینه‌سازی عملکرد"],
+    features: [
+      "۱۵ ساعت برنامه‌نویسی",
+      "پیاده‌سازی مدل‌های هوش مصنوعی",
+      "توسعه چت‌بات",
+      "پردازش زبان طبیعی",
+      "بهینه‌سازی عملکرد",
+    ],
     description: "مناسب برای پروژه‌های هوش مصنوعی و یادگیری ماشین",
   },
 ]
@@ -118,10 +126,10 @@ export default function Cooperation() {
             )}
             <h3 className="text-2xl font-bold mb-2 text-brand-primary">{pkg.name}</h3>
             <div className="flex items-baseline mb-4">
-              <span className="text-3xl font-bold text-white">{pkg.price}</span>
-              <span className="text-gray-400 mr-2">{pkg.currency}</span>
+              <span className="text-3xl font-bold text-white">${pkg.priceUSD}</span>
+              <span className="text-gray-400 mr-2 text-sm">({pkg.priceETH} ETH)</span>
             </div>
-            <p className="text-gray-400 mb-6">{pkg.description}</p>
+            <p className="text-gray-300 mb-6">{pkg.description}</p>
             <ul className="space-y-3 mb-6">
               {pkg.features.map((feature) => (
                 <li key={feature} className="flex items-center text-gray-300">
@@ -131,7 +139,7 @@ export default function Cooperation() {
               ))}
             </ul>
             <Link
-              href={`/payment?package=${pkg.name}&amount=${pkg.price}`}
+              href={`/payment?package=${pkg.name}&amount=${pkg.priceETH}&usd=${pkg.priceUSD}`}
               className={`block w-full text-center py-3 rounded-xl transition-colors ${
                 pkg.popular
                   ? "bg-brand-primary text-white hover:bg-brand-primary/90"
@@ -149,7 +157,7 @@ export default function Cooperation() {
       <section className="max-w-md mx-auto mb-16">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-4 text-brand-primary">دریافت مشاوره رایگان</h2>
-          <p className="text-gray-400">شماره تماس خود را وارد کنید تا در اولین فرصت با شما تماس بگیریم.</p>
+          <p className="text-gray-300">شماره تماس خود را وارد کنید تا در اولین فرصت با شما تماس بگیریم.</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

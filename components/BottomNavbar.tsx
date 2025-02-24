@@ -11,8 +11,8 @@ const BottomNavbar = () => {
   const navItems = [
     { href: "/", icon: Home, label: "خانه" },
     { href: "/about", icon: User, label: "درباره من" },
+    { href: "/services", icon: Briefcase, label: "خدمات" }, // Changed from portfolio
     { href: "/blog", icon: Newspaper, label: "وبلاگ" },
-    { href: "/portfolio", icon: Briefcase, label: "نمونه کارها" },
     { href: "/cooperation", icon: Handshake, label: "همکاری" },
     { href: "/contact", icon: Mail, label: "تماس" },
   ]

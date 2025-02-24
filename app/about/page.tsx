@@ -21,7 +21,7 @@ export default function About() {
       <div className="flex flex-col md:flex-row items-center md:items-end gap-8">
         <div className="w-full md:w-auto">
           <Image
-            src="/images/about/me2.svg"
+            src="/images/about/me2.webp"
             alt="امیرحسین سلمانی"
             width={300}
             height={300}

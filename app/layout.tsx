@@ -185,7 +185,7 @@ export default function RootLayout({
             name: "امیرحسین سلمانی",
             alternateName: "Amirhossein Salmani",
             url: "https://amirsalmani.com",
-            image: "https://amirsalmani.com/images/about/me.svg",
+            image: "https://amirsalmani.com/images/about/me.webp",
             sameAs: [
               "https://github.com/yourusername",
               "https://linkedin.com/in/yourusername",

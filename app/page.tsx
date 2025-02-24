@@ -7,7 +7,7 @@ export default function Home() {
     <div className="relative flex flex-col items-center justify-center min-h-screen">
       <div className="flex flex-col items-center justify-center p-4 text-center z-20">
         <Image
-          src="/images/about/me.svg"
+          src="/images/about/me.webp"
           alt="امیرحسین سلمانی"
           width={150}
           height={150}

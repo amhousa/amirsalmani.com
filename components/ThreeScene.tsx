@@ -1,75 +1,149 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
-import { PerspectiveCamera } from "@react-three/drei"
+import { useEffect, useRef } from "react"
 import * as THREE from "three"
+import { gsap } from "gsap"
 
-function Cube() {
-  const meshRef = useRef<THREE.Mesh>(null)
-  const edgesRef = useRef<THREE.LineSegments>(null)
-  const targetRotation = useRef({ x: 0, y: 0 })
-  const currentRotation = useRef({ x: 0, y: 0 })
+interface ThreeSceneProps {
+  onLoad?: () => void
+}
+
+export default function ThreeScene({ onLoad }: ThreeSceneProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const sceneRef = useRef<THREE.Scene | null>(null)
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null)
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
+  const cubeRef = useRef<THREE.Mesh | null>(null)
+  const frameRef = useRef<number>(0)
 
   useEffect(() => {
+    if (!containerRef.current) return
+
+    // Scene setup
+    const scene = new THREE.Scene()
+    sceneRef.current = scene
+
+    // Camera setup
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    camera.position.z = 5
+    cameraRef.current = camera
+
+    // Renderer setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(window.devicePixelRatio)
+    containerRef.current.appendChild(renderer.domElement)
+    rendererRef.current = renderer
+
+    // Create materials for each face of the cube
+    const materials = [
+      new THREE.MeshPhongMaterial({ color: 0x00dc82, transparent: true, opacity: 0.9 }), // Right
+      new THREE.MeshPhongMaterial({ color: 0x00b368, transparent: true, opacity: 0.9 }), // Left
+      new THREE.MeshPhongMaterial({ color: 0x00dc82, transparent: true, opacity: 0.9 }), // Top
+      new THREE.MeshPhongMaterial({ color: 0x00b368, transparent: true, opacity: 0.9 }), // Bottom
+      new THREE.MeshPhongMaterial({ color: 0x00dc82, transparent: true, opacity: 0.9 }), // Front
+      new THREE.MeshPhongMaterial({ color: 0x00b368, transparent: true, opacity: 0.9 }), // Back
+    ]
+
+    // Create cube
+    const geometry = new THREE.BoxGeometry(2, 2, 2)
+    const cube = new THREE.Mesh(geometry, materials)
+    scene.add(cube)
+    cubeRef.current = cube
+
+    // Add lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+    scene.add(ambientLight)
+
+    const pointLight = new THREE.PointLight(0xffffff, 1)
+    pointLight.position.set(5, 5, 5)
+    scene.add(pointLight)
+
+    // Initial animation
+    gsap.from(cube.rotation, {
+      y: Math.PI * 2,
+      duration: 2,
+      ease: "power2.out",
+    })
+
+    gsap.from(cube.scale, {
+      x: 0,
+      y: 0,
+      z: 0,
+      duration: 1.5,
+      ease: "elastic.out(1, 0.5)",
+    })
+
+    // Animation loop
+    const animate = () => {
+      frameRef.current = requestAnimationFrame(animate)
+
+      cube.rotation.y += 0.002
+      cube.rotation.x += 0.001
+
+      renderer.render(scene, camera)
+    }
+
+    animate()
+
+    // Handle resize
+    const handleResize = () => {
+      if (!containerRef.current || !renderer || !camera) return
+
+      const width = window.innerWidth
+      const height = window.innerHeight
+
+      camera.aspect = width / height
+      camera.updateProjectionMatrix()
+
+      renderer.setSize(width, height)
+    }
+
+    window.addEventListener("resize", handleResize)
+
+    // Mouse movement effect
     const handleMouseMove = (event: MouseEvent) => {
-      const x = (event.clientY / window.innerHeight - 0.5) * Math.PI * 0.3
-      const y = (event.clientX / window.innerWidth - 0.5) * Math.PI * 0.3
-      targetRotation.current = { x, y }
+      if (!cube) return
+
+      const mouseX = (event.clientX / window.innerWidth) * 2 - 1
+      const mouseY = -(event.clientY / window.innerHeight) * 2 + 1
+
+      gsap.to(cube.rotation, {
+        x: mouseY * 0.3,
+        y: mouseX * 0.3,
+        duration: 1,
+      })
     }
 
     window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
 
-  useFrame(() => {
-    if (meshRef.current && edgesRef.current) {
-      currentRotation.current.x += (targetRotation.current.x - currentRotation.current.x) * 0.05
-      currentRotation.current.y += (targetRotation.current.y - currentRotation.current.y) * 0.05
-
-      meshRef.current.rotation.x = currentRotation.current.x
-      meshRef.current.rotation.y = currentRotation.current.y + Math.PI * 0.25
-      edgesRef.current.rotation.copy(meshRef.current.rotation)
-
-      // Subtle floating animation
-      const floatY = Math.sin(Date.now() * 0.001) * 0.1
-      meshRef.current.position.y = floatY
-      edgesRef.current.position.y = floatY
-    }
-  })
-
-  return (
-    <group scale={[2.5, 2.5, 2.5]}>
-      <mesh ref={meshRef}>
-        <boxGeometry args={[2, 2, 2]} />
-        <meshBasicMaterial color="#050301" transparent opacity={0.1} />
-      </mesh>
-
-      <lineSegments ref={edgesRef}>
-        <edgesGeometry args={[new THREE.BoxGeometry(2, 2, 2)]} />
-        <lineBasicMaterial color="#00dc82" linewidth={1.5} />
-      </lineSegments>
-    </group>
-  )
-}
-
-export default function ThreeScene({ onLoad }: { onLoad?: () => void }) {
-  useEffect(() => {
+    // Notify parent component when everything is loaded
     if (onLoad) {
-      const timer = setTimeout(onLoad, 500)
-      return () => clearTimeout(timer)
+      onLoad()
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      window.removeEventListener("mousemove", handleMouseMove)
+      cancelAnimationFrame(frameRef.current)
+
+      // Cleanup Three.js resources
+      if (rendererRef.current) {
+        rendererRef.current.dispose()
+        containerRef.current?.removeChild(rendererRef.current.domElement)
+      }
+      if (geometry) geometry.dispose()
+      materials.forEach((material) => material.dispose())
     }
   }, [onLoad])
 
   return (
-    <div className="absolute inset-0 -z-10">
-      <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-        <color attach="background" args={["#050301"]} />
-        <pointLight position={[10, 10, 10]} intensity={0.5} color="#00dc82" />
-        <Cube />
-      </Canvas>
-    </div>
+    <div
+      ref={containerRef}
+      className="absolute inset-0 -z-10"
+      style={{
+        background: "radial-gradient(circle at center, rgba(0,220,130,0.1) 0%, transparent 70%)",
+      }}
+    />
   )
 }
-

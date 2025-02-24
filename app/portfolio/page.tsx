@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
-import { Info, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
-import { isMobile, isTablet } from "react-device-detect"
+import { useState, useCallback, useEffect, useRef } from "react"
+import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Project {
   id: number
@@ -145,164 +145,170 @@ export default function Portfolio() {
     // Add other projects here
   ]
 
-  const [activeProject, setActiveProject] = useState(0)
-  const [showInfo, setShowInfo] = useState(false)
-  const isTouchDevice = isMobile || isTablet
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0)
+
+  const openModal = useCallback((project: Project) => {
+    setSelectedProject(project)
+    setIsModalOpen(true)
+    document.body.style.overflow = "hidden" // Prevent scrolling when modal is open
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setSelectedProject(null)
+    setIsModalOpen(false)
+    document.body.style.overflow = "auto" // Restore scrolling
+  }, [])
 
   const nextProject = useCallback(() => {
-    setActiveProject((prev) => (prev + 1) % projects.length)
-    setShowInfo(false)
-  }, [projects.length])
+    setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length)
+    setSelectedProject(projects[currentProjectIndex])
+  }, [currentProjectIndex, projects])
 
   const prevProject = useCallback(() => {
-    setActiveProject((prev) => (prev - 1 + projects.length) % projects.length)
-    setShowInfo(false)
-  }, [projects.length])
+    setCurrentProjectIndex((prevIndex) => (prevIndex - 1 + projects.length) % projects.length)
+    setSelectedProject(projects[currentProjectIndex])
+  }, [currentProjectIndex, projects])
 
-  // Handle keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowRight") prevProject()
-      if (event.key === "ArrowLeft") nextProject()
+    if (isModalOpen) {
+      setSelectedProject(projects[currentProjectIndex])
     }
+  }, [currentProjectIndex, isModalOpen, projects])
 
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [nextProject, prevProject])
+  const modalVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 },
+  }
 
-  const ProjectSection = ({ project }: { project: Project }) => {
-    return (
-      <div className="relative w-full h-screen">
-        {/* Full-screen image */}
-        <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
+  const projectDetailsVariants = {
+    hidden: { x: "100%" },
+    visible: { x: 0 },
+    exit: { x: "100%" },
+  }
 
-        {/* Info button */}
-        <button
-          className="absolute top-6 left-6 z-20 group flex items-center gap-2 bg-black/60 backdrop-blur-sm 
-                    hover:bg-brand-primary/20 hover:border-brand-primary/50 border border-white/10 
-                    px-4 py-2 rounded-xl transition-all duration-300"
-          onClick={() => isTouchDevice && setShowInfo(!showInfo)}
-          onMouseEnter={() => !isTouchDevice && setShowInfo(true)}
-          onMouseLeave={() => !isTouchDevice && setShowInfo(false)}
-        >
-          <Info className="w-5 h-5 text-white group-hover:text-brand-primary transition-colors" />
-          <span className="text-white group-hover:text-brand-primary transition-colors">مشاهده اطلاعات پروژه</span>
-        </button>
+  const [isZoomed, setIsZoomed] = useState(false)
+  const imageRef = useRef<HTMLImageElement>(null)
 
-        {/* Navigation buttons */}
-        <div className="absolute inset-y-0 left-0 right-0 flex justify-between items-center px-6">
-          {/* Previous button */}
-          <motion.button
-            onClick={prevProject}
-            className="group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
-                     border border-white/10 hover:border-brand-primary/50 px-6 py-3 rounded-2xl transition-all duration-300"
-            whileHover={{ x: -5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ChevronRight className="w-6 h-6 text-white group-hover:text-brand-primary transition-colors" />
-            <span className="hidden md:block text-white group-hover:text-brand-primary transition-colors">
-              پروژه قبلی
-            </span>
-          </motion.button>
-
-          {/* Next button */}
-          <motion.button
-            onClick={nextProject}
-            className="group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
-                     border border-white/10 hover:border-brand-primary/50 px-6 py-3 rounded-2xl transition-all duration-300"
-            whileHover={{ x: 5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className="hidden md:block text-white group-hover:text-brand-primary transition-colors">
-              پروژه بعدی
-            </span>
-            <ChevronLeft className="w-6 h-6 text-white group-hover:text-brand-primary transition-colors" />
-          </motion.button>
-        </div>
-
-        {/* Info panel */}
-        <AnimatePresence>
-          {showInfo && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="absolute top-20 left-6 w-full max-w-md z-10"
-            >
-              <div className="bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-white/10">
-                <div className="relative">
-                  {/* Project title */}
-                  <h2 className="text-2xl font-bold mb-4 text-white">{project.title}</h2>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1 rounded-full text-xs bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-gray-300 mb-4">{project.description}</p>
-
-                  {/* Highlights */}
-                  <div className="space-y-2 mb-6">
-                    {project.highlights.map((highlight, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-gray-300">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
-                        {highlight}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* View site button */}
-                  <Link
-                    href={project.fullViewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-brand-primary hover:bg-brand-primary/90 text-black font-medium 
-                             px-6 py-3 rounded-xl transition-all duration-300 group w-full justify-center"
-                  >
-                    مشاهده وب‌سایت
-                    <ExternalLink className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Dark overlay when info is shown */}
-        <AnimatePresence>
-          {showInfo && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-              onClick={() => isTouchDevice && setShowInfo(false)}
-            />
-          )}
-        </AnimatePresence>
-
-        {/* Project counter */}
-        <div
-          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm 
-                       border border-white/10 px-4 py-2 rounded-xl text-white text-sm"
-        >
-          {activeProject + 1} / {projects.length}
-        </div>
-      </div>
-    )
+  const toggleZoom = () => {
+    setIsZoomed(!isZoomed)
   }
 
   return (
-    <div className="fixed inset-0 bg-black text-white overflow-hidden">
-      <ProjectSection project={projects[activeProject]} />
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <h1 className="text-3xl font-bold mb-8">پروژه‌های من</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project) => (
+          <div key={project.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <Image
+              src={project.image || "/placeholder.svg"}
+              alt={project.title}
+              width={600}
+              height={400}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4">
+              <h2 className="text-xl font-semibold mb-2">{project.title}</h2>
+              <p className="text-gray-700">{project.description}</p>
+              <button
+                onClick={() => openModal(project)}
+                className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                مشاهده جزئیات
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {isModalOpen && selectedProject && (
+          <motion.div
+            className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center z-50"
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.3 }}
+            onClick={closeModal}
+          >
+            <motion.div
+              className="bg-white rounded-lg overflow-hidden max-w-4xl w-full m-4 relative"
+              variants={projectDetailsVariants}
+              transition={{ duration: 0.4 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative">
+                <Image
+                  ref={imageRef}
+                  src={selectedProject.image || "/placeholder.svg"}
+                  alt={selectedProject.title}
+                  width={1200}
+                  height={800}
+                  className={`w-full h-auto object-cover cursor-pointer transition-transform duration-300 ${
+                    isZoomed ? "scale-150 transform-origin-center" : ""
+                  }`}
+                  onClick={toggleZoom}
+                />
+                <div
+                  className="absolute top-4 left-4 bg-white bg-opacity-75 rounded-full p-2 cursor-pointer"
+                  onClick={closeModal}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-x"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="M6 6 18 18" />
+                  </svg>
+                </div>
+                <div className="absolute top-4 right-4 bg-white bg-opacity-75 rounded-full p-2 cursor-pointer">
+                  <Link href={selectedProject.fullViewUrl} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="p-8">
+                <h2 className="text-3xl font-semibold mb-4">{selectedProject.title}</h2>
+                <p className="text-gray-700 mb-6">{selectedProject.description}</p>
+                <h3 className="text-xl font-semibold mb-2">ویژگی‌ها</h3>
+                <ul className="list-disc list-inside text-gray-700">
+                  {selectedProject.highlights.map((highlight, index) => (
+                    <li key={index}>{highlight}</li>
+                  ))}
+                </ul>
+                <div className="flex justify-between mt-6">
+                  <button
+                    onClick={prevProject}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+                  >
+                    <ChevronRight />
+                    قبلی
+                  </button>
+                  <button
+                    onClick={nextProject}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+                  >
+                    بعدی
+                    <ChevronLeft />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

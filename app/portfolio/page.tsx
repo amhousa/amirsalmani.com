@@ -149,44 +149,39 @@ export default function Portfolio() {
   const [activeProject, setActiveProject] = useState(0)
   const [showInfo, setShowInfo] = useState(false)
   const isTouchDevice = isMobile || isTablet
-  const timeoutRef = useRef<NodeJS.Timeout>()
   const infoBoxRef = useRef<HTMLDivElement>(null)
 
   const nextProject = useCallback(() => {
     setActiveProject((prev) => (prev + 1) % projects.length)
     setShowInfo(false)
-  }, [projects.length])
+  }, [projects])
 
   const prevProject = useCallback(() => {
     setActiveProject((prev) => (prev - 1 + projects.length) % projects.length)
     setShowInfo(false)
-  }, [projects.length])
+  }, [projects])
 
   const handleInfoButtonHover = () => {
     if (isTouchDevice) return
-    clearTimeout(timeoutRef.current)
     setShowInfo(true)
   }
 
   const handleInfoButtonLeave = () => {
     if (isTouchDevice) return
-    timeoutRef.current = setTimeout(() => {
-      if (!infoBoxRef.current?.matches(":hover")) {
-        setShowInfo(false)
-      }
-    }, 4000)
+    // Only hide if not hovering over info box
+    if (!infoBoxRef.current?.matches(":hover")) {
+      setShowInfo(false)
+    }
   }
 
   const handleInfoBoxHover = () => {
     if (isTouchDevice) return
-    clearTimeout(timeoutRef.current)
+    setShowInfo(true)
   }
 
   const handleInfoBoxLeave = () => {
     if (isTouchDevice) return
-    timeoutRef.current = setTimeout(() => {
-      setShowInfo(false)
-    }, 4000)
+    setShowInfo(false)
   }
 
   // Handle keyboard navigation
@@ -199,19 +194,20 @@ export default function Portfolio() {
     window.addEventListener("keydown", handleKeyDown)
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
-      clearTimeout(timeoutRef.current)
     }
   }, [nextProject, prevProject])
 
   const ProjectSection = ({ project }: { project: Project }) => {
     return (
-      <div className="relative w-full h-screen flex items-center justify-center p-8">
+      <div className="relative w-full h-screen flex items-center justify-center">
         {/* Project image container */}
-        <div className="relative w-full max-w-6xl aspect-video rounded-2xl overflow-hidden border border-white/10">
-          <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
+        <div className="relative w-[calc(100%-8rem)] h-[calc(100%-8rem)] flex items-center justify-center">
+          <div className="relative w-full h-full max-w-6xl max-h-[80vh] rounded-2xl overflow-hidden border border-white/10">
+            <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
 
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          </div>
         </div>
 
         {/* Info button */}
@@ -329,12 +325,12 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <>
       <MovingBackground />
-      <div className="relative z-10">
+      <div className="fixed inset-0 overflow-hidden z-10">
         <ProjectSection project={projects[activeProject]} />
       </div>
-    </div>
+    </>
   )
 }
 

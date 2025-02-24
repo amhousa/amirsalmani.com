@@ -26,8 +26,9 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-    camera.position.z = 10
-    camera.position.y = 2
+    camera.position.z = 8
+    camera.position.y = 4 // Moved up slightly
+    camera.rotation.x = -0.3 // Tilt down slightly
     cameraRef.current = camera
 
     // Renderer setup
@@ -78,7 +79,7 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
     }
 
     // Create box faces
-    const size = 4
+    const size = 3.5 // Slightly smaller box
     const faces = [
       // Bottom
       createBoxFace(size, [0, -size / 2, 0], [Math.PI / 2, 0, 0]),
@@ -164,71 +165,36 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
     // Animation timeline
     const tl = gsap.timeline({ delay: 0.5 })
 
-    // Box opening animation
+    // Box opening animation - only top face
     tl.to(faces[1].rotation, {
       // Top face
       x: -Math.PI,
-      duration: 2,
+      duration: 1.5,
       ease: "power2.inOut",
     })
-      .to(
-        faces[2].rotation,
-        {
-          // Front face
-          x: Math.PI / 2,
-          duration: 2,
-          ease: "power2.inOut",
-        },
-        "<",
-      )
-      .to(
-        faces[3].rotation,
-        {
-          // Back face
-          x: -Math.PI / 2,
-          duration: 2,
-          ease: "power2.inOut",
-        },
-        "<",
-      )
-      .to(
-        faces[4].rotation,
-        {
-          // Left face
-          z: -Math.PI / 2,
-          duration: 2,
-          ease: "power2.inOut",
-        },
-        "<",
-      )
-      .to(
-        faces[5].rotation,
-        {
-          // Right face
-          z: Math.PI / 2,
-          duration: 2,
-          ease: "power2.inOut",
-        },
-        "<",
-      )
+
+    // Adjust initial symbol positions to be closer to top of box
+    symbols.forEach((symbol) => {
+      symbol.position.y = -size / 2 // Position at bottom of box initially
+    })
 
     // Symbols animation
     symbols.forEach((symbol, index) => {
       // Make symbol visible
-      tl.set(symbol, { visible: true }, 1.5)
+      tl.set(symbol, { visible: true }, 1)
 
       // Float up and out of the box
       tl.to(
         symbol.position,
         {
-          y: `+=${3 + Math.random() * 2}`,
-          x: `+=${(Math.random() - 0.5) * 4}`,
-          z: `+=${(Math.random() - 0.5) * 4}`,
-          duration: 2,
+          y: `+=${4 + Math.random() * 2}`, // Increased height
+          x: `+=${(Math.random() - 0.5) * 3}`,
+          z: `+=${(Math.random() - 0.5) * 3}`,
+          duration: 1.5,
           ease: "power2.out",
-          delay: index * 0.2,
+          delay: index * 0.15,
         },
-        1.5,
+        1,
       )
 
       // Start floating animation
@@ -238,7 +204,7 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
         yoyo: true,
         repeat: -1,
         ease: "power1.inOut",
-        delay: 3 + index * 0.2,
+        delay: 2.5 + index * 0.15,
       })
 
       // Rotation animation
@@ -248,7 +214,7 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
         duration: 10 + Math.random() * 5,
         repeat: -1,
         ease: "none",
-        delay: 3 + index * 0.2,
+        delay: 2.5 + index * 0.15,
       })
     })
 
@@ -286,13 +252,13 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
       const mouseY = -(event.clientY / window.innerHeight) * 2 + 1
 
       gsap.to(boxGroup.rotation, {
-        x: mouseY * 0.1,
+        x: mouseY * 0.05, // Reduced rotation amount
         y: mouseX * 0.1,
         duration: 1,
       })
 
       gsap.to(symbolsGroup.rotation, {
-        x: mouseY * 0.05,
+        x: mouseY * 0.03, // Reduced rotation amount
         y: mouseX * 0.05,
         duration: 1,
       })

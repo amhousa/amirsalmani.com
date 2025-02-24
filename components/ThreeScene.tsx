@@ -1,139 +1,220 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useMemo } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
-import { Html, PerspectiveCamera, Grid } from "@react-three/drei"
-import { motion } from "framer-motion"
-import { Code, Palette, Globe, Cpu, Rocket, MessageSquare } from "lucide-react"
-import type * as THREE from "three"
+import { Effects, PerspectiveCamera } from "@react-three/drei"
+import * as THREE from "three"
+import { UnrealBloomPass } from "three-stdlib"
+import { extend } from "@react-three/fiber"
 
-interface ServiceProps {
-  position: [number, number, number]
-  title: string
-  description: string
-  icon: any
-  delay: number
+// Extend Three.js with UnrealBloomPass
+extend({ UnrealBloomPass })
+
+// Wave shader
+const waveShader = {
+  uniforms: {
+    uTime: { value: 0 },
+    uColor: { value: new THREE.Color("#00dc82") },
+    uNoiseFreq: { value: 3 },
+    uNoiseAmp: { value: 0.2 },
+    uWaveSpeed: { value: 0.75 },
+    uWaveFreq: { value: 5.0 },
+  },
+  vertexShader: `
+    uniform float uTime;
+    uniform float uNoiseFreq;
+    uniform float uNoiseAmp;
+    uniform float uWaveSpeed;
+    uniform float uWaveFreq;
+    
+    varying vec2 vUv;
+    varying float vElevation;
+    
+    //	Classic Perlin 3D Noise by Stefan Gustavson
+    vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+    vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+    vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+    
+    float cnoise(vec3 P){
+      vec3 Pi0 = floor(P);
+      vec3 Pi1 = Pi0 + vec3(1.0);
+      Pi0 = mod(Pi0, 289.0);
+      Pi1 = mod(Pi1, 289.0);
+      vec3 Pf0 = fract(P);
+      vec3 Pf1 = Pf0 - vec3(1.0);
+      vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+      vec4 iy = vec4(Pi0.yy, Pi1.yy);
+      vec4 iz0 = Pi0.zzzz;
+      vec4 iz1 = Pi1.zzzz;
+    
+      vec4 ixy = permute(permute(ix) + iy);
+      vec4 ixy0 = permute(ixy + iz0);
+      vec4 ixy1 = permute(ixy + iz1);
+    
+      vec4 gx0 = ixy0 / 7.0;
+      vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;
+      gx0 = fract(gx0);
+      vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+      vec4 sz0 = step(gz0, vec4(0.0));
+      gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+      gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+    
+      vec4 gx1 = ixy1 / 7.0;
+      vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;
+      gx1 = fract(gx1);
+      vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+      vec4 sz1 = step(gz1, vec4(0.0));
+      gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+      gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+    
+      vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+      vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+      vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+      vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+      vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+      vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+      vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+      vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+    
+      vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+      g000 *= norm0.x;
+      g010 *= norm0.y;
+      g100 *= norm0.z;
+      g110 *= norm0.w;
+      vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+      g001 *= norm1.x;
+      g011 *= norm1.y;
+      g101 *= norm1.z;
+      g111 *= norm1.w;
+    
+      float n000 = dot(g000, Pf0);
+      float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+      float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+      float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+      float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+      float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+      float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+      float n111 = dot(g111, Pf1);
+    
+      vec3 fade_xyz = fade(Pf0);
+      vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+      vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+      float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
+      return 2.2 * n_xyz;
+    }
+    
+    void main() {
+      vUv = uv;
+      
+      vec3 pos = position;
+      float noiseFreq = uNoiseFreq;
+      float noiseAmp = uNoiseAmp;
+      vec3 noisePos = vec3(pos.x * noiseFreq + uTime * uWaveSpeed, pos.y, pos.z);
+      pos.z += cnoise(noisePos) * noiseAmp;
+      
+      // Wave effect
+      float waveX = pos.x + uTime * uWaveSpeed;
+      float waveY = pos.y + uTime * uWaveSpeed;
+      float waves = sin(waveX * uWaveFreq) * cos(waveY * uWaveFreq) * noiseAmp;
+      pos.z += waves;
+      
+      vElevation = pos.z;
+      
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform vec3 uColor;
+    uniform float uTime;
+    
+    varying vec2 vUv;
+    varying float vElevation;
+    
+    void main() {
+      float intensity = vElevation * 2.0 + 0.5;
+      vec3 color = mix(uColor, vec3(1.0), intensity);
+      
+      // Add pulse effect
+      float pulse = sin(uTime * 2.0) * 0.5 + 0.5;
+      color = mix(color, uColor, pulse * 0.3);
+      
+      gl_FragColor = vec4(color, 1.0);
+    }
+  `,
 }
 
-const Service = ({ position, title, description, icon: Icon, delay }: ServiceProps) => {
-  const [hovered, setHovered] = useState(false)
+function EnergyWaves() {
+  const meshRef = useRef<THREE.Mesh>(null)
+  const materialRef = useRef<THREE.ShaderMaterial>(null)
 
-  return (
-    <Html position={position} center transform>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay, duration: 0.5 }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="w-64 glass-effect rounded-xl p-4 cursor-pointer transform transition-all duration-300"
-        style={{
-          transform: hovered ? "scale(1.05)" : "scale(1)",
-          border: `1px solid ${hovered ? "rgba(0,220,130,0.5)" : "rgba(255,255,255,0.1)"}`,
-        }}
-      >
-        <div className="w-10 h-10 rounded-lg bg-brand-primary/20 flex items-center justify-center mb-3">
-          <Icon className="w-5 h-5 text-brand-primary" />
-        </div>
-        <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-        <p className="text-sm text-gray-300">{description}</p>
-      </motion.div>
-    </Html>
-  )
-}
-
-const Scene = () => {
-  const groupRef = useRef<THREE.Group>(null)
+  // Create geometry with high detail
+  const geometry = useMemo(() => {
+    return new THREE.PlaneGeometry(20, 20, 128, 128)
+  }, [])
 
   useFrame(({ clock }) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.1
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value = clock.getElapsedTime()
     }
   })
 
-  const services = [
-    {
-      position: [5, 3, 0],
-      title: "توسعه وب",
-      description: "طراحی و توسعه وب‌سایت‌های مدرن با استفاده از آخرین تکنولوژی‌ها",
-      icon: Code,
-      delay: 0.2,
-    },
-    {
-      position: [-5, 3, 0],
-      title: "طراحی رابط کاربری",
-      description: "طراحی رابط‌های کاربری زیبا و کاربرپسند",
-      icon: Palette,
-      delay: 0.4,
-    },
-    {
-      position: [0, 5, 0],
-      title: "هوش مصنوعی",
-      description: "پیاده‌سازی راهکارهای هوش مصنوعی در کسب و کار شما",
-      icon: Cpu,
-      delay: 0.6,
-    },
-    {
-      position: [5, -3, 0],
-      title: "سئو و دیجیتال مارکتینگ",
-      description: "بهینه‌سازی سایت و افزایش بازدید ارگانیک",
-      icon: Globe,
-      delay: 0.8,
-    },
-    {
-      position: [-5, -3, 0],
-      title: "مشاوره استارتاپ",
-      description: "مشاوره تخصصی برای راه‌اندازی استارتاپ",
-      icon: Rocket,
-      delay: 1.0,
-    },
-    {
-      position: [0, -5, 0],
-      title: "آموزش برنامه‌نویسی",
-      description: "دوره‌های آموزشی تخصصی برنامه‌نویسی",
-      icon: MessageSquare,
-      delay: 1.2,
-    },
-  ]
+  return (
+    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]}>
+      <shaderMaterial
+        ref={materialRef}
+        vertexShader={waveShader.vertexShader}
+        fragmentShader={waveShader.fragmentShader}
+        uniforms={waveShader.uniforms}
+      />
+      <primitive object={geometry} />
+    </mesh>
+  )
+}
+
+function LightTrails() {
+  const count = 100
+  const positions = useMemo(() => {
+    const pos = new Float32Array(count * 3)
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 20
+      pos[i * 3 + 1] = Math.random() * 10
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 20
+    }
+    return pos
+  }, [])
+
+  const trailRef = useRef<THREE.Points>(null)
+
+  useFrame(({ clock }) => {
+    if (trailRef.current) {
+      const positions = trailRef.current.geometry.attributes.position.array as Float32Array
+      for (let i = 0; i < count; i++) {
+        const i3 = i * 3
+        positions[i3 + 1] = Math.sin(clock.getElapsedTime() + i) * 2 + 5
+      }
+      trailRef.current.geometry.attributes.position.needsUpdate = true
+    }
+  })
 
   return (
-    <group ref={groupRef}>
-      {/* Axes */}
-      <group>
-        {/* X Axis */}
-        <mesh position={[5, 0, 0]}>
-          <boxGeometry args={[10, 0.05, 0.05]} />
-          <meshBasicMaterial color="red" transparent opacity={0.5} />
-        </mesh>
-        {/* Y Axis */}
-        <mesh position={[0, 5, 0]}>
-          <boxGeometry args={[0.05, 10, 0.05]} />
-          <meshBasicMaterial color="green" transparent opacity={0.5} />
-        </mesh>
-        {/* Z Axis */}
-        <mesh position={[0, 0, 5]}>
-          <boxGeometry args={[0.05, 0.05, 10]} />
-          <meshBasicMaterial color="blue" transparent opacity={0.5} />
-        </mesh>
-      </group>
+    <points ref={trailRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
+      </bufferGeometry>
+      <pointsMaterial size={0.1} color="#00dc82" transparent opacity={0.8} blending={THREE.AdditiveBlending} />
+    </points>
+  )
+}
 
-      {/* Grids */}
-      <Grid
-        position={[0, 0, 0]}
-        args={[20, 20]}
-        cellSize={1}
-        cellThickness={0.5}
-        cellColor="#00dc82"
-        sectionSize={5}
-        fadeDistance={30}
-        fadeStrength={1}
-      />
-
-      {/* Services */}
-      {services.map((service, index) => (
-        <Service key={index} {...service} />
-      ))}
-    </group>
+function Scene() {
+  return (
+    <>
+      <EnergyWaves />
+      <LightTrails />
+      <Effects>
+        <unrealBloomPass threshold={0.1} strength={1.5} radius={1} />
+      </Effects>
+    </>
   )
 }
 
@@ -141,10 +222,10 @@ export default function ThreeScene({ onLoad }: { onLoad?: () => void }) {
   return (
     <div className="absolute inset-0 -z-10">
       <Canvas>
-        <PerspectiveCamera makeDefault position={[15, 15, 15]} />
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#00dc82" />
-        <pointLight position={[-10, -10, 10]} intensity={0.5} color="#00b368" />
+        <PerspectiveCamera makeDefault position={[0, 10, 10]} />
+        <color attach="background" args={["#050301"]} />
+        <ambientLight intensity={0.1} />
+        <pointLight position={[10, 10, 10]} intensity={0.5} color="#00dc82" />
         <Scene />
       </Canvas>
     </div>

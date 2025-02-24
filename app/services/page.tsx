@@ -157,6 +157,7 @@ export default function ServicesClient() {
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <ThreeScene onLoad={() => setSceneLoaded(true)} />
 
+        {/* Content overlay */}
         <div className="relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -219,7 +220,7 @@ export default function ServicesClient() {
         </motion.div>
       </section>
 
-      {/* Services Section */}
+      {/* Rest of the services content */}
       <div id="services" className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (

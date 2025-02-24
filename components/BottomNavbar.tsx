@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Home, User, Newspaper, Briefcase, Mail, Handshake } from "lucide-react"
+import { Home, User, Newspaper, Briefcase, Mail, Handshake, Image } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
@@ -11,7 +11,8 @@ const BottomNavbar = () => {
   const navItems = [
     { href: "/", icon: Home, label: "خانه" },
     { href: "/about", icon: User, label: "درباره من" },
-    { href: "/services", icon: Briefcase, label: "خدمات" }, // Changed from portfolio
+    { href: "/services", icon: Briefcase, label: "خدمات" },
+    { href: "/portfolio", icon: Image, label: "نمونه کارها" },
     { href: "/blog", icon: Newspaper, label: "وبلاگ" },
     { href: "/cooperation", icon: Handshake, label: "همکاری" },
     { href: "/contact", icon: Mail, label: "تماس" },

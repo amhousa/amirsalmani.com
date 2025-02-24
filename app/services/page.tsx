@@ -1,7 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Code, Palette, Globe, Cpu, Rocket, MessageSquare } from "lucide-react"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Code, Palette, Globe, Cpu, Rocket, MessageSquare, ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
 
 const services = [
@@ -73,6 +74,161 @@ const services = [
   },
 ]
 
+const faqs = [
+  {
+    category: "خدمات و قیمت‌گذاری",
+    questions: [
+      {
+        q: "هزینه پروژه‌ها چگونه محاسبه می‌شود؟",
+        a: "هزینه هر پروژه بر اساس پیچیدگی، زمان مورد نیاز و ویژگی‌های درخواستی محاسبه می‌شود. قیمت‌های پایه در هر سرویس ذکر شده است و برای دریافت قیمت دقیق می‌توانید درخواست مشاوره رایگان دهید.",
+      },
+      {
+        q: "آیا امکان پرداخت اقساطی وجود دارد؟",
+        a: "بله، برای پروژه‌های بزرگ امکان پرداخت مرحله‌ای (30% ابتدای پروژه، 40% حین اجرا و 30% در پایان) وجود دارد. همچنین برای دوره‌های آموزشی، امکان پرداخت اقساطی فراهم است.",
+      },
+      {
+        q: "مدت زمان اجرای پروژه چقدر است؟",
+        a: "زمان اجرای پروژه بستگی به حجم و پیچیدگی آن دارد. معمولاً پروژه‌های کوچک 2-4 هفته و پروژه‌های متوسط 1-3 ماه زمان می‌برند. زمان دقیق در جلسه مشاوره مشخص می‌شود.",
+      },
+    ],
+  },
+  {
+    category: "فرآیند کار",
+    questions: [
+      {
+        q: "مراحل شروع همکاری چگونه است؟",
+        a: "1. درخواست مشاوره رایگان\n2. جلسه بررسی نیازها و اهداف\n3. ارائه پروپوزال و قیمت\n4. عقد قرارداد و پرداخت پیش‌پرداخت\n5. شروع پروژه طبق زمان‌بندی",
+      },
+      {
+        q: "آیا در طول پروژه امکان اعمال تغییرات وجود دارد؟",
+        a: "بله، تا 20% تغییرات جزئی در محدوده اولیه پروژه بدون هزینه اضافی قابل انجام است. تغییرات بیشتر یا خارج از محدوده اولیه، مستلزم توافق جدید خواهد بود.",
+      },
+      {
+        q: "گزارش پیشرفت پروژه چگونه ارائه می‌شود؟",
+        a: "گزارش‌های هفتگی از پیشرفت پروژه ارائه می‌شود و جلسات آنلاین منظم برای بررسی روند کار برگزار می‌شود. همچنین دسترسی به سیستم مدیریت پروژه برای پیگیری لحظه‌ای فراهم است.",
+      },
+    ],
+  },
+  {
+    category: "پشتیبانی و خدمات پس از تحویل",
+    questions: [
+      {
+        q: "چه مدت پشتیبانی رایگان ارائه می‌شود؟",
+        a: "تمام پروژه‌ها شامل 3 ماه پشتیبانی رایگان هستند که شامل رفع باگ و مشکلات احتمالی می‌شود. پس از آن، می‌توانید از بسته‌های پشتیبانی ماهانه استفاده کنید.",
+      },
+      {
+        q: "آموزش استفاده از سیستم چگونه است؟",
+        a: "در پایان پروژه، جلسات آموزشی برای تیم شما برگزار می‌شود. همچنین مستندات کامل فنی و راهنمای کاربری در اختیارتان قرار می‌گیرد.",
+      },
+      {
+        q: "آیا سورس کد پروژه تحویل داده می‌شود؟",
+        a: "بله، پس از تسویه کامل، تمام سورس کدها به همراه مستندات فنی تحویل داده می‌شود. کدها به صورت تمیز و با رعایت اصول برنامه‌نویسی نوشته می‌شوند.",
+      },
+    ],
+  },
+  {
+    category: "تکنولوژی و امنیت",
+    questions: [
+      {
+        q: "از چه تکنولوژی‌هایی استفاده می‌شود؟",
+        a: "برای فرانت‌اند از React، Next.js و TypeScript استفاده می‌شود. در بک‌اند از Node.js و فریم‌ورک‌های مدرن بهره می‌بریم. پایگاه داده و تکنولوژی‌ها بر اساس نیاز پروژه انتخاب می‌شوند.",
+      },
+      {
+        q: "امنیت پروژه چگونه تضمین می‌شود؟",
+        a: "از بهترین شیوه‌های امنیتی مانند رمزنگاری داده‌ها، احراز هویت دو مرحله‌ای و محافظت در برابر حملات رایج استفاده می‌شود. همچنین تست‌های امنیتی منظم انجام می‌شود.",
+      },
+      {
+        q: "آیا قابلیت مقیاس‌پذیری وجود دارد؟",
+        a: "بله، معماری پروژه‌ها به گونه‌ای طراحی می‌شود که قابلیت مقیاس‌پذیری داشته باشند. از تکنیک‌های مدرن مانند میکروسرویس‌ها و کانتینرسازی استفاده می‌شود.",
+      },
+    ],
+  },
+]
+
+const FAQSection = () => {
+  const [openCategory, setOpenCategory] = useState<string | null>(null)
+  const [openQuestion, setOpenQuestion] = useState<string | null>(null)
+
+  return (
+    <div className="mt-24">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold mb-8 text-center text-brand-primary"
+      >
+        سؤالات متداول
+      </motion.h2>
+
+      <div className="max-w-3xl mx-auto space-y-6">
+        {faqs.map((category) => (
+          <motion.div
+            key={category.category}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-dark-bg border border-gray-800 rounded-2xl overflow-hidden"
+          >
+            <button
+              className="w-full px-6 py-4 flex justify-between items-center bg-black/20 hover:bg-black/30 transition-colors"
+              onClick={() => setOpenCategory(openCategory === category.category ? null : category.category)}
+            >
+              <span className="text-lg font-semibold text-white">{category.category}</span>
+              {openCategory === category.category ? (
+                <ChevronUp className="w-5 h-5 text-brand-primary" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-400" />
+              )}
+            </button>
+
+            <AnimatePresence>
+              {openCategory === category.category && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 py-4 space-y-4">
+                    {category.questions.map((faq) => (
+                      <div key={faq.q} className="border-b border-gray-800 last:border-0 pb-4 last:pb-0">
+                        <button
+                          className="w-full text-right flex justify-between items-center group"
+                          onClick={() => setOpenQuestion(openQuestion === faq.q ? null : faq.q)}
+                        >
+                          <span className="text-white group-hover:text-brand-primary transition-colors">{faq.q}</span>
+                          {openQuestion === faq.q ? (
+                            <ChevronUp className="w-4 h-4 text-brand-primary flex-shrink-0" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-brand-primary flex-shrink-0" />
+                          )}
+                        </button>
+
+                        <AnimatePresence>
+                          {openQuestion === faq.q && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <p className="mt-2 text-gray-400 text-sm whitespace-pre-line">{faq.a}</p>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Services() {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -140,6 +296,9 @@ export default function Services() {
           </motion.div>
         ))}
       </div>
+
+      {/* FAQ Section */}
+      <FAQSection />
     </div>
   )
 }

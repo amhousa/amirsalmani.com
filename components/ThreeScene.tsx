@@ -1,9 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useMemo } from "react"
+import { useEffect, useRef } from "react"
 import * as THREE from "three"
 import { gsap } from "gsap"
-import { Text } from "@react-three/drei"
 
 interface ThreeSceneProps {
   onLoad?: () => void
@@ -14,24 +13,8 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
   const sceneRef = useRef<THREE.Scene | null>(null)
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
-  const boxRef = useRef<THREE.Group | null>(null)
-  const symbolsRef = useRef<THREE.Group | null>(null)
+  const cubesRef = useRef<THREE.Group>(new THREE.Group())
   const frameRef = useRef<number>(0)
-
-  // Create symbols data
-  const symbols = useMemo(
-    () => [
-      { text: "⚛", position: [-1, 0, 0], delay: 0 }, // React
-      { text: "🔷", position: [1, 0, 0], delay: 0.2 }, // Diamond
-      { text: "⚡", position: [0, 1, 0], delay: 0.4 }, // Lightning
-      { text: "🚀", position: [-1, -1, 0], delay: 0.6 }, // Rocket
-      { text: "💻", position: [1, 1, 0], delay: 0.8 }, // Computer
-      { text: "🔮", position: [0, -1, 0], delay: 1 }, // Crystal Ball
-      { text: "🎨", position: [-1, 1, 0], delay: 1.2 }, // Art
-      { text: "🔧", position: [1, -1, 0], delay: 1.4 }, // Tool
-    ],
-    [],
-  )
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -42,121 +25,140 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-    camera.position.z = 5
+    camera.position.z = 10
     camera.position.y = 2
-    camera.lookAt(0, 0, 0)
     cameraRef.current = camera
 
     // Renderer setup
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    })
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.outputEncoding = THREE.sRGBEncoding
     containerRef.current.appendChild(renderer.domElement)
     rendererRef.current = renderer
 
-    // Create box group
-    const boxGroup = new THREE.Group()
-    scene.add(boxGroup)
-    boxRef.current = boxGroup
+    // Create cubes group
+    const cubesGroup = cubesRef.current
+    scene.add(cubesGroup)
 
-    // Create box sides with glowing edges
-    const boxGeometry = new THREE.BoxGeometry(2, 2, 2)
-    const edges = new THREE.EdgesGeometry(boxGeometry)
-    const edgesMaterial = new THREE.LineBasicMaterial({
-      color: 0x00dc82,
-      transparent: true,
-      opacity: 0.8,
-    })
-    const edgesLine = new THREE.LineSegments(edges, edgesMaterial)
-    boxGroup.add(edgesLine)
+    // Create multiple cubes with different sizes and positions
+    const createCube = (size: number, position: [number, number, number], delay: number) => {
+      // Create glowing material
+      const material = new THREE.MeshPhongMaterial({
+        color: Math.random() > 0.5 ? 0x00dc82 : 0x00b368,
+        transparent: true,
+        opacity: 0.9,
+        shininess: 100,
+      })
 
-    // Create semi-transparent faces
-    const faceMaterial = new THREE.MeshPhongMaterial({
-      color: 0x00dc82,
-      transparent: true,
-      opacity: 0.1,
-      side: THREE.DoubleSide,
-    })
-    const boxMesh = new THREE.Mesh(boxGeometry, faceMaterial)
-    boxGroup.add(boxMesh)
+      // Create edges for the cube
+      const geometry = new THREE.BoxGeometry(size, size, size)
+      const edges = new THREE.EdgesGeometry(geometry)
+      const edgesMaterial = new THREE.LineBasicMaterial({
+        color: 0x00dc82,
+        transparent: true,
+        opacity: 0.5,
+      })
+      const edgesLine = new THREE.LineSegments(edges, edgesMaterial)
 
-    // Create symbols group
-    const symbolsGroup = new THREE.Group()
-    scene.add(symbolsGroup)
-    symbolsRef.current = symbolsGroup
+      // Create cube mesh
+      const cube = new THREE.Mesh(geometry, material)
+      cube.position.set(...position)
+      cube.add(edgesLine) // Add edges as child of cube
 
-    // Add symbols
-    symbols.forEach((symbol) => {
-      const text = new Text()
-      text.text = symbol.text
-      text.fontSize = 0.5
-      text.position.set(...symbol.position)
-      text.color = 0x00dc82
-      text.anchorX = "center"
-      text.anchorY = "middle"
-      text.scale.set(0, 0, 0) // Start scaled to 0
-      symbolsGroup.add(text)
+      // Add to group
+      cubesGroup.add(cube)
 
-      // Animate symbol appearance
-      gsap.to(text.scale, {
-        x: 1,
-        y: 1,
-        z: 1,
-        duration: 1,
-        delay: symbol.delay + 1,
+      // Initial animation
+      gsap.from(cube.scale, {
+        x: 0,
+        y: 0,
+        z: 0,
+        duration: 1.5,
+        delay,
         ease: "elastic.out(1, 0.5)",
       })
 
-      // Add floating animation
-      gsap.to(text.position, {
-        y: text.position.y + 0.5,
-        duration: 2,
-        delay: symbol.delay + 1,
+      // Floating animation
+      gsap.to(cube.position, {
+        y: position[1] + 0.5,
+        duration: 2 + Math.random(),
         yoyo: true,
         repeat: -1,
         ease: "power1.inOut",
+        delay: Math.random() * 2,
       })
-    })
+
+      // Rotation animation
+      gsap.to(cube.rotation, {
+        x: Math.PI * 2,
+        y: Math.PI * 2,
+        duration: 10 + Math.random() * 10,
+        repeat: -1,
+        ease: "none",
+        delay: Math.random() * 2,
+      })
+
+      return cube
+    }
+
+    // Create multiple cubes
+    const cubes = [
+      createCube(2, [0, 0, 0], 0),
+      createCube(1.5, [-3, 1, -2], 0.2),
+      createCube(1.2, [3, -1, -1], 0.4),
+      createCube(1, [-2, -2, -3], 0.6),
+      createCube(0.8, [2, 2, -2], 0.8),
+      createCube(1.3, [1, -1, -4], 1),
+    ]
 
     // Add lights
+    // Ambient light
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
     scene.add(ambientLight)
 
-    const pointLight = new THREE.PointLight(0x00dc82, 2)
-    pointLight.position.set(5, 5, 5)
-    scene.add(pointLight)
+    // Point lights
+    const createPointLight = (color: number, intensity: number, position: [number, number, number]) => {
+      const light = new THREE.PointLight(color, intensity)
+      light.position.set(...position)
+      return light
+    }
 
-    // Initial box animation
-    gsap.from(boxGroup.scale, {
-      x: 0,
-      y: 0,
-      z: 0,
-      duration: 1.5,
-      ease: "elastic.out(1, 0.5)",
-      onComplete: () => {
-        // Animate box opening
-        gsap.to(boxGroup.rotation, {
-          x: Math.PI / 6,
-          y: Math.PI / 6,
-          duration: 1,
-          ease: "power2.out",
-        })
-      },
-    })
+    const lights = [
+      createPointLight(0x00dc82, 2, [5, 5, 5]),
+      createPointLight(0x00b368, 1, [-5, -5, 5]),
+      createPointLight(0x00dc82, 1.5, [0, 0, 7]),
+    ]
+    lights.forEach((light) => scene.add(light))
+
+    // Add volumetric light effect
+    const createLightCone = (position: [number, number, number], color: number) => {
+      const geometry = new THREE.ConeGeometry(2, 10, 32)
+      const material = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.1,
+        side: THREE.DoubleSide,
+      })
+      const cone = new THREE.Mesh(geometry, material)
+      cone.position.set(...position)
+      cone.rotation.x = Math.PI
+      return cone
+    }
+
+    const lightCones = [createLightCone([5, 10, 5], 0x00dc82), createLightCone([-5, 10, 5], 0x00b368)]
+    lightCones.forEach((cone) => scene.add(cone))
 
     // Animation loop
     const animate = () => {
       frameRef.current = requestAnimationFrame(animate)
 
-      // Gentle box rotation
-      if (boxGroup) {
-        boxGroup.rotation.y += 0.001
-      }
-
-      // Gentle symbols rotation
-      if (symbolsGroup) {
-        symbolsGroup.rotation.y += 0.0005
-      }
+      // Gentle group rotation
+      cubesGroup.rotation.y += 0.001
 
       renderer.render(scene, camera)
     }
@@ -178,17 +180,24 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
 
     window.addEventListener("resize", handleResize)
 
-    // Mouse interaction
+    // Mouse movement effect
     const handleMouseMove = (event: MouseEvent) => {
-      if (!boxGroup) return
-
       const mouseX = (event.clientX / window.innerWidth) * 2 - 1
       const mouseY = -(event.clientY / window.innerHeight) * 2 + 1
 
-      gsap.to(boxGroup.rotation, {
-        x: mouseY * 0.1 + Math.PI / 6,
-        y: mouseX * 0.1 + Math.PI / 6,
+      gsap.to(cubesGroup.rotation, {
+        x: mouseY * 0.1,
+        y: mouseX * 0.1,
         duration: 1,
+      })
+
+      // Move lights with mouse
+      lights.forEach((light) => {
+        gsap.to(light.position, {
+          x: light.position.x + mouseX * 2,
+          y: light.position.y + mouseY * 2,
+          duration: 1,
+        })
       })
     }
 
@@ -209,7 +218,9 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
         rendererRef.current.dispose()
         containerRef.current?.removeChild(rendererRef.current.domElement)
       }
-      scene.traverse((object) => {
+
+      // Dispose geometries and materials
+      cubesGroup.traverse((object) => {
         if (object instanceof THREE.Mesh) {
           object.geometry.dispose()
           if (Array.isArray(object.material)) {
@@ -219,8 +230,14 @@ export default function ThreeScene({ onLoad }: ThreeSceneProps) {
           }
         }
       })
+
+      // Dispose light cones
+      lightCones.forEach((cone) => {
+        cone.geometry.dispose()
+        cone.material.dispose()
+      })
     }
-  }, [symbols, onLoad])
+  }, [onLoad])
 
   return (
     <div

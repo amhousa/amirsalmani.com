@@ -154,12 +154,12 @@ export default function Portfolio() {
   const nextProject = useCallback(() => {
     setActiveProject((prev) => (prev + 1) % projects.length)
     setShowInfo(false)
-  }, [projects])
+  }, [projects.length])
 
   const prevProject = useCallback(() => {
     setActiveProject((prev) => (prev - 1 + projects.length) % projects.length)
     setShowInfo(false)
-  }, [projects])
+  }, [projects.length])
 
   const handleInfoButtonHover = () => {
     if (isTouchDevice) return
@@ -168,7 +168,6 @@ export default function Portfolio() {
 
   const handleInfoButtonLeave = () => {
     if (isTouchDevice) return
-    // Only hide if not hovering over info box
     if (!infoBoxRef.current?.matches(":hover")) {
       setShowInfo(false)
     }
@@ -184,7 +183,6 @@ export default function Portfolio() {
     setShowInfo(false)
   }
 
-  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") prevProject()
@@ -199,20 +197,10 @@ export default function Portfolio() {
 
   const ProjectSection = ({ project }: { project: Project }) => {
     return (
-      <div className="relative w-full h-screen flex items-center justify-center">
-        {/* Project image container */}
-        <div className="relative w-[calc(100%-8rem)] h-[calc(100%-8rem)] flex items-center justify-center">
-          <div className="relative w-full h-full max-w-6xl max-h-[80vh] rounded-2xl overflow-hidden border border-white/10">
-            <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
-
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-          </div>
-        </div>
-
+      <div className="relative w-full h-screen flex flex-col items-center justify-center">
         {/* Info button */}
         <button
-          className="absolute top-12 left-12 z-20 group flex items-center gap-2 bg-black/60 backdrop-blur-sm 
+          className="absolute top-4 md:top-8 left-4 md:left-8 z-20 group flex items-center gap-2 bg-black/60 backdrop-blur-sm 
                     hover:bg-brand-primary/20 hover:border-brand-primary/50 border border-white/10 
                     px-4 py-2 rounded-xl transition-all duration-300"
           onClick={() => setShowInfo(!showInfo)}
@@ -223,9 +211,51 @@ export default function Portfolio() {
           <span className="text-white group-hover:text-brand-primary transition-colors">مشاهده اطلاعات پروژه</span>
         </button>
 
-        {/* Navigation buttons */}
-        <div className="absolute inset-y-0 left-12 right-12 flex justify-between items-center pointer-events-none">
-          {/* Previous button */}
+        {/* Project image container */}
+        <div className="relative w-full h-full max-h-[calc(100vh-10rem)] md:max-h-[calc(100vh-8rem)] flex items-center justify-center px-4 md:px-16">
+          <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10">
+            <img
+              src={project.image || "/placeholder.svg"}
+              alt={project.title}
+              className="w-full h-full object-contain"
+            />
+
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          </div>
+        </div>
+
+        {/* Mobile Navigation and Counter */}
+        <div className="md:hidden fixed bottom-20 left-0 right-0 flex flex-col items-center gap-4 pb-4">
+          <div className="flex justify-between w-full px-4">
+            <motion.button
+              onClick={prevProject}
+              className="flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
+                       border border-white/10 hover:border-brand-primary/50 px-4 py-2 rounded-xl transition-all duration-300"
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight className="w-5 h-5 text-white" />
+              <span className="text-white">پروژه قبلی</span>
+            </motion.button>
+
+            <motion.button
+              onClick={nextProject}
+              className="flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
+                       border border-white/10 hover:border-brand-primary/50 px-4 py-2 rounded-xl transition-all duration-300"
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="text-white">پروژه بعدی</span>
+              <ChevronLeft className="w-5 h-5 text-white" />
+            </motion.button>
+          </div>
+
+          <div className="bg-black/60 backdrop-blur-sm border border-white/10 px-4 py-2 rounded-xl text-white text-sm">
+            {activeProject + 1} / {projects.length}
+          </div>
+        </div>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex absolute inset-y-0 left-8 right-8 items-center justify-between pointer-events-none">
           <motion.button
             onClick={prevProject}
             className="pointer-events-auto group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
@@ -234,12 +264,9 @@ export default function Portfolio() {
             whileTap={{ scale: 0.95 }}
           >
             <ChevronRight className="w-6 h-6 text-white group-hover:text-brand-primary transition-colors" />
-            <span className="hidden md:block text-white group-hover:text-brand-primary transition-colors">
-              پروژه قبلی
-            </span>
+            <span className="text-white group-hover:text-brand-primary transition-colors">پروژه قبلی</span>
           </motion.button>
 
-          {/* Next button */}
           <motion.button
             onClick={nextProject}
             className="pointer-events-auto group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
@@ -247,11 +274,17 @@ export default function Portfolio() {
             whileHover={{ x: 5 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className="hidden md:block text-white group-hover:text-brand-primary transition-colors">
-              پروژه بعدی
-            </span>
+            <span className="text-white group-hover:text-brand-primary transition-colors">پروژه بعدی</span>
             <ChevronLeft className="w-6 h-6 text-white group-hover:text-brand-primary transition-colors" />
           </motion.button>
+        </div>
+
+        {/* Desktop Project Counter */}
+        <div
+          className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm 
+                     border border-white/10 px-4 py-2 rounded-xl text-white text-sm"
+        >
+          {activeProject + 1} / {projects.length}
         </div>
 
         {/* Info panel */}
@@ -262,16 +295,13 @@ export default function Portfolio() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="absolute top-24 left-12 right-12 md:right-auto w-auto md:w-full max-w-md z-10"
+              className="absolute top-16 md:top-24 left-4 right-4 md:left-8 md:right-auto w-auto md:w-full max-w-md z-10"
               onMouseEnter={handleInfoBoxHover}
               onMouseLeave={handleInfoBoxLeave}
             >
               <div className="bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-white/10">
                 <div className="relative">
-                  {/* Project title */}
                   <h2 className="text-2xl font-bold mb-4 text-white">{project.title}</h2>
-
-                  {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags?.map((tag) => (
                       <span
@@ -282,11 +312,7 @@ export default function Portfolio() {
                       </span>
                     ))}
                   </div>
-
-                  {/* Description */}
                   <p className="text-gray-300 mb-4">{project.description}</p>
-
-                  {/* Highlights */}
                   <div className="space-y-2 mb-6">
                     {project.highlights.map((highlight, index) => (
                       <div key={index} className="flex items-center gap-2 text-sm text-gray-300">
@@ -295,8 +321,6 @@ export default function Portfolio() {
                       </div>
                     ))}
                   </div>
-
-                  {/* View site button */}
                   <Link
                     href={project.fullViewUrl}
                     target="_blank"
@@ -312,14 +336,6 @@ export default function Portfolio() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Project counter */}
-        <div
-          className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm 
-                     border border-white/10 px-4 py-2 rounded-xl text-white text-sm"
-        >
-          {activeProject + 1} / {projects.length}
-        </div>
       </div>
     )
   }

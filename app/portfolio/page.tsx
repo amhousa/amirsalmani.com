@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect, useRef } from "react"
 import { Info, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
-import { isMobile, isTablet } from "react-device-detect"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import MovingBackground from "@/components/MovingBackground"
@@ -148,7 +147,6 @@ export default function Portfolio() {
 
   const [activeProject, setActiveProject] = useState(0)
   const [showInfo, setShowInfo] = useState(false)
-  const isTouchDevice = isMobile || isTablet
   const infoBoxRef = useRef<HTMLDivElement>(null)
 
   const nextProject = useCallback(() => {
@@ -161,54 +159,62 @@ export default function Portfolio() {
     setShowInfo(false)
   }, [projects.length])
 
-  const handleInfoButtonHover = () => {
-    if (isTouchDevice) return
-    setShowInfo(true)
-  }
-
-  const handleInfoButtonLeave = () => {
-    if (isTouchDevice) return
-    if (!infoBoxRef.current?.matches(":hover")) {
-      setShowInfo(false)
-    }
-  }
-
-  const handleInfoBoxHover = () => {
-    if (isTouchDevice) return
-    setShowInfo(true)
-  }
-
-  const handleInfoBoxLeave = () => {
-    if (isTouchDevice) return
-    setShowInfo(false)
+  const toggleInfo = () => {
+    setShowInfo((prev) => !prev)
   }
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") prevProject()
       if (event.key === "ArrowLeft") nextProject()
+      if (event.key === "Escape" && showInfo) setShowInfo(false)
     }
 
     window.addEventListener("keydown", handleKeyDown)
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [nextProject, prevProject])
+  }, [nextProject, prevProject, showInfo])
+
+  // Handle clicks outside the info panel to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (infoBoxRef.current && !infoBoxRef.current.contains(event.target as Node)) {
+        // Check if the click was on the info button
+        const infoButton = document.getElementById("info-button")
+        if (!infoButton?.contains(event.target as Node)) {
+          setShowInfo(false)
+        }
+      }
+    }
+
+    if (showInfo) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [showInfo])
 
   const ProjectSection = ({ project }: { project: Project }) => {
     return (
       <div className="relative w-full h-screen flex flex-col items-center justify-center">
         {/* Info button */}
         <button
-          className="absolute top-4 md:top-8 left-4 md:left-8 z-20 group flex items-center gap-2 bg-black/60 backdrop-blur-sm 
-                    hover:bg-brand-primary/20 hover:border-brand-primary/50 border border-white/10 
-                    px-4 py-2 rounded-xl transition-all duration-300"
-          onClick={() => setShowInfo(!showInfo)}
-          onMouseEnter={handleInfoButtonHover}
-          onMouseLeave={handleInfoButtonLeave}
+          id="info-button"
+          className={`absolute top-4 md:top-8 left-4 md:left-8 z-20 group flex items-center gap-2 
+                    backdrop-blur-sm border border-white/10 px-4 py-2 rounded-xl transition-all duration-300
+                    ${showInfo ? "bg-brand-primary/20 border-brand-primary/50" : "bg-black/60 hover:bg-brand-primary/20 hover:border-brand-primary/50"}`}
+          onClick={toggleInfo}
         >
-          <Info className="w-5 h-5 text-white group-hover:text-brand-primary transition-colors" />
-          <span className="text-white group-hover:text-brand-primary transition-colors">مشاهده اطلاعات پروژه</span>
+          <Info
+            className={`w-5 h-5 transition-colors ${showInfo ? "text-brand-primary" : "text-white group-hover:text-brand-primary"}`}
+          />
+          <span
+            className={`transition-colors ${showInfo ? "text-brand-primary" : "text-white group-hover:text-brand-primary"}`}
+          >
+            مشاهده اطلاعات پروژه
+          </span>
         </button>
 
         {/* Project image container */}
@@ -292,12 +298,11 @@ export default function Portfolio() {
           {showInfo && (
             <motion.div
               ref={infoBoxRef}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="absolute top-16 md:top-24 left-4 right-4 md:left-8 md:right-auto w-auto md:w-full max-w-md z-10"
-              onMouseEnter={handleInfoBoxHover}
-              onMouseLeave={handleInfoBoxLeave}
             >
               <div className="bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-white/10">
                 <div className="relative">

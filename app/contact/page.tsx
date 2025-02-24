@@ -46,7 +46,7 @@ export default function Contact() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-brand-purple">تماس با من</h1>
+      <h1 className="text-3xl font-bold mb-6 text-brand-primary">تماس با من</h1>
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2 text-white">

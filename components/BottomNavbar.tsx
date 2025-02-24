@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Home, User, Newspaper, Briefcase, Mail, Handshake, Image } from "lucide-react"
+import { Home, User, Newspaper, Briefcase, Mail, Handshake } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
@@ -11,16 +11,15 @@ const BottomNavbar = () => {
   const navItems = [
     { href: "/", icon: Home, label: "خانه" },
     { href: "/about", icon: User, label: "درباره من" },
-    { href: "/services", icon: Briefcase, label: "خدمات" },
-    { href: "/portfolio", icon: Image, label: "نمونه کارها" },
+    { href: "/services", icon: Briefcase, label: "خدمات" }, // Changed from portfolio
     { href: "/blog", icon: Newspaper, label: "وبلاگ" },
     { href: "/cooperation", icon: Handshake, label: "همکاری" },
     { href: "/contact", icon: Mail, label: "تماس" },
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 glass-effect">
-      <div className="flex justify-around items-center h-16">
+    <nav className="fixed bottom-0 left-0 right-0 bg-[#050301]/80 backdrop-blur-md border-t border-white/5 pb-3">
+      <div className="flex justify-around items-center h-14">
         {navItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href
           return (

@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import { Info, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { isMobile, isTablet } from "react-device-detect"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+import MovingBackground from "@/components/MovingBackground"
 
 interface Project {
   id: number
@@ -148,6 +149,8 @@ export default function Portfolio() {
   const [activeProject, setActiveProject] = useState(0)
   const [showInfo, setShowInfo] = useState(false)
   const isTouchDevice = isMobile || isTablet
+  const timeoutRef = useRef<NodeJS.Timeout>()
+  const infoBoxRef = useRef<HTMLDivElement>(null)
 
   const nextProject = useCallback(() => {
     setActiveProject((prev) => (prev + 1) % projects.length)
@@ -159,6 +162,33 @@ export default function Portfolio() {
     setShowInfo(false)
   }, [projects.length])
 
+  const handleInfoButtonHover = () => {
+    if (isTouchDevice) return
+    clearTimeout(timeoutRef.current)
+    setShowInfo(true)
+  }
+
+  const handleInfoButtonLeave = () => {
+    if (isTouchDevice) return
+    timeoutRef.current = setTimeout(() => {
+      if (!infoBoxRef.current?.matches(":hover")) {
+        setShowInfo(false)
+      }
+    }, 4000)
+  }
+
+  const handleInfoBoxHover = () => {
+    if (isTouchDevice) return
+    clearTimeout(timeoutRef.current)
+  }
+
+  const handleInfoBoxLeave = () => {
+    if (isTouchDevice) return
+    timeoutRef.current = setTimeout(() => {
+      setShowInfo(false)
+    }, 4000)
+  }
+
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -167,34 +197,42 @@ export default function Portfolio() {
     }
 
     window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+      clearTimeout(timeoutRef.current)
+    }
   }, [nextProject, prevProject])
 
   const ProjectSection = ({ project }: { project: Project }) => {
     return (
-      <div className="relative w-full h-screen">
-        {/* Full-screen image */}
-        <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
+      <div className="relative w-full h-screen flex items-center justify-center p-8">
+        {/* Project image container */}
+        <div className="relative w-full max-w-6xl aspect-video rounded-2xl overflow-hidden border border-white/10">
+          <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        </div>
 
         {/* Info button */}
         <button
-          className="absolute top-6 left-6 z-20 group flex items-center gap-2 bg-black/60 backdrop-blur-sm 
+          className="absolute top-12 left-12 z-20 group flex items-center gap-2 bg-black/60 backdrop-blur-sm 
                     hover:bg-brand-primary/20 hover:border-brand-primary/50 border border-white/10 
                     px-4 py-2 rounded-xl transition-all duration-300"
           onClick={() => setShowInfo(!showInfo)}
-          onMouseEnter={() => !isTouchDevice && setShowInfo(true)}
-          onMouseLeave={() => !isTouchDevice && setTimeout(() => setShowInfo(false), 300)}
+          onMouseEnter={handleInfoButtonHover}
+          onMouseLeave={handleInfoButtonLeave}
         >
           <Info className="w-5 h-5 text-white group-hover:text-brand-primary transition-colors" />
           <span className="text-white group-hover:text-brand-primary transition-colors">مشاهده اطلاعات پروژه</span>
         </button>
 
         {/* Navigation buttons */}
-        <div className="absolute inset-y-0 left-0 right-0 flex justify-between items-center px-6">
+        <div className="absolute inset-y-0 left-12 right-12 flex justify-between items-center pointer-events-none">
           {/* Previous button */}
           <motion.button
             onClick={prevProject}
-            className="group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
+            className="pointer-events-auto group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
                      border border-white/10 hover:border-brand-primary/50 px-6 py-3 rounded-2xl transition-all duration-300"
             whileHover={{ x: -5 }}
             whileTap={{ scale: 0.95 }}
@@ -208,7 +246,7 @@ export default function Portfolio() {
           {/* Next button */}
           <motion.button
             onClick={nextProject}
-            className="group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
+            className="pointer-events-auto group relative flex items-center gap-2 bg-black/60 backdrop-blur-sm hover:bg-brand-primary/20 
                      border border-white/10 hover:border-brand-primary/50 px-6 py-3 rounded-2xl transition-all duration-300"
             whileHover={{ x: 5 }}
             whileTap={{ scale: 0.95 }}
@@ -224,16 +262,15 @@ export default function Portfolio() {
         <AnimatePresence>
           {showInfo && (
             <motion.div
+              ref={infoBoxRef}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="absolute top-20 left-6 right-6 md:right-auto w-auto md:w-full max-w-md z-10"
+              className="absolute top-24 left-12 right-12 md:right-auto w-auto md:w-full max-w-md z-10"
+              onMouseEnter={handleInfoBoxHover}
+              onMouseLeave={handleInfoBoxLeave}
             >
-              <div
-                className="bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-white/10"
-                onMouseEnter={() => !isTouchDevice && setShowInfo(true)}
-                onMouseLeave={() => !isTouchDevice && setShowInfo(false)}
-              >
+              <div className="bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-white/10">
                 <div className="relative">
                   {/* Project title */}
                   <h2 className="text-2xl font-bold mb-4 text-white">{project.title}</h2>
@@ -280,23 +317,10 @@ export default function Portfolio() {
           )}
         </AnimatePresence>
 
-        {/* Dark overlay when info is shown */}
-        <AnimatePresence>
-          {showInfo && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-              onClick={() => isTouchDevice && setShowInfo(false)}
-            />
-          )}
-        </AnimatePresence>
-
         {/* Project counter */}
         <div
-          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm 
-                       border border-white/10 px-4 py-2 rounded-xl text-white text-sm"
+          className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm 
+                     border border-white/10 px-4 py-2 rounded-xl text-white text-sm"
         >
           {activeProject + 1} / {projects.length}
         </div>
@@ -305,8 +329,11 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="fixed inset-0 bg-black text-white overflow-hidden">
-      <ProjectSection project={projects[activeProject]} />
+    <div className="fixed inset-0 overflow-hidden">
+      <MovingBackground />
+      <div className="relative z-10">
+        <ProjectSection project={projects[activeProject]} />
+      </div>
     </div>
   )
 }

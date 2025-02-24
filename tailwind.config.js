@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-vazirmatn)"],
+      },
       colors: {
         brand: {
           primary: "#00DC82", // Vibrant green

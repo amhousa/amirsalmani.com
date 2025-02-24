@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Code, Palette, Globe, Cpu, Rocket, MessageSquare, ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
+import ThreeScene from "@/components/ThreeScene"
 
 const services = [
   {
@@ -145,160 +146,210 @@ const faqs = [
   },
 ]
 
-const FAQSection = () => {
+export default function ServicesClient() {
+  const [sceneLoaded, setSceneLoaded] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
   const [openQuestion, setOpenQuestion] = useState<string | null>(null)
 
   return (
-    <div className="mt-24">
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-bold mb-8 text-center text-brand-primary"
-      >
-        سؤالات متداول
-      </motion.h2>
+    <div className="relative">
+      {/* Hero Section with 3D Animation */}
+      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+        <ThreeScene onLoad={() => setSceneLoaded(true)} />
 
-      <div className="max-w-3xl mx-auto space-y-6">
-        {faqs.map((category) => (
+        <div className="relative z-10 text-center">
           <motion.div
-            key={category.category}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-dark-bg border border-gray-800 rounded-2xl overflow-hidden"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: sceneLoaded ? 1 : 0, y: sceneLoaded ? 0 : 50 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="space-y-6"
           >
-            <button
-              className="w-full px-6 py-4 flex justify-between items-center bg-black/20 hover:bg-black/30 transition-colors"
-              onClick={() => setOpenCategory(openCategory === category.category ? null : category.category)}
+            <h1 className="text-5xl md:text-7xl font-bold text-white">
+              خدمات{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-primary/70">
+                تخصصی
+              </span>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto px-4">
+              با استفاده از تجربه و تخصص در حوزه‌های مختلف، آماده ارائه خدمات حرفه‌ای به کسب و کار شما هستم.
+            </p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="flex justify-center gap-4 flex-wrap"
             >
-              <span className="text-lg font-semibold text-white">{category.category}</span>
-              {openCategory === category.category ? (
-                <ChevronUp className="w-5 h-5 text-brand-primary" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-gray-400" />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {openCategory === category.category && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-6 py-4 space-y-4">
-                    {category.questions.map((faq) => (
-                      <div key={faq.q} className="border-b border-gray-800 last:border-0 pb-4 last:pb-0">
-                        <button
-                          className="w-full text-right flex justify-between items-center group"
-                          onClick={() => setOpenQuestion(openQuestion === faq.q ? null : faq.q)}
-                        >
-                          <span className="text-white group-hover:text-brand-primary transition-colors">{faq.q}</span>
-                          {openQuestion === faq.q ? (
-                            <ChevronUp className="w-4 h-4 text-brand-primary flex-shrink-0" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-brand-primary flex-shrink-0" />
-                          )}
-                        </button>
-
-                        <AnimatePresence>
-                          {openQuestion === faq.q && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="overflow-hidden"
-                            >
-                              <p className="mt-2 text-gray-400 text-sm whitespace-pre-line">{faq.a}</p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <Link
+                href="/cooperation"
+                className="px-8 py-3 bg-brand-primary text-black rounded-xl hover:bg-brand-primary/90 transition-all transform hover:scale-105"
+              >
+                شروع همکاری
+              </Link>
+              <Link
+                href="#services"
+                className="px-8 py-3 bg-white/10 text-white rounded-xl hover:bg-white/20 transition-all transform hover:scale-105"
+              >
+                مشاهده خدمات
+              </Link>
+            </motion.div>
           </motion.div>
-        ))}
-      </div>
-    </div>
-  )
-}
+        </div>
 
-export default function Services() {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-16">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold mb-4 text-brand-primary"
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: sceneLoaded ? 1 : 0 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         >
-          خدمات تخصصی
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-lg text-gray-300 max-w-2xl mx-auto"
-        >
-          با استفاده از تجربه و تخصص در حوزه‌های مختلف، آماده ارائه خدمات حرفه‌ای به کسب و کار شما هستم.
-        </motion.p>
-      </div>
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-sm text-gray-400">اسکرول کنید</span>
+            <motion.div
+              animate={{
+                y: [0, 10, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Number.POSITIVE_INFINITY,
+                repeatType: "loop",
+              }}
+              className="w-1 h-8 rounded-full bg-gradient-to-b from-brand-primary to-transparent"
+            />
+          </div>
+        </motion.div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {services.map((service, index) => (
-          <motion.div
-            key={service.title}
+      {/* Services Section */}
+      <div id="services" className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative bg-dark-bg border border-gray-800 rounded-2xl p-6 hover:border-brand-primary/50 transition-all duration-300"
+            >
+              {/* Keep existing service card content */}
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 to-transparent rounded-2xl" />
+              <div className="relative">
+                <div className="w-12 h-12 rounded-xl bg-brand-primary/20 flex items-center justify-center mb-4">
+                  <service.icon className="w-6 h-6 text-brand-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-white group-hover:text-brand-primary transition-colors">
+                  {service.title}
+                </h3>
+                <p className="text-gray-400 mb-4 min-h-[3rem]">{service.description}</p>
+                <div className="space-y-2 mb-6">
+                  {service.features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-2 text-sm text-gray-300">
+                      <div className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
+                      {feature}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-brand-primary font-semibold">{service.price}</span>
+                  <Link
+                    href={service.link}
+                    className="inline-flex items-center justify-center px-4 py-2 bg-brand-primary text-black rounded-xl 
+                             hover:bg-brand-primary/90 transition-colors font-medium"
+                  >
+                    سفارش
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* FAQ Section */}
+        <div className="mt-24">
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="group relative bg-dark-bg border border-gray-800 rounded-2xl p-6 hover:border-brand-primary/50 transition-all duration-300"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold mb-8 text-center text-brand-primary"
           >
-            {/* Gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 to-transparent rounded-2xl" />
+            سؤالات متداول
+          </motion.h2>
 
-            {/* Content */}
-            <div className="relative">
-              <div className="w-12 h-12 rounded-xl bg-brand-primary/20 flex items-center justify-center mb-4">
-                <service.icon className="w-6 h-6 text-brand-primary" />
-              </div>
-
-              <h3 className="text-xl font-bold mb-2 text-white group-hover:text-brand-primary transition-colors">
-                {service.title}
-              </h3>
-              <p className="text-gray-400 mb-4 min-h-[3rem]">{service.description}</p>
-
-              <div className="space-y-2 mb-6">
-                {service.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
-                    {feature}
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-brand-primary font-semibold">{service.price}</span>
-                <Link
-                  href={service.link}
-                  className="inline-flex items-center justify-center px-4 py-2 bg-brand-primary text-black rounded-xl 
-                           hover:bg-brand-primary/90 transition-colors font-medium"
+          {/* Keep existing FAQ content */}
+          <div className="max-w-3xl mx-auto space-y-6">
+            {faqs.map((category) => (
+              <motion.div
+                key={category.category}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="bg-dark-bg border border-gray-800 rounded-2xl overflow-hidden"
+              >
+                {/* Keep existing FAQ category content */}
+                <button
+                  className="w-full px-6 py-4 flex justify-between items-center bg-black/20 hover:bg-black/30 transition-colors"
+                  onClick={() => setOpenCategory(openCategory === category.category ? null : category.category)}
                 >
-                  سفارش
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+                  <span className="text-lg font-semibold text-white">{category.category}</span>
+                  {openCategory === category.category ? (
+                    <ChevronUp className="w-5 h-5 text-brand-primary" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                  )}
+                </button>
 
-      {/* FAQ Section */}
-      <FAQSection />
+                <AnimatePresence>
+                  {openCategory === category.category && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      {/* Keep existing FAQ questions content */}
+                      <div className="px-6 py-4 space-y-4">
+                        {category.questions.map((faq) => (
+                          <div key={faq.q} className="border-b border-gray-800 last:border-0 pb-4 last:pb-0">
+                            {/* Keep existing FAQ question content */}
+                            <button
+                              className="w-full text-right flex justify-between items-center group"
+                              onClick={() => setOpenQuestion(openQuestion === faq.q ? null : faq.q)}
+                            >
+                              <span className="text-white group-hover:text-brand-primary transition-colors">
+                                {faq.q}
+                              </span>
+                              {openQuestion === faq.q ? (
+                                <ChevronUp className="w-4 h-4 text-brand-primary flex-shrink-0" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-brand-primary flex-shrink-0" />
+                              )}
+                            </button>
+
+                            <AnimatePresence>
+                              {openQuestion === faq.q && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <p className="mt-2 text-gray-400 text-sm whitespace-pre-line">{faq.a}</p>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

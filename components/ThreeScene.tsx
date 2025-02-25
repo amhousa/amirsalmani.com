@@ -1,113 +1,205 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useCallback } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import * as THREE from "three"
 
-function DesertTerrain() {
-  const terrainRef = useRef<THREE.Mesh>(null)
-  const materialRef = useRef<THREE.ShaderMaterial>(null)
-
-  // Custom shader for the terrain
-  const terrainShader = {
-    vertexShader: `
-      varying vec3 vPosition;
-      varying float vElevation;
-      
-      void main() {
-        vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-        vec4 viewPosition = viewMatrix * modelPosition;
-        vec4 projectedPosition = projectionMatrix * viewPosition;
-
-        vPosition = position;
-        vElevation = position.z;
-        
-        gl_Position = projectedPosition;
-      }
-    `,
-    fragmentShader: `
-      varying vec3 vPosition;
-      varying float vElevation;
-      
-      void main() {
-        float alpha = 0.3;
-        vec3 color = vec3(0.0, 0.86, 0.51); // #00DC82
-        
-        // Add some depth to the color based on elevation
-        float elevationColor = (vElevation + 2.0) * 0.2;
-        color += elevationColor;
-        
-        gl_FragColor = vec4(color, alpha);
-      }
-    `,
-  }
+function FloatingCube() {
+  const cubeRef = useRef<THREE.Mesh>(null)
+  const edgesRef = useRef<THREE.LineSegments>(null)
+  const sparkRef = useRef<THREE.PointLight>(null)
+  const sparkMeshRef = useRef<THREE.Mesh>(null)
+  const targetRotation = useRef({ x: 0, y: 0 })
+  const currentRotation = useRef({ x: 0, y: 0 })
+  const lastSparkTime = useRef(0)
+  const sparkDuration = 0.15 // Duration of spark effect in seconds
 
   useFrame(({ clock }) => {
-    if (terrainRef.current) {
-      // Animate the terrain
+    if (cubeRef.current && edgesRef.current && sparkRef.current && sparkMeshRef.current) {
+      // Update cube rotation
+      currentRotation.current.x += (targetRotation.current.x - currentRotation.current.x) * 0.05
+      currentRotation.current.y += (targetRotation.current.y - currentRotation.current.y) * 0.05
+
+      cubeRef.current.rotation.x = currentRotation.current.x
+      cubeRef.current.rotation.y = currentRotation.current.y + Math.PI * 0.25
+      edgesRef.current.rotation.copy(cubeRef.current.rotation)
+
+      // Subtle floating animation
       const time = clock.getElapsedTime()
-      const position = terrainRef.current.geometry.attributes.position
-      const originalPosition = terrainRef.current.geometry.attributes.position.array.slice()
+      const floatY = Math.sin(time * 0.5) * 0.2
+      cubeRef.current.position.y = floatY
+      edgesRef.current.position.y = floatY
 
-      for (let i = 0; i < position.count; i++) {
-        const x = originalPosition[i * 3]
-        const y = originalPosition[i * 3 + 1]
-
-        // Create wave effect
-        const wave = Math.sin(x * 0.5 + time) * Math.cos(y * 0.5 + time) * 0.5
-
-        position.array[i * 3 + 2] = wave
+      // Handle spark effect fade out
+      const timeSinceLastSpark = time - lastSparkTime.current
+      if (timeSinceLastSpark < sparkDuration) {
+        const fadeOut = 1 - timeSinceLastSpark / sparkDuration
+        sparkRef.current.intensity = fadeOut * 2
+        sparkMeshRef.current.material.opacity = fadeOut
+      } else {
+        sparkRef.current.intensity = 0
+        sparkMeshRef.current.material.opacity = 0
       }
-
-      position.needsUpdate = true
     }
   })
 
+  // Function to trigger spark effect
+  const triggerSpark = useCallback((position: THREE.Vector3) => {
+    if (sparkRef.current && sparkMeshRef.current) {
+      lastSparkTime.current = performance.now() * 0.001
+      sparkRef.current.position.copy(position)
+      sparkMeshRef.current.position.copy(position)
+    }
+  }, [])
+
+  // Make triggerSpark available to parent
+  useEffect(() => {
+    if (cubeRef.current) {
+      cubeRef.current.userData.triggerSpark = triggerSpark
+    }
+  }, [triggerSpark])
+
   return (
-    <mesh ref={terrainRef} rotation={[-Math.PI / 3, 0, 0]} position={[0, -2, -5]}>
-      <planeGeometry args={[30, 30, 50, 50]} />
-      <shaderMaterial
-        ref={materialRef}
-        vertexShader={terrainShader.vertexShader}
-        fragmentShader={terrainShader.fragmentShader}
-        transparent={true}
-        wireframe={true}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+    <group scale={[2, 2, 2]}>
+      <mesh ref={cubeRef}>
+        <boxGeometry args={[2, 2, 2]} />
+        <meshBasicMaterial color="#050301" transparent opacity={0.1} />
+      </mesh>
+
+      <lineSegments ref={edgesRef}>
+        <edgesGeometry args={[new THREE.BoxGeometry(2, 2, 2)]} />
+        <lineBasicMaterial color="#00dc82" linewidth={1.5} />
+      </lineSegments>
+
+      {/* Spark effect */}
+      <pointLight ref={sparkRef} color="#00dc82" intensity={0} distance={4} decay={2} />
+      <mesh ref={sparkMeshRef}>
+        <sphereGeometry args={[0.1, 16, 16]} />
+        <meshBasicMaterial color="#00dc82" transparent opacity={0} />
+      </mesh>
+    </group>
   )
 }
 
 function Particles() {
   const particlesRef = useRef<THREE.Points>(null)
-  const particleCount = 1000
+  const cubeRef = useRef<THREE.Mesh | null>(null)
+  const particleCount = 200
+  const particleSpeed = 0.02
+  const particlePositions = useRef<Float32Array>()
+  const particleVelocities = useRef<{ x: number; y: number; z: number }[]>([])
 
+  // Initialize particle positions and velocities
   useEffect(() => {
     if (particlesRef.current) {
-      const positions = new Float32Array(particleCount * 3)
+      particlePositions.current = new Float32Array(particleCount * 3)
+      particleVelocities.current = []
 
       for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 30
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 30
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 30
+        // Distribute particles in a sphere
+        const theta = Math.random() * Math.PI * 2
+        const phi = Math.acos(2 * Math.random() - 1)
+        const radius = 15 + Math.random() * 5 // Distance from center
+
+        particlePositions.current[i * 3] = radius * Math.sin(phi) * Math.cos(theta)
+        particlePositions.current[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta)
+        particlePositions.current[i * 3 + 2] = radius * Math.cos(phi)
+
+        // Add velocity towards center
+        particleVelocities.current.push({
+          x: -particlePositions.current[i * 3] * particleSpeed,
+          y: -particlePositions.current[i * 3 + 1] * particleSpeed,
+          z: -particlePositions.current[i * 3 + 2] * particleSpeed,
+        })
       }
 
-      particlesRef.current.geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
+      particlesRef.current.geometry.setAttribute("position", new THREE.BufferAttribute(particlePositions.current, 3))
     }
   }, [])
 
-  useFrame(({ clock }) => {
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = clock.getElapsedTime() * 0.05
+  useFrame(() => {
+    if (particlesRef.current && particlePositions.current && particleVelocities.current) {
+      const positions = particlesRef.current.geometry.attributes.position.array as Float32Array
+      const cubePosition = new THREE.Vector3()
+      const cubeSize = new THREE.Vector3(4, 4, 4) // Cube size with some margin
+
+      // Get the cube's world position if available
+      if (cubeRef.current) {
+        cubeRef.current.getWorldPosition(cubePosition)
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3
+
+        // Update positions
+        positions[i3] += particleVelocities.current[i].x
+        positions[i3 + 1] += particleVelocities.current[i].y
+        positions[i3 + 2] += particleVelocities.current[i].z
+
+        // Check for cube collision
+        const particlePos = new THREE.Vector3(positions[i3], positions[i3 + 1], positions[i3 + 2])
+        if (
+          Math.abs(particlePos.x - cubePosition.x) < cubeSize.x / 2 &&
+          Math.abs(particlePos.y - cubePosition.y) < cubeSize.y / 2 &&
+          Math.abs(particlePos.z - cubePosition.z) < cubeSize.z / 2
+        ) {
+          // Trigger spark effect at collision point
+          if (cubeRef.current?.userData.triggerSpark) {
+            cubeRef.current.userData.triggerSpark(particlePos)
+          }
+
+          // Reset particle to outer radius
+          const theta = Math.random() * Math.PI * 2
+          const phi = Math.acos(2 * Math.random() - 1)
+          const radius = 15 + Math.random() * 5
+
+          positions[i3] = radius * Math.sin(phi) * Math.cos(theta)
+          positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta)
+          positions[i3 + 2] = radius * Math.cos(phi)
+
+          // Update velocity
+          particleVelocities.current[i] = {
+            x: -positions[i3] * particleSpeed,
+            y: -positions[i3 + 1] * particleSpeed,
+            z: -positions[i3 + 2] * particleSpeed,
+          }
+        }
+
+        // Reset particles that get too close to center
+        const distanceToCenter = Math.sqrt(
+          positions[i3] * positions[i3] + positions[i3 + 1] * positions[i3 + 1] + positions[i3 + 2] * positions[i3 + 2],
+        )
+
+        if (distanceToCenter < 2) {
+          const theta = Math.random() * Math.PI * 2
+          const phi = Math.acos(2 * Math.random() - 1)
+          const radius = 15 + Math.random() * 5
+
+          positions[i3] = radius * Math.sin(phi) * Math.cos(theta)
+          positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta)
+          positions[i3 + 2] = radius * Math.cos(phi)
+
+          particleVelocities.current[i] = {
+            x: -positions[i3] * particleSpeed,
+            y: -positions[i3 + 1] * particleSpeed,
+            z: -positions[i3 + 2] * particleSpeed,
+          }
+        }
+      }
+
+      particlesRef.current.geometry.attributes.position.needsUpdate = true
     }
   })
 
   return (
-    <points ref={particlesRef}>
-      <bufferGeometry />
-      <pointsMaterial size={0.05} color="#00DC82" transparent opacity={0.5} sizeAttenuation={true} />
-    </points>
+    <>
+      <FloatingCube ref={cubeRef} />
+      <points ref={particlesRef}>
+        <bufferGeometry />
+        <pointsMaterial size={0.05} color="#00DC82" transparent opacity={0.5} sizeAttenuation={true} />
+      </points>
+    </>
   )
 }
 
@@ -132,7 +224,6 @@ export default function ThreeScene({ onLoad }: { onLoad?: () => void }) {
         <pointLight position={[-10, -10, -10]} intensity={0.3} color="#00DC82" />
 
         {/* Main scene elements */}
-        <DesertTerrain />
         <Particles />
 
         {/* Subtle camera movement */}

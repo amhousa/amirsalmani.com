@@ -1,7 +1,18 @@
+# Allow all crawlers
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /_next/
 
+# Protect sensitive routes
+Disallow: /api/
+Disallow: /_next/static/development/
+
+# Allow static assets
+Allow: /_next/static/
+Allow: /_next/image/
+Allow: /images/
+Allow: /fonts/
+Allow: /icons/
+
+# Sitemaps
 Sitemap: https://amirsalmani.com/sitemap.xml
 

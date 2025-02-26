@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, PartyPopper, Clock, ArrowRight } from "lucide-react"
+import { X, PartyPopper, Clock, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import confetti from "canvas-confetti"
 
@@ -117,8 +117,8 @@ export default function CelebrationPopup() {
                            transition-all flex items-center justify-center gap-2 group"
                   onClick={handleClose}
                 >
+                  <ArrowLeft className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
                   مشاهده خدمات
-                  <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <button
                   onClick={handlePostpone}
@@ -133,7 +133,7 @@ export default function CelebrationPopup() {
               {/* Additional Info */}
               <div className="mt-6 text-center">
                 <p className="text-xs text-gray-400">
-                  کد تخفیف: <span className="text-brand-primary font-mono">NOWRUZ1403</span>
+                  کد تخفیف: <span className="text-brand-primary font-mono">NOWRUZ1404</span>
                 </p>
               </div>
             </div>

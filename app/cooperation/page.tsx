@@ -148,7 +148,7 @@ export default function Cooperation() {
                 pkg.popular ? "bg-black text-white hover:bg-black/90" : "bg-gray-800 text-white hover:bg-gray-700"
               }`}
             >
-              <Wallet className="inline-block w-5 h-5 mr-2 -mt-1" />
+              <Wallet className="inline-block w-5 h-5 ml-2 -mt-1" />
               پرداخت و شروع
             </Link>
           </motion.div>

@@ -19,35 +19,22 @@ export default function LoginClient() {
   const router = useRouter()
   const supabase = createClientComponentClient()
 
-  // Format phone number to ensure it has +98 prefix
+  // Format phone number to ensure it starts with 0
   const formatPhoneNumber = (value: string) => {
     // Remove any non-digit characters
     let digits = value.replace(/\D/g, "")
 
-    // If the number starts with 0, replace it with +98
-    if (digits.startsWith("0")) {
-      digits = "98" + digits.substring(1)
+    // If the number starts with 98 or +98, remove it
+    if (digits.startsWith("98")) {
+      digits = digits.substring(2)
     }
 
-    // If the number doesn't have a country code, add +98
-    if (!digits.startsWith("98")) {
-      digits = "98" + digits
+    // Ensure number starts with 0
+    if (!digits.startsWith("0")) {
+      digits = "0" + digits
     }
 
-    return "+" + digits
-  }
-
-  const startCountdown = () => {
-    setCountdown(120) // 2 minutes countdown
-    const timer = setInterval(() => {
-      setCountdown((current) => {
-        if (current <= 1) {
-          clearInterval(timer)
-          return 0
-        }
-        return current - 1
-      })
-    }, 1000)
+    return digits
   }
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
@@ -57,6 +44,11 @@ export default function LoginClient() {
 
     try {
       const formattedPhone = formatPhoneNumber(phone)
+
+      // Validate phone number format
+      if (!formattedPhone.match(/^09\d{9}$/)) {
+        throw new Error("لطفاً یک شماره موبایل معتبر وارد کنید")
+      }
 
       const response = await fetch("/api/auth/otp", {
         method: "POST",
@@ -119,6 +111,19 @@ export default function LoginClient() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const startCountdown = () => {
+    setCountdown(120) // 2 minutes countdown
+    const timer = setInterval(() => {
+      setCountdown((current) => {
+        if (current <= 1) {
+          clearInterval(timer)
+          return 0
+        }
+        return current - 1
+      })
+    }, 1000)
   }
 
   const handleResendOtp = async () => {

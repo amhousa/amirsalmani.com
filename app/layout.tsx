@@ -116,7 +116,7 @@ export const metadata: Metadata = {
     yandex: "your-yandex-verification",
     yahoo: "your-yahoo-verification",
     other: {
-      "norton-safeweb-site-verification": "your-norton-verification",
+      "norton-safeweb-site-verification": "21BJFR818NHI04SL5SVNKZ2WAFQE53-ZMLANNST-M26A3EQYXDYRYKUN961FDSBCH5-EC1J0S9173CUYXAIHZA3LL83YPJ3G5B-JDXTHB6TQH791K6J99KI0B9OB5MSX",
     },
   },
   appleWebApp: {

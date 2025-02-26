@@ -6,7 +6,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { motion } from "framer-motion"
-import { Phone, ArrowRight, Lock } from "lucide-react"
+import { Phone, Lock, ArrowLeft } from "lucide-react"
 import MovingBackground from "@/components/MovingBackground"
 
 export default function LoginClient() {
@@ -208,7 +208,7 @@ export default function LoginClient() {
               ) : (
                 <>
                   دریافت کد تایید
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowLeft className="w-5 h-5" />
                 </>
               )}
             </button>
@@ -266,7 +266,7 @@ export default function LoginClient() {
               ) : (
                 <>
                   ورود به حساب کاربری
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowLeft className="w-5 h-5" />
                 </>
               )}
             </button>

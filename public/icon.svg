@@ -1,16 +1,16 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Define a gradient for a sleek background -->
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="#050301"/>
+  
+  <!-- Letter A with gradient -->
+  <path d="M256 64L432 448H400L347.2 320H164.8L112 448H80L256 64ZM332.8 288L256 112L179.2 288H332.8Z" fill="url(#gradient)"/>
+  
+  <!-- Gradient definition -->
   <defs>
-    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#000"/>
-      <stop offset="100%" stop-color="#333"/>
+    <linearGradient id="gradient" x1="256" y1="64" x2="256" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00DC82"/>
+      <stop offset="1" stop-color="#00B368"/>
     </linearGradient>
   </defs>
-  <!-- Background circle with gradient fill -->
-  <circle cx="100" cy="100" r="80" fill="url(#grad)" />
-  <!-- Main text: initials -->
-  <text x="100" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" dominant-baseline="middle">AS</text>
-  <!-- Subtitle: team descriptor -->
-  <text x="100" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#fff">Dev Team</text>
 </svg>
 

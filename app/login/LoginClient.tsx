@@ -15,6 +15,7 @@ export default function LoginClient() {
   const [otp, setOtp] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [countdown, setCountdown] = useState(0)
   const router = useRouter()
   const supabase = createClientComponentClient()
 
@@ -36,6 +37,19 @@ export default function LoginClient() {
     return "+" + digits
   }
 
+  const startCountdown = () => {
+    setCountdown(120) // 2 minutes countdown
+    const timer = setInterval(() => {
+      setCountdown((current) => {
+        if (current <= 1) {
+          clearInterval(timer)
+          return 0
+        }
+        return current - 1
+      })
+    }, 1000)
+  }
+
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
@@ -44,13 +58,22 @@ export default function LoginClient() {
     try {
       const formattedPhone = formatPhoneNumber(phone)
 
-      const { error } = await supabase.auth.signInWithOtp({
-        phone: formattedPhone,
+      const response = await fetch("/api/auth/otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phone: formattedPhone }),
       })
 
-      if (error) throw error
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "خطا در ارسال کد تایید")
+      }
 
       setStep("otp")
+      startCountdown()
     } catch (error: any) {
       console.error("Error sending OTP:", error)
       setError(error.message || "خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.")
@@ -67,20 +90,64 @@ export default function LoginClient() {
     try {
       const formattedPhone = formatPhoneNumber(phone)
 
-      const { error } = await supabase.auth.verifyOtp({
-        phone: formattedPhone,
-        token: otp,
-        type: "sms",
+      const response = await fetch("/api/auth/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: formattedPhone,
+          code: otp,
+        }),
       })
 
-      if (error) throw error
+      const data = await response.json()
 
-      // Redirect to dashboard on successful login
+      if (!response.ok) {
+        throw new Error(data.error || "کد تایید نامعتبر است")
+      }
+
+      // Set the session
+      await supabase.auth.setSession(data.session)
+
+      // Redirect to dashboard
       router.push("/dashboard")
       router.refresh()
     } catch (error: any) {
       console.error("Error verifying OTP:", error)
       setError(error.message || "کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleResendOtp = async () => {
+    if (countdown > 0) return
+
+    setError("")
+    setLoading(true)
+
+    try {
+      const formattedPhone = formatPhoneNumber(phone)
+
+      const response = await fetch("/api/auth/otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phone: formattedPhone }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "خطا در ارسال مجدد کد تایید")
+      }
+
+      startCountdown()
+    } catch (error: any) {
+      console.error("Error resending OTP:", error)
+      setError(error.message || "خطا در ارسال مجدد کد تایید. لطفاً دوباره تلاش کنید.")
     } finally {
       setLoading(false)
     }
@@ -163,7 +230,23 @@ export default function LoginClient() {
                   dir="ltr"
                 />
               </div>
-              <p className="text-xs text-gray-400 mt-2">کد ۶ رقمی ارسال شده به شماره {phone} را وارد کنید</p>
+              <div className="flex justify-between items-center mt-2">
+                <p className="text-xs text-gray-400">کد ۶ رقمی ارسال شده به شماره {phone} را وارد کنید</p>
+                {countdown > 0 ? (
+                  <span className="text-sm text-gray-400">
+                    {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, "0")}
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={loading}
+                    className="text-sm text-brand-primary"
+                  >
+                    ارسال مجدد کد
+                  </button>
+                )}
+              </div>
             </div>
 
             {error && <p className="text-red-500 text-sm">{error}</p>}

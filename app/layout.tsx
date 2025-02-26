@@ -49,7 +49,6 @@ export const metadata: Metadata = {
     canonical: "https://amirsalmani.com",
     languages: {
       "fa-IR": "https://amirsalmani.com",
-      "en-US": "https://amirsalmani.com/en",
     },
   },
   robots: {
@@ -101,8 +100,8 @@ export const metadata: Metadata = {
     title: "امیرحسین سلمانی | توسعه‌دهنده فول‌استک",
     description:
       "به دنبال طراحی سایتی حرفه‌ای و مدرن هستید؟ من، امیرحسین سلمانی، توسعه‌دهنده فول‌استک با تخصص در پیاده‌سازی مدل‌های هوش مصنوعی، تحویل سریع پروژه و طراحی‌های زیبا، آماده همکاری با کسب‌وکار شما هستم.",
-    images: ["https://amirsalmani.com/twitter-image.jpg"],
-    creator: "@amirsalmani",
+    images: ["https://amirsalmani.com/x-image.jpg"],
+    creator: "@amhousa",
     creatorId: "1467726470533754880",
   },
   viewport: {
@@ -114,7 +113,6 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-site-verification",
     yandex: "your-yandex-verification",
-    yahoo: "your-yahoo-verification",
     other: {
       "norton-safeweb-site-verification": "21BJFR818NHI04SL5SVNKZ2WAFQE53-ZMLANNST-M26A3EQYXDYRYKUN961FDSBCH5-EC1J0S9173CUYXAIHZA3LL83YPJ3G5B-JDXTHB6TQH791K6J99KI0B9OB5MSX",
     },
@@ -154,7 +152,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="alternate" type="application/rss+xml" title="RSS Feed for amirsalmani.com" href="/rss.xml" />
+        {/* <link rel="alternate" type="application/rss+xml" title="RSS Feed for amirsalmani.com" href="/rss.xml" /> */}
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
         {/* Schema.org JSON-LD */}
@@ -169,14 +167,14 @@ export default function RootLayout({
               url: "https://amirsalmani.com",
               image: "https://amirsalmani.com/images/about/me.svg",
               sameAs: [
-                "https://github.com/yourusername",
-                "https://linkedin.com/in/yourusername",
-                "https://twitter.com/yourusername",
+                "https://github.com/amhousa",
+                "https://linkedin.com/in/amirhosseinsalmani",
+                "https://x.com/amhousa",
               ],
               jobTitle: "توسعه‌دهنده فول‌استک",
               worksFor: {
                 "@type": "Organization",
-                name: "مستر سلمانی",
+                name: "تیم توسعه امیرحسین سلمانی",
               },
               description: "توسعه‌دهنده فول‌استک با تخصص در پیاده‌سازی مدل‌های هوش مصنوعی",
             }),

@@ -37,7 +37,6 @@ export default function Contact() {
         throw new Error("خطا در ارسال فرم")
       }
     } catch (error) {
-      console.error("Error submitting form:", error)
       setStatus("متأسفانه در ارسال پیام خطایی رخ داد. لطفاً دوباره تلاش کنید.")
     } finally {
       setLoading(false)

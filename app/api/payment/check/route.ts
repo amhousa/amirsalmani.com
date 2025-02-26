@@ -67,7 +67,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ status: "pending" })
   } catch (error) {
-    console.error("Error checking payment:", error)
     return NextResponse.json({ status: "error" }, { status: 500 })
   }
 }

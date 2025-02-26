@@ -409,7 +409,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ status: "success" })
   } catch (error) {
-    console.error("Error sending confirmation emails:", error)
     return NextResponse.json({ status: "error" }, { status: 500 })
   }
 }

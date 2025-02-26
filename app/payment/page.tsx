@@ -3,7 +3,7 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { Copy, ExternalLink, ArrowRight, Loader2, CreditCard, Wallet, Check } from "lucide-react"
+import { Copy, ExternalLink, Loader2, CreditCard, Wallet, Check, ArrowLeft } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 interface FormData {
@@ -377,7 +377,7 @@ export default function Payment() {
                   ) : (
                     <>
                       مرحله بعد
-                      <ArrowRight className="w-5 h-5" />
+                      <ArrowLeft className="w-5 h-5" />
                     </>
                   )}
                 </button>

@@ -1,7 +1,16 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="32" height="32" rx="8" fill="#49117C"/>
-  <path d="M9 22L13.5 10H16.5L21 22H18.5L15 12.5L11.5 22H9Z" fill="white"/>
-  <path d="M14 16H18" stroke="white" stroke-width="2" stroke-linecap="round"/>
-  <path d="M12.5 19L19.5 19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="#050301"/>
+  
+  <!-- Letter A with gradient -->
+  <path d="M256 64L432 448H400L347.2 320H164.8L112 448H80L256 64ZM332.8 288L256 112L179.2 288H332.8Z" fill="url(#gradient)"/>
+  
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id="gradient" x1="256" y1="64" x2="256" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00DC82"/>
+      <stop offset="1" stop-color="#00B368"/>
+    </linearGradient>
+  </defs>
 </svg>
 

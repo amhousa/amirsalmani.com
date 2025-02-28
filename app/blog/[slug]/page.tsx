@@ -125,7 +125,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         />
       </article>
 
-      {/* Navigation */}
+      {/* Fixed navigation syntax */}
       <nav className="mt-12 flex justify-between items-center border-t border-gray-700 pt-8">
         {prev ? (
           <Link
@@ -138,8 +138,8 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               <div className="font-medium">{prev.title}</div>
             </div>
           </Link>
-        ) : (\
-          <div /> {/* Empty div to maintain spacing */}
+        ) : (
+          <div></div> // Fixed empty div syntax
         )}
 
         {next ? (
@@ -154,7 +154,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             <ArrowLeft className="w-5 h-5" />
           </Link>
         ) : (
-          <div /> {/* Empty div to maintain spacing */}
+          <div></div> // Fixed empty div syntax
         )}
       </nav>
     </div>

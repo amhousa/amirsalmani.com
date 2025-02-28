@@ -1,10 +1,12 @@
-import fs from "fs"
-import path from "path"
-import matter from "gray-matter"
+"use client"
+
+import { useState, useEffect, useCallback, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Search, Tag, Calendar, Clock, Filter, Loader2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { Clock, Calendar, Tag } from "lucide-react"
-import { cn } from "@/lib/utils"
+import debounce from "lodash/debounce"
+import MovingBackground from "@/components/MovingBackground"
 
 interface BlogPost {
   slug: string
@@ -13,97 +15,204 @@ interface BlogPost {
   excerpt: string
   tags: string[]
   image: string
+  category?: string
 }
 
-export default async function Blog({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) {
-  const page = typeof searchParams.page === "string" ? Number.parseInt(searchParams.page) : 1
-  const postsDirectory = path.join(process.cwd(), "posts")
-  const fileNames = fs.readdirSync(postsDirectory)
+export default function Blog() {
+  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [categories, setCategories] = useState<string[]>([])
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const posts: BlogPost[] = fileNames
-    .map((fileName) => {
-      const fullPath = path.join(postsDirectory, fileName)
-      const fileContents = fs.readFileSync(fullPath, "utf8")
-      const { data } = matter(fileContents)
-      return {
-        slug: fileName.replace(/\.md$/, ""),
-        title: data.title,
-        date: data.date,
-        excerpt: data.excerpt,
-        tags: data.tags,
-        image: data.image,
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    debounce(async (query: string, category: string | null) => {
+      setLoading(true)
+      try {
+        const params = new URLSearchParams()
+        if (query) params.append("q", query)
+        if (category) params.append("category", category)
+
+        const response = await fetch(`/api/blog/search?${params.toString()}`)
+        const data = await response.json()
+        setPosts(data)
+      } catch (error) {
+        console.error("Error fetching posts:", error)
+      } finally {
+        setLoading(false)
       }
-    })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    }, 300),
+    [],
+  )
 
-  const POSTS_PER_PAGE = 6
-  const totalPosts = posts.length
-  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE)
-  const currentPosts = posts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE)
+  // Initial load and category extraction
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true)
+      try {
+        const response = await fetch("/api/blog/search")
+        const data = await response.json()
+        setPosts(data)
+
+        // Extract unique categories from posts
+        const allCategories = Array.from(new Set(data.flatMap((post: BlogPost) => post.tags)))
+        setCategories(allCategories)
+      } catch (error) {
+        console.error("Error fetching posts:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
+
+  // Search effect
+  useEffect(() => {
+    debouncedSearch(searchQuery, selectedCategory)
+    return () => {
+      debouncedSearch.cancel()
+    }
+  }, [searchQuery, selectedCategory, debouncedSearch])
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-brand-primary">وبلاگ</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentPosts.map((post) => (
-          <article key={post.slug} className="blog-card group frosted-glass rounded-xl overflow-hidden">
-            <Link href={`/blog/${post.slug}`} className="block">
-              <div className="relative h-48 card-image">
-                <Image src={post.image || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 to-transparent" />
-              </div>
-              <div className="p-6 card-content">
-                <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
-                  <span className="flex items-center gap-1 glass-button px-2 py-1 rounded-full">
-                    <Calendar className="w-4 h-4" />
-                    {post.date}
-                  </span>
-                  <span className="flex items-center gap-1 glass-button px-2 py-1 rounded-full">
-                    <Clock className="w-4 h-4" />
-                    {Math.ceil(post.excerpt.length / 200)} دقیقه
-                  </span>
-                </div>
-                <h2 className="text-xl font-semibold mb-2 text-brand-primary group-hover:text-brand-primary/80 transition-colors line-clamp-2">
-                  {post.title}
-                </h2>
-                <p className="text-gray-400 mb-4 line-clamp-2">{post.excerpt}</p>
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="glass-button inline-flex items-center text-xs px-3 py-1 rounded-full text-white/80"
-                    >
-                      <Tag className="w-3 h-3 mr-1" />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Link>
-          </article>
-        ))}
+    <div className="relative min-h-screen">
+      <MovingBackground />
+
+      {/* Header with search and filters */}
+      <div className="fixed top-0 left-0 right-0 z-30 bg-dark-bg/80 backdrop-blur-md border-b border-white/5 px-4 py-3">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <h1 className="text-2xl font-bold text-brand-primary">وبلاگ</h1>
+
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+            {/* Search input */}
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="جستجو..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-4 pr-10 py-2 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-brand-primary text-white"
+              />
+            </div>
+
+            {/* Category filters */}
+            <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={`px-3 py-1 text-sm rounded-full whitespace-nowrap transition-colors ${
+                  selectedCategory === null ? "bg-brand-primary text-black" : "bg-white/10 hover:bg-white/20"
+                }`}
+              >
+                همه
+              </button>
+
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-3 py-1 text-sm rounded-full whitespace-nowrap transition-colors ${
+                    selectedCategory === category ? "bg-brand-primary text-black" : "bg-white/10 hover:bg-white/20"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {totalPages > 1 && (
-        <div className="mt-12 flex justify-center items-center gap-2">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-            <Link
-              key={pageNum}
-              href={`/blog?page=${pageNum}`}
-              className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 glass-button",
-                pageNum === page ? "bg-brand-primary text-dark-bg font-semibold" : "hover:bg-white/10",
-              )}
+      {/* Blog posts grid */}
+      <div className="container mx-auto pt-28 pb-20 px-4">
+        <AnimatePresence mode="wait">
+          {loading ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center py-12"
             >
-              {pageNum}
-            </Link>
-          ))}
-        </div>
-      )}
+              <Loader2 className="w-8 h-8 text-brand-primary animate-spin" />
+            </motion.div>
+          ) : posts.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {posts.map((post, index) => (
+                <motion.article
+                  key={post.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group relative glass-effect rounded-xl overflow-hidden border border-white/10 hover:border-brand-primary/50 transition-all duration-300"
+                >
+                  <Link href={`/blog/${post.slug}`} className="block">
+                    <div className="relative aspect-video">
+                      <Image
+                        src={post.image || "/placeholder.svg"}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
+                    </div>
+
+                    <div className="p-6">
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {post.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
+                          >
+                            <Tag className="w-3 h-3 mr-1" />
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h2 className="text-xl font-bold mb-2 text-white group-hover:text-brand-primary transition-colors line-clamp-2">
+                        {post.title}
+                      </h2>
+
+                      <p className="text-gray-400 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+
+                      <div className="flex items-center gap-4 text-sm text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {post.date}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {Math.ceil(post.excerpt.length / 200)} دقیقه
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-center py-12"
+            >
+              <Filter className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+              <h3 className="text-xl font-bold mb-2">نتیجه‌ای یافت نشد</h3>
+              <p className="text-gray-400">متأسفانه هیچ مطلبی با معیارهای جستجوی شما پیدا نشد.</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }

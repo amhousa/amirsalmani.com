@@ -1,5 +1,5 @@
 import "./globals.css"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Vazirmatn } from "next/font/google"
 import BottomNavbar from "@/components/BottomNavbar"
 import MovingBackground from "@/components/MovingBackground"
@@ -13,6 +13,18 @@ const vazirmatn = Vazirmatn({
   preload: true,
   adjustFontFallback: true,
 })
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#050301" },
+  ],
+  colorScheme: "dark",
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://amirsalmani.com"),
@@ -101,12 +113,6 @@ export const metadata: Metadata = {
     creator: "@amhousa",
     creatorId: "1467726470533754880",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
   verification: {
     google: "your-google-site-verification",
     yandex: "your-yandex-verification",
@@ -124,11 +130,6 @@ export const metadata: Metadata = {
   category: "technology",
   classification: "Web Development, Full Stack Development, AI Services",
   referrer: "origin-when-cross-origin",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#050301" },
-  ],
-  colorScheme: "dark",
   generator: "Next.js",
   applicationName: "امیرحسین سلمانی",
   keywords: ["طراحی سایت", "برنامه نویسی", "هوش مصنوعی", "دیجیتال مارکتینگ"],
@@ -150,9 +151,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* <link rel="alternate" type="application/rss+xml" title="RSS Feed for amirsalmani.com" href="/rss.xml" /> */}
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-
         {/* Schema.org JSON-LD */}
         <script
           type="application/ld+json"

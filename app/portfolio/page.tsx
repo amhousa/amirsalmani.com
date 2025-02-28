@@ -278,19 +278,19 @@ export default function Portfolio() {
             </div>
 
             {/* View mode toggle */}
-            <div className="flex items-center gap-2 border border-white/10 rounded-lg overflow-hidden">
+            <div className="flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-full">
               <button
                 onClick={() => setViewMode("fullscreen")}
-                className={`px-3 py-1.5 text-sm transition-colors ${
-                  viewMode === "fullscreen" ? "bg-brand-primary text-black" : "hover:bg-white/10"
+                className={`px-4 py-2 text-sm rounded-full transition-all duration-300 ${
+                  viewMode === "fullscreen" ? "bg-brand-primary text-black" : "text-white hover:bg-white/10"
                 }`}
               >
                 تمام صفحه
               </button>
               <button
                 onClick={() => setViewMode("grid")}
-                className={`px-3 py-1.5 text-sm transition-colors ${
-                  viewMode === "grid" ? "bg-brand-primary text-black" : "hover:bg-white/10"
+                className={`px-4 py-2 text-sm rounded-full transition-all duration-300 ${
+                  viewMode === "grid" ? "bg-brand-primary text-black" : "text-white hover:bg-white/10"
                 }`}
               >
                 گرید
@@ -305,12 +305,13 @@ export default function Portfolio() {
           <div className="relative w-full h-full">
             {/* Project image container */}
             <div className="relative w-full h-full flex items-center justify-center px-4 md:px-16">
-              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10">
+              <div className="relative w-full h-full overflow-hidden">
+                <div className="absolute inset-0 border border-white/10" />
                 <Image
                   src={filteredProjects[activeProject].image || "/placeholder.svg"}
                   alt={filteredProjects[activeProject].title}
                   fill
-                  className="object-contain"
+                  className="object-cover w-full h-full"
                   priority
                 />
 

@@ -5,6 +5,7 @@ import { remark } from "remark"
 import html from "remark-html"
 import type { Metadata } from "next"
 import Image from "next/image"
+import ServiceAdvertisement from "@/components/ServiceAdvertisement"
 
 export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), "posts")
@@ -73,6 +74,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           dangerouslySetInnerHTML={{ __html: contentHtml.replace(/<h1>.*?<\/h1>/, "") }}
           className="text-default prose-headings:text-brand-purple prose-a:text-brand-purple hover:prose-a:text-brand-purple/80"
         />
+        <ServiceAdvertisement />
       </article>
     </div>
   )

@@ -82,7 +82,7 @@ export default function Blog() {
       <MovingBackground />
 
       {/* Header with search and filters */}
-      <div className="fixed top-0 left-0 right-0 z-30 bg-dark-bg/80 backdrop-blur-md border-b border-white/5 px-4 py-3">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-dark-bg/80 backdrop-blur-md border-b border-white/5 px-4 py-3">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <h1 className="text-2xl font-bold text-brand-primary">وبلاگ</h1>
 
@@ -127,8 +127,10 @@ export default function Blog() {
         </div>
       </div>
 
-      {/* Blog posts grid */}
-      <div className="container mx-auto pt-28 pb-20 px-4">
+      {/* Blog posts grid - Updated padding-top */}
+      <div className="container mx-auto px-4 pt-[140px] sm:pt-[120px] pb-20">
+        {" "}
+        {/* Adjusted padding-top */}
         <AnimatePresence mode="wait">
           {loading ? (
             <motion.div

@@ -16,19 +16,19 @@ export default function Home() {
           priority
         />
         <h1 className="text-4xl font-bold mb-2 text-brand-purple">امیرحسین سلمانی</h1>
-        <p className="text-xl mb-6 text-default">توسعه‌دهنده فول‌استک، خراسان شمالی</p>
-        <p className="mb-8 max-w-md text-default">
+        <p className="text-xl mb-4 text-default">توسعه‌دهنده فول‌استک، خراسان شمالی</p>
+        <p className="mb-4 max-w-md text-default">
           به وبسایت شخصی من خوش آمدید. من یک توسعه‌دهنده با تجربه در زمینه‌های مختلف وب و موبایل هستم.
         </p>
         <Link
           href="/portfolio"
-          className="bg-brand-purple text-white px-8 py-3 rounded-full hover:bg-opacity-90 transition-colors mb-8"
+          className="bg-brand-purple text-white px-8 py-3 rounded-full hover:bg-opacity-90 transition-colors mb-4"
         >
           مشاهده نمونه کارها
         </Link>
 
         {/* Technology Logos Section */}
-        <div className="flex items-center justify-center gap-6 mt-2">
+        <div className="flex items-center justify-center gap-6">
           <div className="flex flex-wrap items-center justify-center gap-6">
             {/* v0.dev Logo */}
             <Link href="https://v0.dev" target="_blank" rel="noopener noreferrer" className="group">

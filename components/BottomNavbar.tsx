@@ -8,6 +8,11 @@ import { cn } from "@/lib/utils"
 const BottomNavbar = () => {
   const pathname = usePathname()
 
+  // Hide bottom navigation in dashboard
+  if (pathname.startsWith("/dashboard")) {
+    return null
+  }
+
   const navItems = [
     { href: "/", icon: Home, label: "خانه" },
     { href: "/about", icon: User, label: "درباره من" },

@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server"
 import { createServerClient } from "@/lib/supabase-server"
-import nodemailer from "nodemailer"
 
 export async function POST(request: Request) {
   const supabase = createServerClient()
   const body = await request.json()
-  const { phoneNumber, email, name } = body
+  const { serviceType, email, name, phoneNumber, details } = body
 
   try {
     // Get user session if exists
@@ -39,49 +38,28 @@ export async function POST(request: Request) {
       }
     }
 
-    // Store consultation request in database
-    const { error: consultationError } = await supabase.from("consultations").insert([
+    // Store service request in database
+    const { error: serviceError } = await supabase.from("services").insert([
       {
         user_id: userId,
-        phone_number: phoneNumber,
+        service_type: serviceType,
         email,
         name,
+        phone_number: phoneNumber,
+        details,
         status: "pending",
       },
     ])
 
-    if (consultationError) throw consultationError
-
-    // Send email notification
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: Number.parseInt(process.env.MAIL_PORT || "465"),
-      secure: true,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    })
-
-    await transporter.sendMail({
-      from: `"Consultation Request" <${process.env.MAIL_FROM}>`,
-      to: process.env.MAIL_TO,
-      subject: "New Consultation Request",
-      html: `
-        <h1>New Consultation Request</h1>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Phone Number:</strong> ${phoneNumber}</p>
-        <p><strong>Email:</strong> ${email}</p>
-      `,
-    })
+    if (serviceError) throw serviceError
 
     return NextResponse.json({
-      message: "Request submitted successfully",
+      message: "Service request submitted successfully",
       userId,
     })
   } catch (error) {
-    console.error("Consultation request error:", error)
-    return NextResponse.json({ error: "Failed to submit request" }, { status: 500 })
+    console.error("Service request error:", error)
+    return NextResponse.json({ error: "Failed to submit service request" }, { status: 500 })
   }
 }
 

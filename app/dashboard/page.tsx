@@ -11,12 +11,25 @@ export default async function Dashboard() {
   } = await supabase.auth.getSession()
 
   if (!session) {
-    // Redirect to login if not authenticated
     redirect("/login")
   }
 
   // Fetch user data
   const { data: userData } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+
+  // Fetch user's orders
+  const { data: orders } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: false })
+
+  // Fetch user's meetings
+  const { data: meetings } = await supabase
+    .from("meetings")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("meeting_date", { ascending: true })
 
   // Fetch user's consultations
   const { data: consultations } = await supabase
@@ -25,7 +38,7 @@ export default async function Dashboard() {
     .eq("user_id", session.user.id)
     .order("created_at", { ascending: false })
 
-  // Fetch user's purchased services
+  // Fetch user's services
   const { data: services } = await supabase
     .from("services")
     .select("*")
@@ -42,6 +55,8 @@ export default async function Dashboard() {
   return (
     <DashboardClient
       user={userData || {}}
+      orders={orders || []}
+      meetings={meetings || []}
       consultations={consultations || []}
       services={services || []}
       payments={payments || []}

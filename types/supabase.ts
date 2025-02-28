@@ -164,6 +164,82 @@ export interface Database {
           related_type?: string | null
         }
       }
+      orders: {
+        Row: {
+          id: string
+          created_at: string
+          user_id: string
+          status: string
+          total_amount: number
+          payment_status: string
+          payment_method: string | null
+          items: Json
+          shipping_address: Json | null
+          notes: string | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          user_id: string
+          status: string
+          total_amount: number
+          payment_status: string
+          payment_method?: string | null
+          items: Json
+          shipping_address?: Json | null
+          notes?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          user_id?: string
+          status?: string
+          total_amount?: number
+          payment_status?: string
+          payment_method?: string | null
+          items?: Json
+          shipping_address?: Json | null
+          notes?: string | null
+        }
+      }
+      meetings: {
+        Row: {
+          id: string
+          created_at: string
+          user_id: string
+          title: string
+          description: string | null
+          meeting_date: string
+          duration: number
+          status: string
+          meeting_link: string | null
+          notes: string | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          user_id: string
+          title: string
+          description?: string | null
+          meeting_date: string
+          duration: number
+          status: string
+          meeting_link?: string | null
+          notes?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          user_id?: string
+          title?: string
+          description?: string | null
+          meeting_date?: string
+          duration?: number
+          status?: string
+          meeting_link?: string | null
+          notes?: string | null
+        }
+      }
     }
     Views: {
       [_ in never]: never

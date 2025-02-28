@@ -13,7 +13,7 @@ export default function Home() {
           width={150}
           height={150}
           className="rounded-full mb-4 object-cover"
-          priority // Remove lazy loading for above-the-fold image
+          priority
         />
         <h1 className="text-4xl font-bold mb-2 text-brand-purple">امیرحسین سلمانی</h1>
         <p className="text-xl mb-6 text-default">توسعه‌دهنده فول‌استک، خراسان شمالی</p>
@@ -22,13 +22,62 @@ export default function Home() {
         </p>
         <Link
           href="/portfolio"
-          className="bg-brand-purple text-white px-8 py-3 rounded-full hover:bg-opacity-90 transition-colors"
+          className="bg-brand-purple text-white px-8 py-3 rounded-full hover:bg-opacity-90 transition-colors mb-8"
         >
           مشاهده نمونه کارها
         </Link>
+
+        {/* Technology Logos Section */}
+        <div className="flex items-center justify-center gap-6 mt-4">
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            {/* v0.dev Logo */}
+            <Link href="https://v0.dev" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/v0.svg"
+                alt="Built with v0.dev"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
+
+            {/* Vercel Logo */}
+            <Link href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/vercel.svg"
+                alt="Deployed on Vercel"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
+
+            {/* GitHub Logo */}
+            <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/github.svg"
+                alt="Source on GitHub"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
+
+            {/* Next.js Logo */}
+            <Link href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/nextjs.svg"
+                alt="Built with Next.js"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
+          </div>
+        </div>
       </div>
       <Analytics />
-      <SpeedInsights/>
+      <SpeedInsights />
     </div>
   )
 }

@@ -1,12 +1,13 @@
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { remark } from "remark"
-import html from "remark-html"
+import { MDXRemote } from "next-mdx-remote/rsc"
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight } from "lucide-react"
+import { mdxComponents } from "@/components/MdxComponents"
+import ServiceAdvertisement from "@/components/ServiceAdvertisement"
 
 interface Post {
   slug: string
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: data.title,
       description: data.excerpt,
       type: "article",
-      url: `https://www.amirhosseinsalmani.com/blog/${params.slug}`,
+      url: `https://amirsalmani.com/blog/${params.slug}`,
       images: [
         {
           url: data.ogImage,
@@ -92,10 +93,14 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   const fullPath = path.join(process.cwd(), "posts", `${params.slug}.md`)
   const fileContents = fs.readFileSync(fullPath, "utf8")
   const { data, content } = matter(fileContents)
-  const processedContent = await remark().use(html, { sanitize: false }).process(content)
-  const contentHtml = processedContent.toString()
-
   const { prev, next } = getAdjacentPosts(params.slug)
+
+  // Split content to insert ad
+  const contentParts = content.split("\n\n")
+  const midPoint = Math.floor(contentParts.length / 2)
+
+  const firstHalf = contentParts.slice(0, midPoint).join("\n\n")
+  const secondHalf = contentParts.slice(midPoint).join("\n\n")
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -119,13 +124,19 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           <Image src={data.image || "/placeholder.svg"} alt={data.title} fill className="object-cover" />
         </div>
 
-        <div
-          dangerouslySetInnerHTML={{ __html: contentHtml.replace(/<h1>.*?<\/h1>/, "") }}
-          className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80"
-        />
+        <div className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80">
+          {/* First half of the content */}
+          <MDXRemote source={firstHalf} components={mdxComponents} />
+
+          {/* Advertisement */}
+          <ServiceAdvertisement />
+
+          {/* Second half of the content */}
+          <MDXRemote source={secondHalf} components={mdxComponents} />
+        </div>
       </article>
 
-      {/* Fixed navigation syntax */}
+      {/* Navigation */}
       <nav className="mt-12 flex justify-between items-center border-t border-gray-700 pt-8">
         {prev ? (
           <Link
@@ -139,7 +150,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             </div>
           </Link>
         ) : (
-          <div></div> // Fixed empty div syntax
+          <div></div>
         )}
 
         {next ? (
@@ -154,7 +165,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             <ArrowLeft className="w-5 h-5" />
           </Link>
         ) : (
-          <div></div> // Fixed empty div syntax
+          <div></div>
         )}
       </nav>
     </div>

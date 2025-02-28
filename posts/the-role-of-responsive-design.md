@@ -5,7 +5,7 @@ author: "امیرحسین سلمانی"
 excerpt: "بررسی تأثیر طراحی وب واکنش‌گرا بر بهبود تجربه کاربری و رتبه‌بندی موتورهای جستجو در دنیای دیجیتال."
 tags: ["Responsive Design", "SEO", "User Experience", "Web Development"]
 image: "/images/blog/responsive-design-role.webp"
-canonicalUrl: "https://www.amirhosseinsalmani.com/blog/the-role-of-responsive-design"
+canonicalUrl: "https://amirsalmani.com/blog/the-role-of-responsive-design"
 ogImage: "/images/blog/responsive-design-role.webp"
 ---
 

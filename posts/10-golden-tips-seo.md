@@ -5,7 +5,7 @@ author: "امیرحسین سلمانی"
 excerpt: "در این مقاله، ده نکته طلایی برای بهینه‌سازی وب‌سایت به منظور افزایش رتبه در موتورهای جستجو و جذب ترافیک بیشتر بررسی می‌شود."
 tags: ["SEO", "بهینه‌سازی وب", "سئو", "Digital Marketing", "Website Optimization"]
 image: "/images/blog/10-golden-tips-seo.webp"
-canonicalUrl: "https://www.amirhosseinsalmani.com/blog/10-golden-tips-seo"
+canonicalUrl: "https://amirsalmani.com/blog/10-golden-tips-seo"
 ogImage: "/images/blog/10-golden-tips-seo.webp"
 ---
 

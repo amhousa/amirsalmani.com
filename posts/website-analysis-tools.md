@@ -5,7 +5,7 @@ author: "امیرحسین سلمانی"
 excerpt: "کشف چگونگی ابزارهای تحلیل وب‌سایت در شناسایی نقاط قوت و ضعف وب‌سایت‌ها و ارائه راهکارهای بهینه‌سازی برای افزایش کارایی دیجیتال."
 tags: ["Digital Marketing", "SEO", "Website Analytics", "Performance Improvement"]
 image: "/images/blog/web-analytics-tools.webp"
-canonicalUrl: "https://www.amirhosseinsalmani.com/blog/web-analytics-tools"
+canonicalUrl: "https://amirsalmani.com/blog/web-analytics-tools"
 ogImage: "/images/blog/web-analytics-tools.webp"
 ---
 

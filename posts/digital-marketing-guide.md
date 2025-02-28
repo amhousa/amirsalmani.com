@@ -5,7 +5,7 @@ author: "امیرحسین سلمانی"
 excerpt: "در این مقاله، استراتژی‌ها و تکنیک‌های کلیدی دیجیتال مارکتینگ را بررسی می‌کنیم که به کسب‌وکارها کمک می‌کند در فضای آنلاین رشد کنند و مشتریان بیشتری جذب کنند."
 tags: ["Digital Marketing", "SEO", "Social Media Marketing", "Content Marketing", "Business Growth"]
 image: "/images/blog/digital-marketing-guide.webp"
-canonicalUrl: "https://www.amirhosseinsalmani.com/blog/digital-marketing-guide"
+canonicalUrl: "https://amirsalmani.com/blog/digital-marketing-guide"
 ogImage: "/images/blog/digital-marketing-guide.webp"
 ---
 

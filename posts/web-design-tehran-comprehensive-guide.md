@@ -4,7 +4,7 @@ date: "1403/12/01" author: "امیرحسین سلمانی"
 excerpt: "بررسی اهمیت حیاتی وب‌سایت برای کسب و کارها در تهران، شهری با بیشترین تعداد کاربران اینترنت در کشور و چگونگی تأثیرگذاری طراحی سایت در رشد و درآمدزایی."
 tags: ["Web Design", "Digital Marketing", "Tehran Business", "SEO"]
 image: "/images/blog/web-design-tehran.webp"
-canonicalUrl: "https://www.amirhosseinsalmani.com/blog/web-design-in-tehran"
+canonicalUrl: "https://amirsalmani.com/blog/web-design-in-tehran"
 ogImage: "/images/blog/web-design-tehran.webp"
 ---
 

@@ -7,6 +7,7 @@ import Link from "next/link"
 import Image from "next/image"
 import debounce from "lodash/debounce"
 import MovingBackground from "@/components/MovingBackground"
+import ServiceAdvertisement from "@/components/ServiceAdvertisement"
 
 interface BlogPost {
   slug: string
@@ -142,65 +143,76 @@ export default function Blog() {
               <Loader2 className="w-8 h-8 text-brand-primary animate-spin" />
             </motion.div>
           ) : posts.length > 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {posts.map((post, index) => (
-                <motion.article
-                  key={post.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group relative glass-effect rounded-xl overflow-hidden border border-white/10 hover:border-brand-primary/50 transition-all duration-300"
-                >
-                  <Link href={`/blog/${post.slug}`} className="block">
-                    <div className="relative aspect-video">
-                      <Image
-                        src={post.image || "/placeholder.svg"}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
-                    </div>
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {posts.map((post, index) => (
+                  <>
+                    {/* Insert ad after every 6 posts */}
+                    {index > 0 && index % 6 === 0 && (
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="col-span-full my-8">
+                        <ServiceAdvertisement />
+                      </motion.div>
+                    )}
 
-                    <div className="p-6">
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        {post.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
-                          >
-                            <Tag className="w-3 h-3 mr-1" />
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                    <motion.article
+                      key={post.slug}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="group relative glass-effect rounded-xl overflow-hidden border border-white/10 hover:border-brand-primary/50 transition-all duration-300"
+                    >
+                      <Link href={`/blog/${post.slug}`} className="block">
+                        <div className="relative aspect-video">
+                          <Image
+                            src={post.image || "/placeholder.svg"}
+                            alt={post.title}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
+                        </div>
 
-                      <h2 className="text-xl font-bold mb-2 text-white group-hover:text-brand-primary transition-colors line-clamp-2">
-                        {post.title}
-                      </h2>
+                        <div className="p-6">
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {post.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center text-xs px-3 py-1 rounded-full bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
+                              >
+                                <Tag className="w-3 h-3 mr-1" />
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
 
-                      <p className="text-gray-400 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                          <h2 className="text-xl font-bold mb-2 text-white group-hover:text-brand-primary transition-colors line-clamp-2">
+                            {post.title}
+                          </h2>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-400">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {post.date}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {Math.ceil(post.excerpt.length / 200)} دقیقه
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.article>
-              ))}
-            </motion.div>
+                          <p className="text-gray-400 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+
+                          <div className="flex items-center gap-4 text-sm text-gray-400">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {post.date}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              {Math.ceil(post.excerpt.length / 200)} دقیقه
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.article>
+                  </>
+                ))}
+              </motion.div>
+            </>
           ) : (
             <motion.div
               initial={{ opacity: 0 }}

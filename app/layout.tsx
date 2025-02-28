@@ -5,6 +5,7 @@ import BottomNavbar from "@/components/BottomNavbar"
 import MovingBackground from "@/components/MovingBackground"
 import type React from "react"
 import CelebrationPopup from "@/components/CelebrationPopup"
+import { Toaster } from "sonner"
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -69,12 +70,8 @@ export const metadata: Metadata = {
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
     shortcut: [{ url: "/favicon.ico" }],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }
-    ],
-    other: [
-      { rel: "mask-icon", url: "/icon.svg", color: "#00DC82" }
-    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    other: [{ rel: "mask-icon", url: "/icon.svg", color: "#00DC82" }],
   },
   manifest: "/site.webmanifest",
   openGraph: {
@@ -114,7 +111,8 @@ export const metadata: Metadata = {
     google: "your-google-site-verification",
     yandex: "your-yandex-verification",
     other: {
-      "norton-safeweb-site-verification": "21BJFR818NHI04SL5SVNKZ2WAFQE53-ZMLANNST-M26A3EQYXDYRYKUN961FDSBCH5-EC1J0S9173CUYXAIHZA3LL83YPJ3G5B-JDXTHB6TQH791K6J99KI0B9OB5MSX",
+      "norton-safeweb-site-verification":
+        "21BJFR818NHI04SL5SVNKZ2WAFQE53-ZMLANNST-M26A3EQYXDYRYKUN961FDSBCH5-EC1J0S9173CUYXAIHZA3LL83YPJ3G5B-JDXTHB6TQH791K6J99KI0B9OB5MSX",
     },
   },
   appleWebApp: {
@@ -182,6 +180,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${vazirmatn.className} bg-[#050301] text-dark-text`}>
+        <Toaster position="top-center" expand={true} richColors />
         <MovingBackground />
         <CelebrationPopup />
         <main className="min-h-screen pb-16">{children}</main>

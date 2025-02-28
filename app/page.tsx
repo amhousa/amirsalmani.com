@@ -28,7 +28,7 @@ export default function Home() {
         </Link>
 
         {/* Technology Logos Section */}
-        <div className="flex items-center justify-center gap-6 mt-4">
+        <div className="flex items-center justify-center gap-6 mt-2">
           <div className="flex flex-wrap items-center justify-center gap-6">
             {/* v0.dev Logo */}
             <Link href="https://v0.dev" target="_blank" rel="noopener noreferrer" className="group">

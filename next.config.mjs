@@ -26,7 +26,6 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   reactStrictMode: true,
-  swcMinify: true, // Use SWC for minification
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },

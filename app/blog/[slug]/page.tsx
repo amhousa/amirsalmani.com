@@ -5,7 +5,18 @@ import { remark } from "remark"
 import html from "remark-html"
 import type { Metadata } from "next"
 import Image from "next/image"
-import ServiceAdvertisement from "@/components/ServiceAdvertisement"
+import Link from "next/link"
+import { ArrowLeft, ArrowRight } from "lucide-react"
+
+interface Post {
+  slug: string
+  title: string
+  date: string
+  content: string
+  excerpt: string
+  tags: string[]
+  image: string
+}
 
 export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), "posts")
@@ -41,6 +52,42 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
+function getAllPosts(): Post[] {
+  const postsDirectory = path.join(process.cwd(), "posts")
+  const fileNames = fs.readdirSync(postsDirectory)
+
+  return fileNames
+    .map((fileName) => {
+      const fullPath = path.join(postsDirectory, fileName)
+      const fileContents = fs.readFileSync(fullPath, "utf8")
+      const { data, content } = matter(fileContents)
+
+      return {
+        slug: fileName.replace(/\.md$/, ""),
+        title: data.title,
+        date: data.date,
+        content,
+        excerpt: data.excerpt,
+        tags: data.tags,
+        image: data.image,
+      }
+    })
+    .sort((a, b) => {
+      // Sort by date (newest first)
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+    })
+}
+
+function getAdjacentPosts(currentSlug: string): { prev: Post | null; next: Post | null } {
+  const posts = getAllPosts()
+  const currentIndex = posts.findIndex((post) => post.slug === currentSlug)
+
+  return {
+    prev: currentIndex > 0 ? posts[currentIndex - 1] : null,
+    next: currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null,
+  }
+}
+
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const fullPath = path.join(process.cwd(), "posts", `${params.slug}.md`)
   const fileContents = fs.readFileSync(fullPath, "utf8")
@@ -48,11 +95,13 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   const processedContent = await remark().use(html, { sanitize: false }).process(content)
   const contentHtml = processedContent.toString()
 
+  const { prev, next } = getAdjacentPosts(params.slug)
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <article className="prose prose-lg dark:prose-invert prose-purple mx-auto">
         <header className="mb-8">
-          <h1 className="text-4xl font-bold text-brand-purple">{data.title}</h1>
+          <h1 className="text-4xl font-bold text-brand-primary">{data.title}</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">{data.date}</p>
           <div className="flex flex-wrap gap-2 mt-4">
             {data.tags.map((tag: string) => (
@@ -66,16 +115,48 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </header>
 
-        <div className="aspect-square relative mb-8 rounded-lg overflow-hidden">
+        <div className="aspect-video relative mb-8 rounded-lg overflow-hidden">
           <Image src={data.image || "/placeholder.svg"} alt={data.title} fill className="object-cover" />
         </div>
 
         <div
           dangerouslySetInnerHTML={{ __html: contentHtml.replace(/<h1>.*?<\/h1>/, "") }}
-          className="text-default prose-headings:text-brand-purple prose-a:text-brand-purple hover:prose-a:text-brand-purple/80"
+          className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80"
         />
-        <ServiceAdvertisement />
       </article>
+
+      {/* Navigation */}
+      <nav className="mt-12 flex justify-between items-center border-t border-gray-700 pt-8">
+        {prev ? (
+          <Link
+            href={`/blog/${prev.slug}`}
+            className="flex items-center gap-2 text-gray-400 hover:text-brand-primary transition-colors"
+          >
+            <ArrowRight className="w-5 h-5" />
+            <div className="text-right">
+              <div className="text-sm text-gray-500">مطلب قبلی</div>
+              <div className="font-medium">{prev.title}</div>
+            </div>
+          </Link>
+        ) : (\
+          <div /> {/* Empty div to maintain spacing */}
+        )}
+
+        {next ? (
+          <Link
+            href={`/blog/${next.slug}`}
+            className="flex items-center gap-2 text-gray-400 hover:text-brand-primary transition-colors"
+          >
+            <div className="text-left">
+              <div className="text-sm text-gray-500">مطلب بعدی</div>
+              <div className="font-medium">{next.title}</div>
+            </div>
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+        ) : (
+          <div /> {/* Empty div to maintain spacing */}
+        )}
+      </nav>
     </div>
   )
 }

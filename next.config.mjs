@@ -15,6 +15,7 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    domains: ['localhost', 'amirsalmani.com'],
   },
   experimental: {
     webpackBuildWorker: true,

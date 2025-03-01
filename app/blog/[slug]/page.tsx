@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { mdxComponents } from "@/components/MdxComponents"
+import ServiceAdvertisement from "@/components/ServiceAdvertisement"
 
 interface Post {
   slug: string
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: data.title,
       description: data.excerpt,
       type: "article",
-      url: `https://www.amirhosseinsalmani.com/blog/${params.slug}`,
+      url: `https://amirsalmani.com/blog/${params.slug}`,
       images: [
         {
           url: data.ogImage,
@@ -85,6 +86,12 @@ function getAdjacentPosts(currentSlug: string): { prev: Post | null; next: Post 
   }
 }
 
+const mdxComponentsUpdated = {
+  ...mdxComponents,
+  h1: (props: any) => <h2 className="text-3xl font-bold mb-4 text-brand-primary" {...props} />,
+  ServiceAd: mdxComponents.ServiceAd,
+}
+
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const fullPath = path.join(process.cwd(), "posts", `${params.slug}.md`)
   const fileContents = fs.readFileSync(fullPath, "utf8")
@@ -95,7 +102,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <article className="prose prose-lg dark:prose-invert prose-purple mx-auto">
         <header className="mb-8">
-          <h1 className="text-4xl font-bold text-brand-primary">{data.title}</h1>
+          <h1 className="text-4xl font-bold text-brand-primary mb-4">{data.title}</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">{data.date}</p>
           <div className="flex flex-wrap gap-2 mt-4">
             {data.tags.map((tag: string) => (
@@ -109,12 +116,31 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </header>
 
-        <div className="aspect-video relative mb-8 rounded-lg overflow-hidden">
-          <Image src={data.image || "/placeholder.svg"} alt={data.title} fill className="object-cover" />
+        <div className="aspect-video relative mb-8 rounded-xl overflow-hidden">
+          <Image src={data.image || "/placeholder.svg"} alt={data.title} fill className="object-cover rounded-xl" />
+        </div>
+
+        {/* First ad after the header */}
+        <div className="my-8">
+          <ServiceAdvertisement />
         </div>
 
         <div className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80">
-          <MDXRemote source={content} components={mdxComponents} />
+          {/* Split content and insert ad in the middle */}
+          <MDXRemote source={content.slice(0, Math.floor(content.length / 2))} components={mdxComponentsUpdated} />
+
+          {/* Middle ad */}
+          <div className="my-8">
+            <ServiceAdvertisement />
+          </div>
+
+          {/* Rest of the content */}
+          <MDXRemote source={content.slice(Math.floor(content.length / 2))} components={mdxComponentsUpdated} />
+        </div>
+
+        {/* Final ad before navigation */}
+        <div className="my-8">
+          <ServiceAdvertisement />
         </div>
       </article>
 

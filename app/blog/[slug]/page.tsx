@@ -7,7 +7,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { mdxComponents } from "@/components/MdxComponents"
-import ServiceAdvertisement from "@/components/ServiceAdvertisement"
 
 interface Post {
   slug: string
@@ -40,7 +39,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: data.title,
       description: data.excerpt,
       type: "article",
-      url: `https://amirsalmani.com/blog/${params.slug}`,
+      url: `https://www.amirhosseinsalmani.com/blog/${params.slug}`,
       images: [
         {
           url: data.ogImage,
@@ -73,10 +72,7 @@ function getAllPosts(): Post[] {
         image: data.image,
       }
     })
-    .sort((a, b) => {
-      // Sort by date (newest first)
-      return new Date(b.date).getTime() - new Date(a.date).getTime()
-    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
 function getAdjacentPosts(currentSlug: string): { prev: Post | null; next: Post | null } {
@@ -94,13 +90,6 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   const fileContents = fs.readFileSync(fullPath, "utf8")
   const { data, content } = matter(fileContents)
   const { prev, next } = getAdjacentPosts(params.slug)
-
-  // Split content to insert ad
-  const contentParts = content.split("\n\n")
-  const midPoint = Math.floor(contentParts.length / 2)
-
-  const firstHalf = contentParts.slice(0, midPoint).join("\n\n")
-  const secondHalf = contentParts.slice(midPoint).join("\n\n")
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -125,18 +114,10 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         </div>
 
         <div className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80">
-          {/* First half of the content */}
-          <MDXRemote source={firstHalf} components={mdxComponents} />
-
-          {/* Advertisement */}
-          <ServiceAdvertisement />
-
-          {/* Second half of the content */}
-          <MDXRemote source={secondHalf} components={mdxComponents} />
+          <MDXRemote source={content} components={mdxComponents} />
         </div>
       </article>
 
-      {/* Navigation */}
       <nav className="mt-12 flex justify-between items-center border-t border-gray-700 pt-8">
         {prev ? (
           <Link

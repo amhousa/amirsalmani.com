@@ -3,6 +3,11 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 export async function middleware(req: NextRequest) {
+  // Check for URI length first
+  if (req.nextUrl.pathname.length > 2048) {
+    return NextResponse.rewrite(new URL("/not-found-414", req.url))
+  }
+
   const res = NextResponse.next()
   const supabase = createMiddlewareClient({ req, res })
 
@@ -30,6 +35,16 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login"],
+  matcher: [
+    // Match all request paths except for the ones starting with:
+    // - api (API routes)
+    // - _next/static (static files)
+    // - _next/image (image optimization files)
+    // - favicon.ico (favicon file)
+    // Also match /dashboard and /login paths for auth
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/dashboard/:path*",
+    "/login",
+  ],
 }
 

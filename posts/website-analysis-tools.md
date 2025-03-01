@@ -19,101 +19,101 @@ ogImage: "/images/blog/web-analytics-tools.webp"
 <tbody>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>نام ابزار</span></p>
+<p align="right">نام ابزار</p>
 </td>
 <td width="194">
-<p align="right"><span>کاربرد اصلی</span></p>
+<p align="right">کاربرد اصلی</p>
 </td>
 <td width="193">
-<p align="right"><span>ویژگی&zwnj;های کلیدی</span></p>
+<p align="right">ویژگی&zwnj;های کلیدی</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>کلمات میزفا تولز</span></p>
+<p align="right">کلمات میزفا تولز</p>
 </td>
 <td width="194">
-<p align="right"><span>تحقیق و رصد کلمات کلیدی</span></p>
+<p align="right">تحقیق و رصد کلمات کلیدی</p>
 </td>
 <td width="193">
-<p align="right"><span>شناسایی کلمات کلیدی مرتبط، بررسی کلمات کلیدی رقبا، ردیابی عملکرد کلمات کلیدی</span></p>
+<p align="right">شناسایی کلمات کلیدی مرتبط، بررسی کلمات کلیدی رقبا، ردیابی عملکرد کلمات کلیدی</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>ابزار محتوا</span></p>
+<p align="right">ابزار محتوا</p>
 </td>
 <td width="194">
-<p align="right"><span>بهینه&zwnj;سازی عناوین و محتوا</span></p>
+<p align="right">بهینه&zwnj;سازی عناوین و محتوا</p>
 </td>
 <td width="193">
-<p align="right"><span>بررسی عناوین رقبا، شناسایی کلمات کلیدی پرکاربرد، ایده&zwnj;یابی برای محتوا</span></p>
+<p align="right">بررسی عناوین رقبا، شناسایی کلمات کلیدی پرکاربرد، ایده&zwnj;یابی برای محتوا</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>ابزار کاوش</span></p>
+<p align="right">ابزار کاوش</p>
 </td>
 <td width="194">
-<p align="right"><span>شناسایی و رفع خطاهای سئویی</span></p>
+<p align="right">شناسایی و رفع خطاهای سئویی</p>
 </td>
 <td width="193">
-<p align="right"><span>شناسایی بیش از </span>50 <span>نوع خطای سئویی، ارائه پیشنهادات برای رفع خطاها</span></p>
+<p align="right">شناسایی بیش از 50 نوع خطای سئویی، ارائه پیشنهادات برای رفع خطاها</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>ابزار واکاوی</span></p>
+<p align="right">ابزار واکاوی</p>
 </td>
 <td width="194">
-<p align="right"><span>تحلیل سرعت وب&zwnj;سایت</span></p>
+<p align="right">تحلیل سرعت وب&zwnj;سایت</p>
 </td>
 <td width="193">
-<p align="right"><span>بررسی سرعت سایت و رقبای، شناسایی خطاهای مربوط به سرعت، ارائه راهنمایی برای بهبود سرعت</span></p>
+<p align="right">بررسی سرعت سایت و رقبای، شناسایی خطاهای مربوط به سرعت، ارائه راهنمایی برای بهبود سرعت</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>سمراش</span></p>
+<p align="right">سمراش</p>
 </td>
 <td width="194">
-<p align="right"><span>ابزار جامع سئو</span></p>
+<p align="right">ابزار جامع سئو</p>
 </td>
 <td width="193">
-<p align="right"><span>تحلیل کلمات کلیدی، بررسی بک&zwnj;لینک&zwnj;ها، ارزیابی وضعیت سایت، تحلیل عملکرد رقبا</span></p>
+<p align="right">تحلیل کلمات کلیدی، بررسی بک&zwnj;لینک&zwnj;ها، ارزیابی وضعیت سایت، تحلیل عملکرد رقبا</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>گوگل آنالیتیکس</span></p>
+<p align="right">گوگل آنالیتیکس</p>
 </td>
 <td width="194">
-<p align="right"><span>تحلیل رفتار کاربران و نرخ تبدیل</span></p>
+<p align="right">تحلیل رفتار کاربران و نرخ تبدیل</p>
 </td>
 <td width="193">
-<p align="right"><span>تحلیل ترافیک وب&zwnj;سایت، شناسایی الگوهای بازدیدکنندگان، شناسایی محتوای محبوب</span></p>
+<p align="right">تحلیل ترافیک وب&zwnj;سایت، شناسایی الگوهای بازدیدکنندگان، شناسایی محتوای محبوب</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>گوگل تگ منیجر</span></p>
+<p align="right">گوگل تگ منیجر</p>
 </td>
 <td width="194">
-<p align="right"><span>مدیریت آسان تگ&zwnj;ها</span></p>
+<p align="right">مدیریت آسان تگ&zwnj;ها</p>
 </td>
 <td width="193">
-<p align="right"><span>اضافه کردن، حذف یا ویرایش تگ&zwnj;ها بدون نیاز به دانش فنی</span></p>
+<p align="right">اضافه کردن، حذف یا ویرایش تگ&zwnj;ها بدون نیاز به دانش فنی</p>
 </td>
 </tr>
 <tr valign="top">
 <td width="193">
-<p align="right"><span>وورنک</span></p>
+<p align="right">وورنک</p>
 </td>
 <td width="194">
-<p align="right"><span>شناسایی فرصت&zwnj;های بهبود وب&zwnj;سایت</span></p>
+<p align="right">شناسایی فرصت&zwnj;های بهبود وب&zwnj;سایت</p>
 </td>
 <td width="193">
-<p align="right"><span>گزارش&zwnj;های دقیق از وضعیت سایت، ارزیابی سئو داخلی، بررسی سازگاری با موبایل</span></p>
+<p align="right">گزارش&zwnj;های دقیق از وضعیت سایت، ارزیابی سئو داخلی، بررسی سازگاری با موبایل</p>
 </td>
 </tr>
 <tr valign="top">
@@ -121,10 +121,10 @@ ogImage: "/images/blog/web-analytics-tools.webp"
 <p align="right">KWFinder</p>
 </td>
 <td width="194">
-<p align="right"><span>تحقیق کلمات کلیدی</span></p>
+<p align="right">تحقیق کلمات کلیدی</p>
 </td>
 <td width="193">
-<p align="right"><span>پیدا کردن کلمات کلیدی طولانی، شناسایی کلمات کلیدی رقبا، تحلیل رقابت در نتایج جستجو</span></p>
+<p align="right">پیدا کردن کلمات کلیدی طولانی، شناسایی کلمات کلیدی رقبا، تحلیل رقابت در نتایج جستجو</p>
 </td>
 </tr>
 </tbody>
@@ -198,16 +198,16 @@ ogImage: "/images/blog/web-analytics-tools.webp"
 
 <ul>
 <li>
-<p><span>اولاً، پیدا کردن کلمات کلیدی طولانی، به شما کمک می&zwnj;کند تا کلمات لانگ&zwnj;تِیل را شناسایی کنید که فرصت&zwnj;های بیشتری برای جذب ترافیک به سایت شما می&zwnj;دهند</span>.</p>
+<p>اولاً، پیدا کردن کلمات کلیدی طولانی، به شما کمک می&zwnj;کند تا کلمات لانگ&zwnj;تِیل را شناسایی کنید که فرصت&zwnj;های بیشتری برای جذب ترافیک به سایت شما می&zwnj;دهند.</p>
 </li>
 <li>
-<p><span>همچنین، این ابزار امکان شناسایی کلمات کلیدی رقبای شما را فراهم می&zwnj;کند تا بتوانید استراتژی&zwnj;های کلمات کلیدی خود را با رقبای اصلی مقایسه کرده و از فرصت&zwnj;های بالقوه بهره&zwnj;برداری کنید</span>.</p>
+<p>همچنین، این ابزار امکان شناسایی کلمات کلیدی رقبای شما را فراهم می&zwnj;کند تا بتوانید استراتژی&zwnj;های کلمات کلیدی خود را با رقبای اصلی مقایسه کرده و از فرصت&zwnj;های بالقوه بهره&zwnj;برداری کنید.</p>
 </li>
 <li>
-<p><span>علاوه بر این، </span>KWFinder <span>ابزار تجزیه و تحلیل </span>SERP <span>دارد که می&zwnj;تواند رقابت در نتایج جستجو را تحلیل کرده و به شما اطلاعاتی بدهد که کاربران دقیقاً به دنبال چه مطالبی در صفحات شما هستند</span>.</p>
+<p>علاوه بر این، KWFinder ابزار تجزیه و تحلیل SERP دارد که می&zwnj;تواند رقابت در نتایج جستجو را تحلیل کرده و به شما اطلاعاتی بدهد که کاربران دقیقاً به دنبال چه مطالبی در صفحات شما هستند.</p>
 </li>
 <li>
-<p><span>ویژگی دیگری که این ابزار ارائه می&zwnj;دهد، ابزار تحقیق کلمات کلیدی محلی است که به شما اجازه می&zwnj;دهد تا نیازهای جستجوگران محلی را شناسایی کرده و بر جذب ترافیک خاص محلی متمرکز شوید</span>.</p>
+<p>ویژگی دیگری که این ابزار ارائه می&zwnj;دهد، ابزار تحقیق کلمات کلیدی محلی است که به شما اجازه می&zwnj;دهد تا نیازهای جستجوگران محلی را شناسایی کرده و بر جذب ترافیک خاص محلی متمرکز شوید.</p>
 </li>
 </ul>
 

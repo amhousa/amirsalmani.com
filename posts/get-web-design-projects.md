@@ -35,16 +35,16 @@ ogImage: "/images/blog/how-to-get-web-design-projects.webp"
 
 <ul>
 <li>
-<p><span>کارلنسر</span></p>
+<p>کارلنسر</p>
 </li>
 <li>
-<p><span>انجام میدم</span></p>
+<p>انجام میدم</p>
 </li>
 <li>
-<p><span>پونیشا</span></p>
+<p>پونیشا</p>
 </li>
 <li>
-<p><span>پارسکدرز</span></p>
+<p>پارسکدرز</p>
 </li>
 </ul>
 
@@ -56,13 +56,13 @@ ogImage: "/images/blog/how-to-get-web-design-projects.webp"
 
 <ul>
 <li>
-<p><span>ابتدا چند حساب کاربری در پلتفرم&zwnj;های فریلنسری ایجاد کنید</span>.</p>
+<p>ابتدا چند حساب کاربری در پلتفرم&zwnj;های فریلنسری ایجاد کنید.</p>
 </li>
 <li>
-<p><span>سپس پروژه&zwnj;هایی را برای ساخت وب&zwnj;سایت ثبت کنید</span>.</p>
+<p>سپس پروژه&zwnj;هایی را برای ساخت وب&zwnj;سایت ثبت کنید.</p>
 </li>
 <li>
-<p><span>پس از انجام پروژه&zwnj;ها، بازخورد مثبت از خودتان بگذارید</span>.</p>
+<p>پس از انجام پروژه&zwnj;ها، بازخورد مثبت از خودتان بگذارید.</p>
 </li>
 </ul>
 

@@ -64,6 +64,7 @@ export default function ServiceAdvertisement() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="my-8 p-6 rounded-xl bg-gradient-to-br from-[#012E1F] to-[#001A10] border border-[#014D40]/20 relative overflow-hidden group"
+      style={{ zIndex: -1 }}
     >
       {/* Background Icon */}
       <motion.div

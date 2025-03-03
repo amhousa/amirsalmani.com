@@ -73,6 +73,28 @@ export default function Home() {
                 className="opacity-70 hover:opacity-100 transition-opacity"
               />
             </Link>
+            
+            {/* Tailwind CSS Logo */}
+            <Link href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/tailwindcss.svg"
+                alt="Styled with Tailwind CSS"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
+
+            {/* Supabase Logo */}
+            <Link href="https://supabase.io" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/supabase.svg"
+                alt="Powered by Supabase"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
           </div>
         </div>
       </div>

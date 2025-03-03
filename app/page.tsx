@@ -30,27 +30,6 @@ export default function Home() {
         {/* Technology Logos Section */}
         <div className="flex items-center justify-center gap-6">
           <div className="flex flex-wrap items-center justify-center gap-6">
-            {/* v0.dev Logo */}
-            <Link href="https://v0.dev" target="_blank" rel="noopener noreferrer" className="group">
-              <Image
-                src="/images/tech/v0.svg"
-                alt="Built with v0.dev"
-                width={24}
-                height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
-              />
-            </Link>
-
-            {/* Vercel Logo */}
-            <Link href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="group">
-              <Image
-                src="/images/tech/vercel.svg"
-                alt="Deployed on Vercel"
-                width={24}
-                height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
-              />
-            </Link>
 
             {/* GitHub Logo */}
             <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="group">
@@ -73,12 +52,23 @@ export default function Home() {
                 className="opacity-70 hover:opacity-100 transition-opacity"
               />
             </Link>
-            
-            {/* Tailwind CSS Logo */}
-            <Link href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="group">
+
+            {/* Vercel Logo */}
+            <Link href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="group">
               <Image
-                src="/images/tech/tailwindcss.svg"
-                alt="Styled with Tailwind CSS"
+                src="/images/tech/vercel.svg"
+                alt="Deployed on Vercel"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
+
+            {/* v0.dev Logo */}
+            <Link href="https://v0.dev" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/v0.svg"
+                alt="Built with v0.dev"
                 width={24}
                 height={24}
                 className="opacity-70 hover:opacity-100 transition-opacity"
@@ -95,6 +85,18 @@ export default function Home() {
                 className="opacity-70 hover:opacity-100 transition-opacity"
               />
             </Link>
+            
+            {/* Tailwind CSS Logo */}
+            <Link href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src="/images/tech/tailwindcss.svg"
+                alt="Styled with Tailwind CSS"
+                width={24}
+                height={24}
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </Link>
+
           </div>
         </div>
       </div>

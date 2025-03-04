@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { sendSMS } from "@/lib/sms"
+import { redis } from "@/lib/redis"
 
 // Initialize Supabase Admin client
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
@@ -22,24 +23,16 @@ export async function POST(request: Request) {
     const otp = Math.floor(100000 + Math.random() * 900000).toString()
 
     // Create message
-    const message = `کد تایید شما: ${otp}\nامیرحسین سلمانی`
+    const message = `کد تایید شما: ${otp}
+امیرحسین سلمانی`
 
     try {
       // First try to send SMS
       const smsResult = await sendSMS(phone, message)
 
       if (smsResult.success) {
-        // If SMS is sent successfully, store OTP in database
-        const { error: dbError } = await supabase.from("otp_codes").insert({
-          phone,
-          code: otp,
-          expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(), // 5 minutes expiry
-        })
-
-        if (dbError) {
-          console.error("Database error:", dbError)
-          throw new Error("خطا در ذخیره‌سازی کد تایید")
-        }
+        // Store OTP in Redis with 5-minute expiration instead of database
+        await redis.set(`otp:${phone}`, otp, { ex: 300 }) // 5 minutes expiry
 
         return NextResponse.json({ success: true })
       }

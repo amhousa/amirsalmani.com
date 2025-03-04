@@ -1,7 +1,18 @@
 import { NextResponse } from "next/server"
 import nodemailer from "nodemailer"
+import { withRateLimit } from "@/lib/api-rate-limit"
 
 export async function POST(request: Request) {
+  // Apply rate limiting - allow 5 requests per 60 seconds per IP
+  const rateLimitResponse = await withRateLimit(request, {
+    limit: 5,
+    window: 60,
+  })
+
+  if (rateLimitResponse) {
+    return rateLimitResponse
+  }
+
   const body = await request.json()
 
   const transporter = nodemailer.createTransport({

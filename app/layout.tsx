@@ -6,6 +6,7 @@ import MovingBackground from "@/components/MovingBackground"
 import type React from "react"
 import CelebrationPopup from "@/components/CelebrationPopup"
 import { Toaster } from "sonner"
+import SessionTracker from "@/components/SessionTracker"
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -182,6 +183,7 @@ export default function RootLayout({
         <Toaster position="top-center" expand={true} richColors />
         <MovingBackground />
         <CelebrationPopup />
+        <SessionTracker />
         <main className="min-h-screen pb-16">{children}</main>
         <BottomNavbar />
       </body>

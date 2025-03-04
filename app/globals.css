@@ -137,3 +137,74 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(0, 220, 130, 0.3);
 }
 
+/* Add these styles for article ads */
+.article-content .article-ad {
+  @apply my-8;
+}
+
+/* Photo container with rotating circle */
+.photo-container {
+  position: relative;
+  display: inline-block;
+}
+
+.rotating-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  height: 110%;
+  border-radius: 50%;
+  border: 2px dashed #00dc82;
+  animation: rotate 20s linear infinite;
+  z-index: -1;
+}
+
+.rotating-circle::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #00dc82;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px #00dc82, 0 0 20px #00dc82;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Pulsing glow effect */
+.photo-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 220, 130, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+  animation: pulse 4s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+

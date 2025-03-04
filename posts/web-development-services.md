@@ -1,6 +1,6 @@
 ---
 title: "خدمات تخصصی توسعه وب با Node.js، PHP، Next.js، React و Nuxt.js"  
-date: "1403/12/03"  
+date: "1403/12/14"  
 author: "امیرحسین سلمانی"  
 excerpt: "در این مقاله، به بررسی اهمیت و مزایای استفاده از فناوری‌های مدرن مانند Node.js، PHP، Next.js، React و Nuxt.js در توسعه وب‌سایت‌ها و اپلیکیشن‌های وب پرداخته می‌شود."  
 tags: ["Node.js", "PHP", "Next.js", "React", "Nuxt.js", "Web Development", "Programming"]  

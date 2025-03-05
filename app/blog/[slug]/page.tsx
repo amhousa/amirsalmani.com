@@ -92,17 +92,22 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   const { data, content } = matter(fileContents)
   const { prev, next } = getAdjacentPosts(params.slug)
 
-  // Split content for ad insertion
-  const contentFirstHalf = content.slice(0, Math.floor(content.length / 2))
-  const contentSecondHalf = content.slice(Math.floor(content.length / 2))
+  // Split content into paragraphs for better ad placement
+  const paragraphs = content.split("\n\n")
+  const midPoint = Math.floor(paragraphs.length / 2)
+
+  // Group content into three sections for better ad distribution
+  const firstSection = paragraphs.slice(0, midPoint - 2).join("\n\n")
+  const middleSection = paragraphs.slice(midPoint - 2, midPoint + 2).join("\n\n")
+  const lastSection = paragraphs.slice(midPoint + 2).join("\n\n")
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <article className="prose prose-lg dark:prose-invert prose-purple mx-auto">
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold text-brand-primary mb-4">{data.title}</h1>
+      <article className="prose prose-lg dark:prose-invert prose-purple mx-auto rtl">
+        <header className="mb-6">
+          <h1 className="text-4xl font-bold text-brand-primary mb-3">{data.title}</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">{data.date}</p>
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="flex flex-wrap gap-2 mt-3">
             {data.tags.map((tag: string) => (
               <span
                 key={tag}
@@ -114,35 +119,42 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </header>
 
-        <div className="mb-8">
-          <ScanningImage src={data.image || "/placeholder.svg"} alt={data.title} className="aspect-video w-full" />
+        <div className="mb-6">
+          <ScanningImage
+            src={data.image || "/placeholder.svg"}
+            alt={data.title}
+            className="aspect-video w-full rounded-lg"
+          />
         </div>
 
-        {/* First ad after the header */}
-        <div className="my-8">
-          <ServiceAdvertisement />
-        </div>
+        <div className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80 space-y-4">
+          {/* First section */}
+          <MDXRemote source={firstSection} components={mdxComponents} />
 
-        <div className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80">
-          {/* First half of content */}
-          <MDXRemote source={contentFirstHalf} components={mdxComponents} />
-
-          {/* Middle ad */}
-          <div className="my-8">
+          {/* First ad integrated naturally with content */}
+          <div className="not-prose my-6">
             <ServiceAdvertisement />
           </div>
 
-          {/* Second half of content */}
-          <MDXRemote source={contentSecondHalf} components={mdxComponents} />
+          {/* Middle section */}
+          <MDXRemote source={middleSection} components={mdxComponents} />
+
+          {/* Second ad */}
+          <div className="not-prose my-6">
+            <ServiceAdvertisement />
+          </div>
+
+          {/* Last section */}
+          <MDXRemote source={lastSection} components={mdxComponents} />
         </div>
 
         {/* Final ad before navigation */}
-        <div className="my-8">
+        <div className="not-prose mt-8 mb-6">
           <ServiceAdvertisement />
         </div>
       </article>
 
-      <nav className="mt-12 flex justify-between items-center border-t border-gray-700 pt-8">
+      <nav className="mt-8 flex justify-between items-center border-t border-gray-700 pt-6">
         {prev ? (
           <Link
             href={`/blog/${prev.slug}`}

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { redis } from "@/lib/redis"
+import { redisGet, redisSet } from "@/lib/redis"
 import { cookies } from "next/headers"
 
 // Helper to get a unique session ID
@@ -26,10 +26,10 @@ export async function GET(request: Request) {
     }
 
     // Get session data from Redis
-    const sessionData = await redis.get(`session:${sessionId}`)
+    const sessionData = await redisGet(`session:${sessionId}`)
 
     if (sessionData) {
-      return NextResponse.json(JSON.parse(sessionData as string))
+      return NextResponse.json(sessionData)
     }
 
     // If no session data, create new default session
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     }
 
     // Store session in Redis with expiry
-    await redis.set(`session:${sessionId}`, JSON.stringify(newSessionData), { ex: 60 * 60 * 24 * 30 }) // 30 days
+    await redisSet(`session:${sessionId}`, newSessionData, { ex: 60 * 60 * 24 * 30 }) // 30 days
 
     return NextResponse.json(newSessionData)
   } catch (error) {
@@ -64,22 +64,21 @@ export async function PATCH(request: Request) {
     const updates = await request.json()
 
     // Get existing session
-    const sessionData = await redis.get(`session:${sessionId}`)
+    const sessionData = await redisGet(`session:${sessionId}`)
 
     if (!sessionData) {
       return NextResponse.json({ error: "Session expired" }, { status: 400 })
     }
 
     // Update session with new data
-    const existingData = JSON.parse(sessionData as string)
     const updatedData = {
-      ...existingData,
+      ...sessionData,
       ...updates,
       lastActive: new Date().toISOString(),
     }
 
     // Store updated session
-    await redis.set(`session:${sessionId}`, JSON.stringify(updatedData), { ex: 60 * 60 * 24 * 30 }) // 30 days
+    await redisSet(`session:${sessionId}`, updatedData, { ex: 60 * 60 * 24 * 30 }) // 30 days
 
     return NextResponse.json(updatedData)
   } catch (error) {

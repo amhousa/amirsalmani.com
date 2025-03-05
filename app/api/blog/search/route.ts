@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { redis } from "@/lib/redis"
+import { redisGet, redisSet } from "@/lib/redis"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -11,13 +11,13 @@ export async function GET(request: Request) {
 
   try {
     // Check if posts exist in Redis cache
-    const cachedPosts = await redis.get("blog:posts")
+    const cachedPosts = await redisGet("blog:posts")
 
     let posts
 
     if (cachedPosts) {
       // Use cached posts if available
-      posts = JSON.parse(cachedPosts as string)
+      posts = cachedPosts
     } else {
       // If not cached, read from filesystem
       const postsDirectory = path.join(process.cwd(), "posts")
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
       })
 
       // Store in cache for future requests
-      await redis.set("blog:posts", JSON.stringify(posts), { ex: 86400 }) // 24 hours
+      await redisSet("blog:posts", posts, { ex: 86400 }) // 24 hours
     }
 
     // Filter posts based on search query and category

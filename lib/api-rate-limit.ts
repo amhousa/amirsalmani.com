@@ -1,4 +1,4 @@
-import { redis } from "@/lib/redis"
+import { redisIncr, redisExpire, redisTtl } from "@/lib/redis"
 import { NextResponse } from "next/server"
 
 // Configure rate limiting options
@@ -20,13 +20,16 @@ export async function rateLimiter(
   const { limit, window, identifier } = config
   const key = `rate-limit:${identifier}`
 
-  // Get current count and time to live
-  const [count, ttl] = await Promise.all([redis.incr(key), redis.ttl(key)])
+  // Get current count
+  const count = await redisIncr(key)
 
   // Set expiry on first request
   if (count === 1) {
-    await redis.expire(key, window)
+    await redisExpire(key, window)
   }
+
+  // Get TTL
+  const ttl = await redisTtl(key)
 
   const reset = ttl > 0 ? ttl : window
   const remaining = Math.max(0, limit - count)

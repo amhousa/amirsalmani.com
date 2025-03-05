@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { cookies } from "next/headers"
-import { redis } from "@/lib/redis"
+import { redisGet, redisDelete } from "@/lib/redis"
 
 // Initialize Supabase Admin client
 const supabase = createClient(
@@ -24,14 +24,14 @@ export async function POST(request: Request) {
     }
 
     // Check if OTP exists and is valid in Redis
-    const storedOTP = await redis.get(`otp:${phone}`)
+    const storedOTP = await redisGet(`otp:${phone}`)
 
     if (!storedOTP || storedOTP !== code) {
       return NextResponse.json({ error: "Invalid or expired code" }, { status: 400 })
     }
 
     // Delete used OTP from Redis
-    await redis.del(`otp:${phone}`)
+    await redisDelete(`otp:${phone}`)
 
     // Get or create user
     let userId: string

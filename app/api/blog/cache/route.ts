@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { redis } from "@/lib/redis"
+import { redisSet } from "@/lib/redis"
 
 // Function to build and cache blog posts
 async function buildAndCachePostsData() {
@@ -39,7 +39,7 @@ async function buildAndCachePostsData() {
     })
 
     // Store posts in Redis with one day expiration
-    await redis.set("blog:posts", JSON.stringify(sortedPosts), { ex: 86400 }) // 24 hours
+    await redisSet("blog:posts", sortedPosts, { ex: 86400 }) // 24 hours
 
     // Create tag index for quick filtering
     const tagIndex: Record<string, string[]> = {}
@@ -53,7 +53,7 @@ async function buildAndCachePostsData() {
       })
     })
 
-    await redis.set("blog:tagIndex", JSON.stringify(tagIndex), { ex: 86400 })
+    await redisSet("blog:tagIndex", tagIndex, { ex: 86400 })
 
     return { success: true, postsCount: posts.length }
   } catch (error) {

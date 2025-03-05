@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { sendSMS } from "@/lib/sms"
-import { redis } from "@/lib/redis"
+import { redisSet } from "@/lib/redis"
 
 // Initialize Supabase Admin client
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
       if (smsResult.success) {
         // Store OTP in Redis with 5-minute expiration instead of database
-        await redis.set(`otp:${phone}`, otp, { ex: 300 }) // 5 minutes expiry
+        await redisSet(`otp:${phone}`, otp, { ex: 300 }) // 5 minutes expiry
 
         return NextResponse.json({ success: true })
       }

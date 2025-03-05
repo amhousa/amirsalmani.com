@@ -3,11 +3,11 @@ import path from "path"
 import matter from "gray-matter"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { mdxComponents } from "@/components/MdxComponents"
 import ServiceAdvertisement from "@/components/ServiceAdvertisement"
+import ScanningImage from "@/components/ScanningImage"
 
 interface Post {
   slug: string
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       url: `https://amirsalmani.com/blog/${params.slug}`,
       images: [
         {
-          url: data.ogImage,
+          url: data.ogImage || data.image,
           width: 1200,
           height: 630,
           alt: data.title,
@@ -86,17 +86,15 @@ function getAdjacentPosts(currentSlug: string): { prev: Post | null; next: Post 
   }
 }
 
-const mdxComponentsUpdated = {
-  ...mdxComponents,
-  h1: (props: any) => <h2 className="text-3xl font-bold mb-4 text-brand-primary" {...props} />,
-  ServiceAd: mdxComponents.ServiceAd,
-}
-
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const fullPath = path.join(process.cwd(), "posts", `${params.slug}.md`)
   const fileContents = fs.readFileSync(fullPath, "utf8")
   const { data, content } = matter(fileContents)
   const { prev, next } = getAdjacentPosts(params.slug)
+
+  // Split content for ad insertion
+  const contentFirstHalf = content.slice(0, Math.floor(content.length / 2))
+  const contentSecondHalf = content.slice(Math.floor(content.length / 2))
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -116,8 +114,8 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </header>
 
-        <div className="aspect-video relative mb-8 rounded-xl overflow-hidden">
-          <Image src={data.image || "/placeholder.svg"} alt={data.title} fill className="object-cover rounded-xl" />
+        <div className="mb-8">
+          <ScanningImage src={data.image || "/placeholder.svg"} alt={data.title} className="aspect-video w-full" />
         </div>
 
         {/* First ad after the header */}
@@ -126,16 +124,16 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         </div>
 
         <div className="text-default prose-headings:text-brand-primary prose-a:text-brand-primary hover:prose-a:text-brand-primary/80">
-          {/* Split content and insert ad in the middle */}
-          <MDXRemote source={content.slice(0, Math.floor(content.length / 2))} components={mdxComponentsUpdated} />
+          {/* First half of content */}
+          <MDXRemote source={contentFirstHalf} components={mdxComponents} />
 
           {/* Middle ad */}
           <div className="my-8">
             <ServiceAdvertisement />
           </div>
 
-          {/* Rest of the content */}
-          <MDXRemote source={content.slice(Math.floor(content.length / 2))} components={mdxComponentsUpdated} />
+          {/* Second half of content */}
+          <MDXRemote source={contentSecondHalf} components={mdxComponents} />
         </div>
 
         {/* Final ad before navigation */}

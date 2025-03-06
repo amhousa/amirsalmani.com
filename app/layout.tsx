@@ -9,8 +9,6 @@ import { Toaster } from "sonner"
 import SessionTracker from "@/components/SessionTracker"
 // Import the new DynamicChat component
 import DynamicChat from "@/components/DynamicChat"
-// Remove the import line for PageTransition
-// import PageTransition from "@/components/PageTransition"
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],

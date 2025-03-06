@@ -7,6 +7,7 @@ import type React from "react"
 import CelebrationPopup from "@/components/CelebrationPopup"
 import { Toaster } from "sonner"
 import SessionTracker from "@/components/SessionTracker"
+import ChatButton from "@/components/ChatButton"
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -186,6 +187,7 @@ export default function RootLayout({
         <SessionTracker />
         <main className="min-h-screen pb-16">{children}</main>
         <BottomNavbar />
+        <ChatButton />
       </body>
     </html>
   )

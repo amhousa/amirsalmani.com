@@ -17,7 +17,7 @@ ogImage: "/images/blog/web-trends-2025.webp"
 
 ## روندهای کلیدی در توسعه وب ۲۰۲۵
 <figure>
-  <img src="/images/posts/Key-Trends-in-Web-Development-2025.webp" alt="روندهای توسعه وب در سال ۲۰۲۵" />
+  <img src="/images/posts/Key-Trends-in-Web-Development-2025.webp" alt="روندهای توسعه وب در سال ۲۰۲۵" style="z-index:-1" />
   <figcaption>تصویری از پیش‌بینی روندهای توسعه وب در سال ۲۰۲۵</figcaption>
 </figure>
 

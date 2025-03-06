@@ -9,6 +9,7 @@ import { Toaster } from "sonner"
 import SessionTracker from "@/components/SessionTracker"
 // Import the new DynamicChat component
 import DynamicChat from "@/components/DynamicChat"
+import PageTransition from "@/components/PageTransition"
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -186,6 +187,7 @@ export default function RootLayout({
         <MovingBackground />
         <CelebrationPopup />
         <SessionTracker />
+        <PageTransition />
         <main className="min-h-screen pb-16">{children}</main>
         <BottomNavbar />
         <DynamicChat />

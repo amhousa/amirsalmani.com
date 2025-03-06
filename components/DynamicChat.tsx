@@ -239,6 +239,8 @@ export default function DynamicChat({
         <div className="flex items-end gap-2">
           <textarea
             ref={inputRef}
+            id="chat-message"
+            name="chat-message"
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}

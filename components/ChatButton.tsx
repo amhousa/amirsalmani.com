@@ -219,6 +219,8 @@ export default function ChatButton() {
                 <div className="flex items-end gap-2">
                   <textarea
                     ref={inputRef}
+                    id="chat-input"
+                    name="chat-input"
                     value={input}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}

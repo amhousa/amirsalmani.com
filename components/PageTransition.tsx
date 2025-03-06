@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
 
-export default function PageTransition() {
+// This component safely uses useSearchParams inside Suspense
+function PageTransitionInner() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
@@ -54,6 +55,15 @@ export default function PageTransition() {
         ></div>
       </motion.div>
     </motion.div>
+  )
+}
+
+// Main component that wraps the inner component with Suspense
+export default function PageTransition() {
+  return (
+    <Suspense fallback={null}>
+      <PageTransitionInner />
+    </Suspense>
   )
 }
 

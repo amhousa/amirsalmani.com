@@ -86,7 +86,7 @@
     "three": "^0.173.0",
     "vaul": "^0.9.9",
     "zod": "^3.24.2",
-    "together-ai": "^0.1.1"
+    "together-ai": "^0.13.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.6",

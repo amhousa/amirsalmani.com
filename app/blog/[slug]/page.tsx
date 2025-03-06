@@ -124,6 +124,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             src={data.image || "/placeholder.svg"}
             alt={data.title}
             className="aspect-video w-full rounded-lg"
+            style={{ width: "100%" }}
           />
         </div>
 

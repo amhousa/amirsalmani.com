@@ -60,55 +60,53 @@ export default function ServiceAdvertisement() {
   const Icon = message.icon
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="my-8 p-6 rounded-xl bg-gradient-to-br from-[#012E1F] to-[#001A10] border border-[#014D40]/20 relative overflow-hidden group"
-      style={{ zIndex: -1 }}
-    >
-      {/* Background Icon */}
+    <Link href="/cooperation" className="block group" style={{ textDecoration: "none" }}>
       <motion.div
-        initial={{ opacity: 0, scale: 0.5, x: 100 }}
-        animate={{ opacity: 1, scale: 1, x: 0 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-        className="absolute -left-6 top-2 -translate-y-1/2 pointer-events-none"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="my-8 p-6 rounded-xl bg-gradient-to-br from-[#012E1F] to-[#001A10] border border-[#014D40]/20 relative overflow-hidden"
+        style={{ zIndex: -1 }}
       >
-        <Icon className="w-64 h-64 text-[#00DC82]/5 transform -rotate-12 transition-transform duration-500 group-hover:scale-110" />
-      </motion.div>
-
-      {/* Gradient Overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-r ${message.gradient}`} />
-
-      {/* Content */}
-      <div className="relative z-[5]">
-        <motion.h3
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-xl font-bold text-[#00DC82] mb-3"
+        {/* Background Icon */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, x: 100 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="absolute -left-6 top-2 -translate-y-1/2 pointer-events-none"
         >
-          {message.title}
-        </motion.h3>
-        <motion.p
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-          className="text-white/90 mb-4 max-w-[80%] leading-relaxed"
-        >
-          {message.description}
-        </motion.p>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-3 px-7 py-3 bg-black/95 text-[#00DC82] text-sm font-medium rounded-xl transition-all duration-300 hover:bg-black/80"
-            style={{ textDecoration: "none" }}
-          >
-            {message.cta}
-            <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
-          </Link>
+          <Icon className="w-64 h-64 text-[#00DC82]/5 transform -rotate-12 transition-transform duration-500 group-hover:scale-110" />
         </motion.div>
-      </div>
-    </motion.div>
+
+        {/* Gradient Overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-r ${message.gradient}`} />
+
+        {/* Content */}
+        <div className="relative z-[5]">
+          <motion.h3
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-xl font-bold text-[#00DC82] mb-3"
+          >
+            {message.title}
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-white/90 mb-4 max-w-[80%] leading-relaxed"
+          >
+            {message.description}
+          </motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+            <div className="inline-flex items-center gap-3 px-7 py-3 bg-black/95 text-[#00DC82] text-sm font-medium rounded-xl transition-all duration-300 hover:bg-black/80">
+              {message.cta}
+              <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </Link>
   )
 }
 

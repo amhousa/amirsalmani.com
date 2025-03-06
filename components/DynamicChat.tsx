@@ -51,6 +51,22 @@ export default function DynamicChat({
     }
   }, [isOpen])
 
+  // Auto-resize textarea
+  const autoResizeTextarea = () => {
+    if (inputRef.current) {
+      // Reset height to auto to get the correct scrollHeight
+      inputRef.current.style.height = "auto"
+      // Set the height to scrollHeight to fit the content
+      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`
+    }
+  }
+
+  // Handle input change with auto-resize
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value)
+    autoResizeTextarea()
+  }
+
   const handleResetChat = () => {
     if (confirm("آیا مطمئن هستید که می‌خواهید گفتگو را از اول شروع کنید؟")) {
       setMessages([])
@@ -64,6 +80,12 @@ export default function DynamicChat({
     const userMessage = { role: "user" as const, content: input }
     setMessages((prev) => [...prev, userMessage])
     setInput("")
+
+    // Reset textarea height
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto"
+    }
+
     setIsLoading(true)
 
     try {
@@ -133,6 +155,10 @@ export default function DynamicChat({
       })
     } finally {
       setIsLoading(false)
+      // Re-focus the input after sending
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 10)
     }
   }
 
@@ -214,11 +240,12 @@ export default function DynamicChat({
           <textarea
             ref={inputRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white resize-none max-h-32 min-h-[44px] focus:outline-none focus:border-brand-primary"
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white resize-none min-h-[44px] focus:outline-none focus:border-brand-primary"
             rows={1}
+            style={{ overflow: "hidden" }}
           />
           <button
             type="submit"

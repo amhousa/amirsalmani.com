@@ -5,7 +5,6 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { MessageSquare, Send, X, Loader } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import Together from "together-ai"
 
 type Message = {
   role: "user" | "assistant"
@@ -34,6 +33,22 @@ export default function ChatButton() {
     }
   }, [isOpen])
 
+  // Auto-resize textarea
+  const autoResizeTextarea = () => {
+    if (inputRef.current) {
+      // Reset height to auto to get the correct scrollHeight
+      inputRef.current.style.height = "auto"
+      // Set the height to scrollHeight to fit the content
+      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`
+    }
+  }
+
+  // Handle input change with auto-resize
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value)
+    autoResizeTextarea()
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() || isLoading) return
@@ -41,44 +56,82 @@ export default function ChatButton() {
     const userMessage = { role: "user" as const, content: input }
     setMessages((prev) => [...prev, userMessage])
     setInput("")
+
+    // Reset textarea height
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto"
+    }
+
     setIsLoading(true)
 
     try {
-      const together = new Together()
       const allMessages = [...messages, userMessage]
 
-      const response = await together.chat.completions.create({
-        messages: allMessages,
-        model: "deepseek-ai/DeepSeek-V3",
-        max_tokens: null,
-        temperature: 0.7,
-        top_p: 0.7,
-        top_k: 50,
-        repetition_penalty: 1,
-        stop: ["<｜end of sentence｜>"],
-        stream: true,
+      // Add a placeholder for the assistant's message
+      setMessages((prev) => [...prev, { role: "assistant", content: "" }])
+
+      const response = await fetch("/api/chat/stream", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ messages: allMessages }),
       })
 
-      let assistantMessage = ""
-      for await (const token of response) {
-        const content = token.choices[0]?.delta?.content || ""
-        assistantMessage += content
+      if (!response.ok) {
+        throw new Error("Failed to fetch from API")
+      }
 
-        // Update the message in real-time as tokens arrive
-        setMessages((prev) => [
-          ...prev.slice(0, -1),
-          { role: "user", content: userMessage.content },
-          { role: "assistant", content: assistantMessage },
-        ])
+      const reader = response.body?.getReader()
+      if (!reader) throw new Error("Response body is null")
+
+      const decoder = new TextDecoder()
+      let assistantMessage = ""
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        const chunk = decoder.decode(value)
+        const lines = chunk.split("\n\n")
+
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              if (data.content) {
+                assistantMessage += data.content
+                // Update the last message (which is the assistant's message)
+                setMessages((prev) => [...prev.slice(0, -1), { role: "assistant", content: assistantMessage }])
+              }
+            } catch (e) {
+              console.error("Error parsing SSE data:", e)
+            }
+          }
+        }
       }
     } catch (error) {
       console.error("Error calling AI API:", error)
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "متأسفانه در ارتباط با هوش مصنوعی مشکلی پیش آمد. لطفاً دوباره تلاش کنید." },
-      ])
+      setMessages((prev) => {
+        // If there's already an empty assistant message, replace it
+        if (prev.length > 0 && prev[prev.length - 1].role === "assistant" && prev[prev.length - 1].content === "") {
+          return [
+            ...prev.slice(0, -1),
+            { role: "assistant", content: "متأسفانه در ارتباط با هوش مصنوعی مشکلی پیش آمد. لطفاً دوباره تلاش کنید." },
+          ]
+        }
+        // Otherwise add a new error message
+        return [
+          ...prev,
+          { role: "assistant", content: "متأسفانه در ارتباط با هوش مصنوعی مشکلی پیش آمد. لطفاً دوباره تلاش کنید." },
+        ]
+      })
     } finally {
       setIsLoading(false)
+      // Re-focus the input after sending
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 10)
     }
   }
 
@@ -148,17 +201,15 @@ export default function ChatButton() {
                           message.role === "user" ? "bg-brand-primary text-black" : "bg-white/10 text-white"
                         }`}
                       >
-                        <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+                        <p className="whitespace-pre-wrap text-sm">
+                          {message.content ||
+                            (isLoading && message.role === "assistant" ? (
+                              <Loader className="w-4 h-4 animate-spin" />
+                            ) : null)}
+                        </p>
                       </div>
                     </div>
                   ))
-                )}
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="max-w-[80%] rounded-xl p-3 bg-white/10 text-white">
-                      <Loader className="w-4 h-4 animate-spin" />
-                    </div>
-                  </div>
                 )}
                 <div ref={messagesEndRef} />
               </div>
@@ -169,11 +220,12 @@ export default function ChatButton() {
                   <textarea
                     ref={inputRef}
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     placeholder="پیام خود را بنویسید..."
-                    className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white resize-none max-h-32 min-h-[44px] focus:outline-none focus:border-brand-primary"
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white resize-none min-h-[44px] focus:outline-none focus:border-brand-primary"
                     rows={1}
+                    style={{ overflow: "hidden" }}
                   />
                   <button
                     type="submit"

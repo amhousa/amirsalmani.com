@@ -54,10 +54,18 @@ export default function DynamicChat({
   // Auto-resize textarea
   const autoResizeTextarea = () => {
     if (inputRef.current) {
+      const cursorPosition = inputRef.current.selectionStart
       // Reset height to auto to get the correct scrollHeight
       inputRef.current.style.height = "auto"
       // Set the height to scrollHeight to fit the content
       inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`
+      // Restore cursor position
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.selectionStart = cursorPosition
+          inputRef.current.selectionEnd = cursorPosition
+        }
+      }, 0)
     }
   }
 
@@ -65,6 +73,8 @@ export default function DynamicChat({
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value)
     autoResizeTextarea()
+    // Ensure the input maintains focus
+    e.target.focus()
   }
 
   const handleResetChat = () => {

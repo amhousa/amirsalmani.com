@@ -2,19 +2,14 @@ import Image from "next/image"
 import Link from "next/link"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import ProfilePhoto from "@/components/ProfilePhoto"
 
+// Then replace the Image component with our ProfilePhoto component
 export default function Home() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen">
       <div className="flex flex-col items-center justify-center p-4 text-center z-20">
-        <Image
-          src="/images/about/me.webp"
-          alt="امیرحسین سلمانی"
-          width={150}
-          height={150}
-          className="rounded-full mb-4 object-cover"
-          priority
-        />
+        <ProfilePhoto src="/images/about/me.webp" alt="امیرحسین سلمانی" size={150} className="mb-4" />
         <h1 className="text-4xl font-bold mb-2 text-brand-purple">امیرحسین سلمانی</h1>
         <p className="text-xl mb-4 text-default">توسعه‌دهنده فول‌استک، خراسان شمالی</p>
         <p className="mb-4 max-w-md text-default">
@@ -30,7 +25,6 @@ export default function Home() {
         {/* Technology Logos Section */}
         <div className="flex items-center justify-center gap-6">
           <div className="flex flex-wrap items-center justify-center gap-6">
-
             {/* GitHub Logo */}
             <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="group">
               <Image
@@ -85,7 +79,7 @@ export default function Home() {
                 className="opacity-70 hover:opacity-100 transition-opacity"
               />
             </Link>
-            
+
             {/* Tailwind CSS Logo */}
             <Link href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="group">
               <Image
@@ -96,7 +90,6 @@ export default function Home() {
                 className="opacity-70 hover:opacity-100 transition-opacity"
               />
             </Link>
-
           </div>
         </div>
       </div>

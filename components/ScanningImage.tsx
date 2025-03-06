@@ -18,7 +18,7 @@ export default function ScanningImage({ src, alt, width, height, className = "" 
   return (
     <div
       ref={containerRef}
-      className={`image-container ${className}`}
+      className={`image-container relative overflow-hidden ${className}`}
       style={{
         width: width ? `${width}px` : "100%",
         height: height ? `${height}px` : "auto",
@@ -42,6 +42,9 @@ export default function ScanningImage({ src, alt, width, height, className = "" 
           className={`w-full h-auto rounded-lg ${isLoaded ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}
         />
       )}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+        <div className="scanning-light absolute top-0 h-full w-[30%] bg-gradient-to-r from-transparent via-brand-primary/20 to-transparent"></div>
+      </div>
     </div>
   )
 }

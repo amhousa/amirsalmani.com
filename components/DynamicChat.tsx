@@ -164,9 +164,7 @@ export default function DynamicChat({
     } finally {
       setIsLoading(false)
       // Re-focus the input after sending
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 10)
+      inputRef.current?.focus() // Directly focus without setTimeout
     }
   }
 

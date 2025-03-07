@@ -55,8 +55,6 @@ export default function ChatButton() {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value)
     autoResizeTextarea()
-    // Ensure the input maintains focus
-    e.target.focus()
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

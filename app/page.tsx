@@ -11,7 +11,7 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center p-4 text-center z-20">
         <ProfilePhoto src="/images/about/me.webp" alt="امیرحسین سلمانی" size={150} className="mb-4" />
         <h1 className="text-4xl font-bold mb-2 text-brand-purple">امیرحسین سلمانی</h1>
-        <p className="text-xl mb-4 text-default">توسعه‌دهنده فول‌استک، خراسان شمالی</p>
+        <p className="text-xl mb-4 text-default">توسعه‌دهنده فول‌استک، تهران</p>
         <p className="mb-4 max-w-md text-default">
           به وبسایت شخصی من خوش آمدید. من یک توسعه‌دهنده با تجربه در زمینه‌های مختلف وب و موبایل هستم.
         </p>

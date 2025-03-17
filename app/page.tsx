@@ -58,17 +58,6 @@ export default function Home() {
               />
             </Link>
 
-            {/* v0.dev Logo */}
-            <Link href="https://v0.dev" target="_blank" rel="noopener noreferrer" className="group">
-              <Image
-                src="/images/tech/v0.svg"
-                alt="Built with v0.dev"
-                width={24}
-                height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
-              />
-            </Link>
-
             {/* Supabase Logo */}
             <Link href="https://supabase.io" target="_blank" rel="noopener noreferrer" className="group">
               <Image

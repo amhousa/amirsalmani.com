@@ -119,11 +119,11 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </header>
 
-        <div className="mb-6" style={{zIndex: 0}}>
+        <div className="mb-6">
           <ScanningImage
             src={data.image || "/placeholder.svg"}
             alt={data.title}
-            className="aspect-video w-full rounded-lg"
+            className="aspect-video w-full rounded-lg z-0"
             style={{ width: "100%" }}
           />
         </div>

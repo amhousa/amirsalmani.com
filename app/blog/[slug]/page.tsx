@@ -119,7 +119,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </header>
 
-        <div className="mb-6">
+        <div className="mb-6" style="z-index: 0;">
           <ScanningImage
             src={data.image || "/placeholder.svg"}
             alt={data.title}

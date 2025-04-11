@@ -2,7 +2,6 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { redisGet, redisSet } from "@/lib/redis"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -10,39 +9,26 @@ export async function GET(request: Request) {
   const category = searchParams.get("category")
 
   try {
-    // Check if posts exist in Redis cache
-    const cachedPosts = await redisGet("blog:posts")
+    // Read posts directly from filesystem
+    const postsDirectory = path.join(process.cwd(), "posts")
+    const fileNames = fs.readdirSync(postsDirectory)
 
-    let posts
+    const posts = fileNames.map((fileName) => {
+      const fullPath = path.join(postsDirectory, fileName)
+      const fileContents = fs.readFileSync(fullPath, "utf8")
+      const { data, content } = matter(fileContents)
 
-    if (cachedPosts) {
-      // Use cached posts if available
-      posts = cachedPosts
-    } else {
-      // If not cached, read from filesystem
-      const postsDirectory = path.join(process.cwd(), "posts")
-      const fileNames = fs.readdirSync(postsDirectory)
-
-      posts = fileNames.map((fileName) => {
-        const fullPath = path.join(postsDirectory, fileName)
-        const fileContents = fs.readFileSync(fullPath, "utf8")
-        const { data, content } = matter(fileContents)
-
-        return {
-          slug: fileName.replace(/\.md$/, ""),
-          title: data.title,
-          date: data.date,
-          excerpt: data.excerpt,
-          tags: data.tags,
-          image: data.image,
-          category: data.category || "General", // Default category if none specified
-          content: content.slice(0, 200) + "...", // First 200 characters for search
-        }
-      })
-
-      // Store in cache for future requests
-      await redisSet("blog:posts", posts, { ex: 86400 }) // 24 hours
-    }
+      return {
+        slug: fileName.replace(/\.md$/, ""),
+        title: data.title,
+        date: data.date,
+        excerpt: data.excerpt,
+        tags: data.tags,
+        image: data.image,
+        category: data.category || "General", // Default category if none specified
+        content: content.slice(0, 200) + "...", // First 200 characters for search
+      }
+    })
 
     // Filter posts based on search query and category
     const filteredPosts = posts.filter((post) => {
@@ -68,4 +54,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Failed to search posts" }, { status: 500 })
   }
 }
-

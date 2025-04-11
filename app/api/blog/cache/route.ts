@@ -2,10 +2,9 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { redisSet } from "@/lib/redis"
 
-// Function to build and cache blog posts
-async function buildAndCachePostsData() {
+// Function to build blog posts data without caching
+async function buildPostsData() {
   try {
     const postsDirectory = path.join(process.cwd(), "posts")
 
@@ -38,9 +37,6 @@ async function buildAndCachePostsData() {
       return new Date(b.date).getTime() - new Date(a.date).getTime()
     })
 
-    // Store posts in Redis with one day expiration
-    await redisSet("blog:posts", sortedPosts, { ex: 86400 }) // 24 hours
-
     // Create tag index for quick filtering
     const tagIndex: Record<string, string[]> = {}
 
@@ -53,17 +49,14 @@ async function buildAndCachePostsData() {
       })
     })
 
-    await redisSet("blog:tagIndex", tagIndex, { ex: 86400 })
-
-    return { success: true, postsCount: posts.length }
+    return { success: true, posts: sortedPosts, tagIndex, postsCount: posts.length }
   } catch (error) {
-    console.error("Error building blog cache:", error)
-    return { error: "Failed to build blog cache" }
+    console.error("Error building blog data:", error)
+    return { error: "Failed to build blog data" }
   }
 }
 
 export async function GET() {
-  const result = await buildAndCachePostsData()
+  const result = await buildPostsData()
   return NextResponse.json(result)
 }
-

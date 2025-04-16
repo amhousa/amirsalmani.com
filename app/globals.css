@@ -265,10 +265,25 @@ textarea:focus {
   }
 }
 
+/* RGB animation for GitHub button */
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+  background-size: 200% 200%;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .scanning-light {
     width: 30%;
   }
 }
-

@@ -167,56 +167,56 @@ SMS_PASSWORD=your_sms_password
 
 ## 📁 Project Structure
 
-\`\`\`
-├── app/                  # Next.js App Router
-│   ├── api/              # API routes
-│   │   ├── auth/         # Authentication endpoints
-│   │   ├── blog/         # Blog-related endpoints
-│   │   ├── contact/      # Contact form endpoint
-│   │   ├── consultation/ # Consultation endpoints
-│   │   ├── cron/         # Scheduled tasks
-│   │   ├── dynamic-chat/ # AI chat endpoints
-│   │   ├── payment/      # Payment processing
-│   │   ├── services/     # Services endpoints
-│   │   └── session/      # Session management
-│   ├── blog/             # Blog pages
-│   ├── chat-demo/        # AI chat demo page
-│   ├── contact/          # Contact page
-│   ├── cooperation/      # Cooperation page
-│   ├── dashboard/        # Dashboard pages
-│   ├── login/            # Authentication pages
-│   ├── payment/          # Payment pages
-│   ├── portfolio/        # Portfolio page
-│   ├── services/         # Services page
-│   └── about/            # About page
-├── components/           # React components
-│   ├── dashboard/        # Dashboard components
-│   ├── ui/               # UI components (shadcn/ui)
-│   ├── BottomNavbar.tsx  # Mobile navigation
-│   ├── CelebrationPopup.tsx # Promotional popup
-│   ├── DynamicChat.tsx   # AI chat component
-│   ├── MdxComponents.tsx # MDX rendering components
-│   ├── MovingBackground.tsx # Animated background
-│   ├── ProfilePhoto.tsx  # Profile photo component
-│   ├── ScanningImage.tsx # Image with scanning effect
-│   ├── ScrollIndicator.tsx # Scroll progress indicator
-│   ├── ServiceAdvertisement.tsx # Service promotion
-│   ├── SessionTracker.tsx # User session tracking
-│   ├── Snowfall.tsx      # Snowfall animation
-│   └── ThreeScene.tsx    # 3D scene component
-├── lib/                  # Utility functions
-│   ├── api-rate-limit.ts # API rate limiting
-│   ├── redis.ts          # Redis client
-│   ├── sms.ts            # SMS service
-│   ├── supabase-client.ts # Supabase client
-│   ├── supabase-server.ts # Supabase server
-│   └── toast.ts          # Toast notifications
-├── posts/                # Markdown blog posts
-├── public/               # Static assets
-├── scripts/              # Build scripts
-├── styles/               # Global styles
-└── types/                # TypeScript type definitions
-\`\`\`
+| Directory/File | Description
+|-----|-----
+| **app/** | Next.js App Router
+| **api/** | API routes
+| **auth/** | Authentication endpoints
+| **blog/** | Blog-related endpoints
+| **contact/** | Contact form endpoint
+| **consultation/** | Consultation endpoints
+| **cron/** | Scheduled tasks
+| **dynamic-chat/** | AI chat endpoints
+| **payment/** | Payment processing
+| **services/** | Services endpoints
+| **session/** | Session management
+| **blog/** | Blog pages
+| **chat-demo/** | AI chat demo page
+| **contact/** | Contact page
+| **cooperation/** | Cooperation page
+| **dashboard/** | Dashboard pages
+| **login/** | Authentication pages
+| **payment/** | Payment pages
+| **portfolio/** | Portfolio page
+| **services/** | Services page
+| **about/** | About page
+| **components/** | Reusable components
+| **dashboard/** | Dashboard components
+| **ui/** | UI components (shadcn/ui)
+| **BottomNavbar.tsx** | Mobile navigation
+| **CelebrationPopup.tsx** | Promotional popup
+| **DynamicChat.tsx** | AI chat component
+| **MdxComponents.tsx** | MDX rendering components
+| **MovingBackground.tsx** | Animated background
+| **ProfilePhoto.tsx** | Profile photo component
+| **ScanningImage.tsx** | Image with scanning effect
+| **ScrollIndicator.tsx** | Scroll progress indicator
+| **ServiceAdvertisement.tsx** | Service promotion
+| **SessionTracker.tsx** | User session tracking
+| **Snowfall.tsx** | Snowfall animation
+| **ThreeScene.tsx** | 3D scene component
+| **lib/** | Utility functions
+| **api-rate-limit.ts** | API rate limiting
+| **redis.ts** | Redis client
+| **sms.ts** | SMS service
+| **supabase-client.ts** | Supabase client
+| **supabase-server.ts** | Supabase server
+| **toast.ts** | Toast notifications
+| **posts/** | Markdown blog posts
+| **public/** | Static assets
+| **scripts/** | Build scripts
+| **styles/** | Global styles
+| **types/** | TypeScript type definitions
 
 ## 🏛️ Architecture
 

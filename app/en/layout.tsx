@@ -1,13 +1,13 @@
 import "../globals.css"
 import type { Metadata, Viewport } from "next"
 import { Vazirmatn } from "next/font/google"
-import BottomNavbar from "@/components/BottomNavbar"
+import EnBottomNavbar from "@/components/EnBottomNavbar"
 import MovingBackground from "@/components/MovingBackground"
 import type React from "react"
 import CelebrationPopup from "@/components/CelebrationPopup"
 import { Toaster } from "sonner"
 import SessionTracker from "@/components/SessionTracker"
-import DynamicChat from "@/components/DynamicChat"
+import EnDynamicChat from "@/components/EnDynamicChat"
 
 const vazirmatn = Vazirmatn({
   subsets: ["latin"],
@@ -146,8 +146,8 @@ export default function EnglishLayout({
         <CelebrationPopup />
         <SessionTracker />
         <main className="min-h-screen pb-16">{children}</main>
-        <BottomNavbar />
-        <DynamicChat />
+        <EnBottomNavbar />
+        <EnDynamicChat />
       </body>
     </html>
   )

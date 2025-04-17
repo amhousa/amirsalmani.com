@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { MessageSquare, Send, X, Loader2, RefreshCw, User, Bot } from "lucide-react"
 
 type Message = {
-  role: "user" | "assistant"
+  role: "user" | "assistant" | "system"
   content: string
 }
 
@@ -21,8 +21,42 @@ interface DynamicChatProps {
 }
 
 export default function EnDynamicChat({
-  initialSystemPrompt = "You are a helpful AI assistant for Amir Salmani's website. You are friendly, concise, and helpful. You speak English fluently, but can respond in Persian (Farsi) if asked. You know that Amir Salmani is a fullstack developer and consultant based in Iran. Your primary goal is to assist users with their questions and provide accurate information.",
-  title = "Smart Chat",
+  initialSystemPrompt = `Provide information and assistance related to amirsalmani.com, including its purpose, services, and content, while maintaining a professional and approachable tone, and direct users to the Contact page for inquiries outside the scope of the website‛s content.
+english name: Amir Salmani Dev Bot
+persian name: ربات امیر سلمانی
+# Steps
+
+1. **Understand the Query**: Determine the nature of the user‛s inquiry to provide a relevant response.
+2. **Respond Based on Website Content**: If the query pertains to the website‛s sections (Home, About, Portfolio, Blog, Contact), provide accurate and concise information.
+3. **Direct to Contact Page**: For queries outside the scope of the website‛s content, politely suggest contacting Amir Salmani directly via the Contact page.
+4. **Maintain Professional Tone**: Ensure all responses are friendly, approachable, and professional.
+
+# Output Format
+
+- **Relevant Information**: Direct answers to queries about the website‛s content and services.
+- **Direction to Contact Page**: For queries that cannot be answered based on the website‛s content, provide a polite message suggesting contact via the Contact page.
+
+# Examples
+
+### Example 1
+**Query**: What is the purpose of amirsalmani.com?
+**Response**: amirsalmani.com is a platform showcasing Amir Salmani‛s portfolio in web development and technology insights.
+
+### Example 2
+**Query**: How can I get in touch with Amir Salmani for a custom web development project?
+**Response**: For inquiries about custom projects or services not listed on the website, please visit the Contact page to reach out directly to Amir Salmani.
+
+### Example 3
+**Query**: What are the key sections of amirsalmani.com?
+**Response**: The key sections of amirsalmani.com include Home, About, Portfolio, Blog, and Contact, each providing unique insights into Amir Salmani‛s work and services.
+
+# Notes
+
+- Ensure responses are concise and directly address the user‛s query.
+- Consistently maintain a professional and friendly tone in all interactions.
+- Direct users to the appropriate section of the website or the Contact page as necessary.
+- Avoid providing speculative or unsubstantiated information; rely solely on the content available on amirsalmani.com.`,
+  title = "Chat with AI Assistant",
   placeholder = "Type your message...",
   buttonText,
   fullScreen = false,
@@ -97,19 +131,19 @@ export default function EnDynamicChat({
     setIsLoading(true)
 
     try {
-      const allMessages = [...messages, userMessage]
+      const allMessages = [{ role: "system" as const, content: systemPrompt }, ...messages, userMessage]
 
       // Add a placeholder for the assistant's message
       setMessages((prev) => [...prev, { role: "assistant", content: "" }])
 
-      const response = await fetch("/api/dynamic-chat/stream", {
+      // Use Together API directly
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           messages: allMessages,
-          systemPrompt,
         }),
       })
 
@@ -207,35 +241,40 @@ export default function EnDynamicChat({
             <p>How can I help you today?</p>
           </div>
         ) : (
-          messages.map((message, index) => (
-            <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`flex items-start gap-2 max-w-[80%] ${message.role === "user" ? "flex-row-reverse" : ""}`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                    message.role === "user" ? "bg-brand-primary" : "bg-white/10"
-                  }`}
-                >
-                  {message.role === "user" ? (
-                    <User className="w-4 h-4 text-black" />
-                  ) : (
-                    <Bot className="w-4 h-4 text-brand-primary" />
-                  )}
+          messages.map(
+            (message, index) =>
+              message.role !== "system" && (
+                <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`flex items-start gap-2 max-w-[80%] ${message.role === "user" ? "flex-row-reverse" : ""}`}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        message.role === "user" ? "bg-brand-primary" : "bg-white/10"
+                      }`}
+                    >
+                      {message.role === "user" ? (
+                        <User className="w-4 h-4 text-black" />
+                      ) : (
+                        <Bot className="w-4 h-4 text-brand-primary" />
+                      )}
+                    </div>
+                    <div
+                      className={`rounded-xl p-3 ${
+                        message.role === "user" ? "bg-brand-primary text-black" : "bg-white/10 text-white"
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap text-sm">
+                        {message.content ||
+                          (isLoading && message.role === "assistant" ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : null)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className={`rounded-xl p-3 ${
-                    message.role === "user" ? "bg-brand-primary text-black" : "bg-white/10 text-white"
-                  }`}
-                >
-                  <p className="whitespace-pre-wrap text-sm">
-                    {message.content ||
-                      (isLoading && message.role === "assistant" ? <Loader2 className="w-4 h-4 animate-spin" /> : null)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))
+              ),
+          )
         )}
         <div ref={messagesEndRef} />
       </div>

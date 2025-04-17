@@ -3,21 +3,25 @@ import Link from "next/link"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import ProfilePhoto from "@/components/ProfilePhoto"
+import GitHubButton from "@/components/GitHubButton" // Import the GitHub button component
 
 // Then replace the Image component with our ProfilePhoto component
 export default function Home() {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen">
-      <div className="flex flex-col items-center justify-center p-4 text-center z-20">
+    <div className="relative flex min-h-screen flex-col items-center justify-center">
+      {/* Add the GitHub button only on the main page */}
+      <GitHubButton />
+
+      <div className="z-20 flex flex-col items-center justify-center p-4 text-center">
         <ProfilePhoto src="/images/about/me.webp" alt="امیرحسین سلمانی" size={150} className="mb-4" />
-        <h1 className="text-4xl font-bold mb-2 text-brand-purple">امیرحسین سلمانی</h1>
-        <p className="text-xl mb-4 text-default">توسعه‌دهنده فول‌استک، تهران</p>
+        <h1 className="mb-2 text-4xl font-bold text-brand-purple">امیرحسین سلمانی</h1>
+        <p className="mb-4 text-xl text-default">توسعه‌دهنده فول‌استک، تهران</p>
         <p className="mb-4 max-w-md text-default">
           به وبسایت شخصی من خوش آمدید. من یک توسعه‌دهنده با تجربه در زمینه‌های مختلف وب و موبایل هستم.
         </p>
         <Link
           href="/portfolio"
-          className="bg-brand-purple text-white px-8 py-3 rounded-full hover:bg-opacity-90 transition-colors mb-4"
+          className="mb-4 rounded-full bg-brand-purple px-8 py-3 text-white transition-colors hover:bg-opacity-90"
         >
           مشاهده نمونه کارها
         </Link>
@@ -32,7 +36,7 @@ export default function Home() {
                 alt="Source on GitHub"
                 width={24}
                 height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
+                className="opacity-70 transition-opacity hover:opacity-100"
               />
             </Link>
 
@@ -43,7 +47,7 @@ export default function Home() {
                 alt="Built with Next.js"
                 width={24}
                 height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
+                className="opacity-70 transition-opacity hover:opacity-100"
               />
             </Link>
 
@@ -54,7 +58,7 @@ export default function Home() {
                 alt="Deployed on Vercel"
                 width={24}
                 height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
+                className="opacity-70 transition-opacity hover:opacity-100"
               />
             </Link>
 
@@ -65,7 +69,7 @@ export default function Home() {
                 alt="Powered by Supabase"
                 width={24}
                 height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
+                className="opacity-70 transition-opacity hover:opacity-100"
               />
             </Link>
 
@@ -76,7 +80,7 @@ export default function Home() {
                 alt="Styled with Tailwind CSS"
                 width={24}
                 height={24}
-                className="opacity-70 hover:opacity-100 transition-opacity"
+                className="opacity-70 transition-opacity hover:opacity-100"
               />
             </Link>
           </div>
@@ -87,4 +91,3 @@ export default function Home() {
     </div>
   )
 }
-

@@ -8,7 +8,6 @@ import CelebrationPopup from "@/components/CelebrationPopup"
 import { Toaster } from "sonner"
 import SessionTracker from "@/components/SessionTracker"
 import DynamicChat from "@/components/DynamicChat"
-import GitHubButton from "@/components/GitHubButton" // Import the new component
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -186,7 +185,6 @@ export default function RootLayout({
         <MovingBackground />
         <CelebrationPopup />
         <SessionTracker />
-        <GitHubButton /> {/* Add the GitHub button component */}
         <main className="min-h-screen pb-16">{children}</main>
         <BottomNavbar />
         <DynamicChat />

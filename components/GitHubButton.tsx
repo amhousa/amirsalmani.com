@@ -1,45 +1,51 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Github } from "lucide-react"
 import { motion } from "framer-motion"
+import { Github } from "lucide-react"
 
 export default function GitHubButton() {
-  const [isHovered, setIsHovered] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setIsMounted(true)
+    setMounted(true)
   }, [])
 
-  if (!isMounted) return null
+  if (!mounted) return null
 
   return (
-    <div className="fixed top-[50px] left-5 z-50">
-      <div className="relative group">
-        {/* Animated RGB border */}
-        <div
-          className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 
-                      rounded-xl opacity-75 group-hover:opacity-100 blur-sm 
-                      animate-gradient-x transition duration-200"
-        ></div>
+    <motion.a
+      href="https://github.com/yourusername/your-repo-template"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed left-4 top-[50px] z-50 flex items-center gap-2 rounded-xl bg-black px-4 py-3 text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      style={{
+        background: "rgba(0, 0, 0, 0.8)",
+        backdropFilter: "blur(10px)",
+        border: "2px solid transparent",
+        borderImage: "linear-gradient(to right, #ff00cc, #3333ff, #00ccff) 1",
+        animation: "borderAnimation 3s linear infinite",
+      }}
+    >
+      <Github className="h-5 w-5" />
+      <span className="text-sm font-medium">Use this template on GitHub</span>
 
-        {/* Button */}
-        <motion.a
-          href="https://github.com/amhousa/website-template"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative flex items-center gap-2 px-4 py-2 bg-black text-white rounded-xl
-                   hover:bg-black/90 transition-all duration-300 border border-transparent"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Github className="w-5 h-5" />
-          <span className="font-medium">Use this template on GitHub</span>
-        </motion.a>
-      </div>
-    </div>
+      <style jsx global>{`
+        @keyframes borderAnimation {
+          0% {
+            border-image: linear-gradient(to right, #ff00cc, #3333ff, #00ccff) 1;
+          }
+          50% {
+            border-image: linear-gradient(to right, #00ccff, #ff00cc, #3333ff) 1;
+          }
+          100% {
+            border-image: linear-gradient(to right, #3333ff, #00ccff, #ff00cc) 1;
+          }
+        }
+      `}</style>
+    </motion.a>
   )
 }

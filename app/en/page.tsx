@@ -4,9 +4,9 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import ProfilePhoto from "@/components/ProfilePhoto"
 import GitHubButton from "@/components/GitHubButton"
-import LanguageSwitcher from "@/components/LanguageSwitcher" // Import the language switcher
+import LanguageSwitcher from "@/components/LanguageSwitcher"
 
-export default function Home() {
+export default function EnglishHome() {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center">
       {/* Add the GitHub button only on the main page */}
@@ -16,17 +16,17 @@ export default function Home() {
       <LanguageSwitcher />
 
       <div className="z-20 flex flex-col items-center justify-center p-4 text-center">
-        <ProfilePhoto src="/images/about/me.webp" alt="امیرحسین سلمانی" size={150} className="mb-4" />
-        <h1 className="mb-2 text-4xl font-bold text-brand-purple">امیرحسین سلمانی</h1>
-        <p className="mb-4 text-xl text-default">توسعه‌دهنده فول‌استک، تهران</p>
+        <ProfilePhoto src="/images/about/me.webp" alt="Amirhossein Salmani" size={150} className="mb-4" />
+        <h1 className="mb-2 text-4xl font-bold text-brand-purple">Amirhossein Salmani</h1>
+        <p className="mb-4 text-xl text-default">Full Stack Developer, Tehran</p>
         <p className="mb-4 max-w-md text-default">
-          به وبسایت شخصی من خوش آمدید. من یک توسعه‌دهنده با تجربه در زمینه‌های مختلف وب و موبایل هستم.
+          Welcome to my personal website. I am an experienced developer in various web and mobile technologies.
         </p>
         <Link
-          href="/portfolio"
+          href="/en/portfolio"
           className="mb-4 rounded-full bg-brand-purple px-8 py-3 text-white transition-colors hover:bg-opacity-90"
         >
-          مشاهده نمونه کارها
+          View Portfolio
         </Link>
 
         {/* Technology Logos Section */}

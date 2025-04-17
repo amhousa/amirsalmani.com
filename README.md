@@ -48,6 +48,9 @@
 
 ## 🚀 About The Project
 
+ <div align="center">
+  <img src="https://amirsalmani.com/demo.webp" alt="Amir Salmani Logo" width="120" />
+ </div>
 **amirsalmani.com** is a professional portfolio and blog website built with modern web technologies. It showcases a full-stack application with features including authentication, blog functionality, AI-powered chat, and a comprehensive client dashboard.
 
 The project demonstrates best practices in Next.js development, including:

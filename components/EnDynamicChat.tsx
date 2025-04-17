@@ -88,25 +88,32 @@ persian name: ربات امیر سلمانی
   // Auto-resize textarea
   const autoResizeTextarea = () => {
     if (inputRef.current) {
-      const cursorPosition = inputRef.current.selectionStart
+      // Store current selection positions
+      const selectionStart = inputRef.current.selectionStart
+      const selectionEnd = inputRef.current.selectionEnd
+
       // Reset height to auto to get the correct scrollHeight
       inputRef.current.style.height = "auto"
+
       // Set the height to scrollHeight to fit the content
       inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`
-      // Restore cursor position
-      setTimeout(() => {
+
+      // Restore selection positions after React has updated the DOM
+      requestAnimationFrame(() => {
         if (inputRef.current) {
-          inputRef.current.selectionStart = cursorPosition
-          inputRef.current.selectionEnd = cursorPosition
+          inputRef.current.focus()
+          inputRef.current.selectionStart = selectionStart
+          inputRef.current.selectionEnd = selectionEnd
         }
-      }, 0)
+      })
     }
   }
 
   // Handle input change with auto-resize
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value)
-    autoResizeTextarea()
+    // Call autoResize after state update to ensure DOM is stable
+    setTimeout(autoResizeTextarea, 0)
   }
 
   const handleResetChat = () => {

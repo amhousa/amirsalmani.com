@@ -1,6 +1,6 @@
 let userConfig = undefined
 try {
-  userConfig = await import('./v0-user-next.config')
+  userConfig = await import('./amirsalmani-user-next.config')
 } catch (e) {
   // ignore error
 }
@@ -54,7 +54,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
+            value: 'public, max-age=31536000, immutable, stale-while-revalidate=60'
           }
         ],
       },
@@ -63,7 +63,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
+            value: 'public, max-age=31536000, immutable, stale-while-revalidate=60'
           }
         ],
       }

@@ -58,7 +58,7 @@ export default function LanguageSwitcher() {
     <div className="fixed right-4 top-[50px] z-50">
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 rounded-lg border-2 border-white/10 bg-black/80 px-3 py-1.5 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 active:scale-95"
+        className="flex items-center gap-1.5 rounded-xl border-2 border-white/10 bg-black/80 px-3 py-1.5 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 active:scale-95"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -76,14 +76,14 @@ export default function LanguageSwitcher() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 mt-2 w-36 rounded-lg border border-white/10 bg-black/90 p-1 shadow-lg backdrop-blur-md"
+            className="absolute right-0 mt-2 w-36 rounded-xl border border-white/10 bg-black/90 p-1 shadow-lg backdrop-blur-md"
           >
             {languages.map((lang) => (
               <Link
                 key={lang.code}
                 href={getLanguagePath(lang.code)}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-white/10 ${
+                className={`flex items-center gap-2 rounded-xl px-3 py-2 transition-colors hover:bg-white/10 ${
                   currentLang === lang.code ? "bg-brand-primary/20 text-brand-primary" : "text-white"
                 }`}
               >

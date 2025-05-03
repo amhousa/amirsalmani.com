@@ -18,7 +18,7 @@ export default function GitHubButton() {
       href="https://github.com/amhousa/amirsalmani.com"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed left-4 top-[50px] z-50 flex items-center gap-1.5 rounded-lg border-2 border-white/10 bg-black/80 px-3 py-1.5 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 active:scale-95"
+      className="fixed left-4 top-[50px] z-50 flex items-center gap-1.5 rounded-xl border-2 border-white/10 bg-black/80 px-3 py-1.5 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 active:scale-95"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}

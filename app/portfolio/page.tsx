@@ -22,7 +22,7 @@ interface Project {
 
 const projects: Project[] = [
   {
-    id: 1,
+    id: 6,
     title: "برنامه ساز GymHub",
     image: "/images/portfolio/gymhub.webp",
     description: "اپلیکیشن برنامه‌ریزی تمرینات بدنسازی با قابلیت چاپ برنامه هفتگی",
@@ -34,7 +34,7 @@ const projects: Project[] = [
     client: "باشگاه فیتنس پارس",
   },
   {
-    id: 2,
+    id: 7,
     title: "نیلرام - قاب‌های موسیقی",
     image: "/images/portfolio/nilram.webp",
     description: "پلتفرم سفارش قاب‌های موسیقی با امکان شخصی‌سازی پیام‌های صوتی",
@@ -46,7 +46,7 @@ const projects: Project[] = [
     client: "گالری نیلرام",
   },
   {
-    id: 3,
+    id: 8,
     title: "کنترل پنل صنعتی کارما",
     image: "/images/portfolio/karma.webp",
     description: "سیستم مدیریت و کنترل تجهیزات صنعتی با رابط کاربری پیشرفته",
@@ -58,7 +58,7 @@ const projects: Project[] = [
     client: "شرکت کارما گرین",
   },
   {
-    id: 4,
+    id: 9,
     title: "صرافی ارز دیجیتال X",
     image: "/images/portfolio/x-exchange.webp",
     description: "پلتفرم خرید و فروش ارزهای دیجیتال با رابط کاربری حرفه‌ای",
@@ -70,7 +70,7 @@ const projects: Project[] = [
     client: "صرافی ایکس",
   },
   {
-    id: 5,
+    id: 10,
     title: "استارز هاب",
     image: "/images/portfolio/starshub.webp",
     description: "پلتفرم خرید و فروش ارز دیجیتال تلگرام با امکانات پیشرفته",
@@ -82,7 +82,7 @@ const projects: Project[] = [
     client: "استارز هاب",
   },
   {
-    id: 6,
+    id: 11,
     title: "توتال نیوز",
     image: "/images/portfolio/totalnews.webp",
     description: "پورتال خبری چندزبانه در حوزه حمل و نقل و لجستیک",
@@ -94,7 +94,7 @@ const projects: Project[] = [
     client: "توتال نیوز",
   },
   {
-    id: 7,
+    id: 12,
     title: "گرین سورا",
     image: "/images/portfolio/greensora.webp",
     description: "وبسایت شرکت تولیدکننده محصولات پاکسازی آلودگی‌های نفتی",
@@ -106,7 +106,7 @@ const projects: Project[] = [
     client: "شرکت گرین سورا",
   },
   {
-    id: 8,
+    id: 13,
     title: "تعمیرات سامسونگ کرج",
     image: "/images/portfolio/karajsamsung.webp",
     description: "وبسایت خدمات تعمیر لوازم خانگی سامسونگ در کرج",
@@ -118,7 +118,7 @@ const projects: Project[] = [
     client: "مرکز خدمات سامسونگ کرج",
   },
   {
-    id: 9,
+    id: 14,
     title: "جواهری گوهرآرا",
     image: "/images/portfolio/goharara.webp",
     description: "فروشگاه آنلاین جواهرات با طراحی لوکس و حرفه‌ای",
@@ -130,7 +130,7 @@ const projects: Project[] = [
     client: "جواهری گوهرآرا",
   },
   {
-    id: 10,
+    id: 15,
     title: "کیمیاکشت",
     image: "/images/portfolio/kimiakesht.webp",
     description: "فروشگاه آنلاین گیاهان و محصولات کشاورزی",
@@ -142,7 +142,7 @@ const projects: Project[] = [
     client: "کیمیاکشت",
   },
   {
-    id: 11,
+    id: 16,
     title: "منوی آنلاین کافه یاد",
     image: "/images/portfolio/yadcafe.webp",
     description: "طراحی و توسعه منوی دیجیتال برای کافه",
@@ -154,7 +154,7 @@ const projects: Project[] = [
     client: "کافه یاد",
   },
   {
-    id: 12,
+    id: 17,
     title: "صفحه فرود نوآور",
     image: "/images/portfolio/noavar.webp",
     description: "طراحی صفحه فرود با انیمیشن‌های جذاب",
@@ -166,7 +166,7 @@ const projects: Project[] = [
     client: "استارتاپ نوآور",
   },
   {
-    id: 13,
+    id: 18,
     title: "بازی حافظه",
     image: "/images/portfolio/clever-monkey.webp",
     description: "بازی تقویت حافظه با رابط کاربری جذاب",
@@ -177,6 +177,66 @@ const projects: Project[] = [
     date: "1400/07/10",
     client: "پروژه شخصی",
   },
+  {
+    id: 1,
+    title: "Sheriff - FACILITY CONTROL SYSTEM",
+    image: "/images/portfolio/sheriff.webp",
+    description: "Advanced Command Center for Secure Facility Operations.",
+    highlights: ["Secure Access Control", "Real-time Monitoring", "Incident Management", "Data Analytics"],
+    fullViewUrl: "https://sheriff.amirsalmani.com",
+    category: "Web Application",
+    tags: ["React", "Node.js", "Express", "MongoDB"],
+    date: "1404/02/12",
+    client: "Sheriff Security Solutions",
+  },
+  {
+    id: 2,
+    title: "Alalam Jamel",
+    image: "/images/portfolio/alalamjamel-dubai.webp",
+    description: "Start Your Business in Dubai!",
+    highlights: ["Business Setup", "Company Registration", "Visa Services", "Bank Account Opening"],
+    fullViewUrl: "https://alalamjamel.com/",
+    category: "Web Application",
+    tags: ["Next.js", "Figma", "Tailwindcss"],
+    date: "1404/02/02",
+    client: "Alalam Jamel",
+  },
+  // {
+  //   id: 3,
+  //   title: "Test Project 3",
+  //   image: "/images/portfolio/test3.webp",
+  //   description: "Yet another test project description.",
+  //   highlights: ["Feature X", "Feature Y"],
+  //   fullViewUrl: "#",
+  //   category: "Test Category",
+  //   tags: ["Sample", "Project"],
+  //   date: "1402/09/03",
+  //   client: "Test Client 3",
+  // },
+  // {
+  //   id: 4,
+  //   title: "Test Project 4",
+  //   image: "/images/portfolio/test4.webp",
+  //   description: "Test project with unique features.",
+  //   highlights: ["Feature 1", "Feature 2"],
+  //   fullViewUrl: "#",
+  //   category: "Test Category",
+  //   tags: ["Demo", "Project"],
+  //   date: "1402/09/04",
+  //   client: "Test Client 4",
+  // },
+  // {
+  //   id: 5,
+  //   title: "Test Project 5",
+  //   image: "/images/portfolio/test5.webp",
+  //   description: "Final test project description.",
+  //   highlights: ["Highlight Alpha", "Highlight Beta"],
+  //   fullViewUrl: "#",
+  //   category: "Test Category",
+  //   tags: ["Test", "Final"],
+  //   date: "1402/09/05",
+  //   client: "Test Client 5",
+  // },
 ]
 
 export default function Portfolio() {

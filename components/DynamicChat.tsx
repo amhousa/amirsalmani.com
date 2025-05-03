@@ -144,13 +144,14 @@ persian name: ربات امیر سلمانی
       setMessages((prev) => [...prev, { role: "assistant", content: "" }])
 
       // Use Together API directly
-      const response = await fetch("/api/chat", {
+      const response = await fetch("/api/dynamic-chat/stream", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          messages: allMessages,
+          messages: allMessages.filter((msg) => msg.role !== "system"),
+          systemPrompt: systemPrompt,
         }),
       })
 
@@ -179,6 +180,16 @@ persian name: ربات امیر سلمانی
                 assistantMessage += data.content
                 // Update the last message (which is the assistant's message)
                 setMessages((prev) => [...prev.slice(0, -1), { role: "assistant", content: assistantMessage }])
+              } else if (data.error) {
+                // Handle error messages
+                setMessages((prev) => [
+                  ...prev.slice(0, -1),
+                  {
+                    role: "assistant",
+                    content: "متأسفانه در ارتباط با هوش مصنوعی مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
+                  },
+                ])
+                break
               }
             } catch (e) {
               console.error("Error parsing SSE data:", e)

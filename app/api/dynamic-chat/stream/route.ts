@@ -27,12 +27,12 @@ export async function POST(request: Request) {
     const stream = await together.chat.completions.create({
       messages: chatMessages,
       model: "deepseek-ai/DeepSeek-V3",
-      max_tokens: 512,
+      max_tokens: 1024,
       temperature: 0.7,
       top_p: 0.7,
       top_k: 50,
       repetition_penalty: 1,
-      stop: ["<｜end▁of▁sentence｜>"],
+      stop: ["<｜end of sentence｜>"],
       safety_model: "meta-llama/Meta-Llama-Guard-3-8B",
       stream: true,
     })
@@ -47,17 +47,18 @@ export async function POST(request: Request) {
       try {
         for await (const chunk of stream) {
           const content = chunk.choices[0]?.delta?.content || ""
-          const data = encoder.encode(`data: ${JSON.stringify({ content })}
-
-`)
+          const data = encoder.encode(`data: ${JSON.stringify({ content })}\n\n`)
           await writer.write(data)
         }
+
+        // Send a final [DONE] message
+        const doneMessage = encoder.encode(`data: [DONE]\n\n`)
+        await writer.write(doneMessage)
+
         await writer.close()
       } catch (error) {
         console.error("Error processing stream:", error)
-        const errorMessage = encoder.encode(`data: ${JSON.stringify({ error: "Stream processing error" })}
-
-`)
+        const errorMessage = encoder.encode(`data: ${JSON.stringify({ error: "Stream processing error" })}\n\n`)
         await writer.write(errorMessage)
         await writer.close()
       }
@@ -75,4 +76,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to process chat request" }, { status: 500 })
   }
 }
-

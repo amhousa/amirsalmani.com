@@ -28,7 +28,8 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             model: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
             messages: messages,
-            temperature: 0.99,
+            temperature: 0.7,
+            max_tokens: 1024,
             seed: 999,
             safety_model: "meta-llama/Meta-Llama-Guard-3-8B",
             stream: true,
@@ -69,6 +70,10 @@ export async function POST(request: Request) {
             }
           }
         }
+
+        // Send a final [DONE] message
+        const doneMessage = encoder.encode(`data: [DONE]\n\n`)
+        await writer.write(doneMessage)
       } catch (error) {
         console.error("Error in chat API:", error)
         const errorMessage = encoder.encode(`data: ${JSON.stringify({ error: "Error processing request" })}\n\n`)

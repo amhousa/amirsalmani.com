@@ -78,7 +78,7 @@ export default function ChatButton() {
       // Add a placeholder for the assistant's message
       setMessages((prev) => [...prev, { role: "assistant", content: "" }])
 
-      const response = await fetch("/api/chat/stream", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,6 +111,13 @@ export default function ChatButton() {
                 assistantMessage += data.content
                 // Update the last message (which is the assistant's message)
                 setMessages((prev) => [...prev.slice(0, -1), { role: "assistant", content: assistantMessage }])
+              } else if (data.error) {
+                // Handle error messages
+                setMessages((prev) => [
+                  ...prev.slice(0, -1),
+                  { role: "assistant", content: "خطایی رخ داد. لطفاً دوباره تلاش کنید." },
+                ])
+                break
               }
             } catch (e) {
               console.error("Error parsing SSE data:", e)
@@ -251,4 +258,3 @@ export default function ChatButton() {
     </>
   )
 }
-

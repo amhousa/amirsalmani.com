@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Code, Palette, Globe, Cpu, Rocket, MessageSquare, ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 // import ThreeScene from "@/components/ThreeScene"
 
 export default function ServicesClient() {
@@ -89,35 +90,51 @@ export default function ServicesClient() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group relative bg-dark-bg border border-gray-800 rounded-2xl p-6 hover:border-brand-primary/50 transition-all duration-300"
+              className="group relative bg-dark-bg border border-gray-800 rounded-2xl overflow-hidden hover:border-brand-primary/50 transition-all duration-300"
             >
-              {/* Keep existing service card content */}
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 to-transparent rounded-2xl" />
-              <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-brand-primary/20 flex items-center justify-center mb-4">
-                  <service.icon className="w-6 h-6 text-brand-primary" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-white group-hover:text-brand-primary transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-gray-400 mb-4 min-h-[3rem]">{service.description}</p>
-                <div className="space-y-2 mb-6">
-                  {service.features.map((feature) => (
-                    <div key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-                      <div className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
-                      {feature}
+              {/* Service Image */}
+              <div className="relative w-full h-48 overflow-hidden">
+                <Image
+                  src={service.image || "/placeholder.svg"}
+                  alt={service.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent" />
+              </div>
+
+              {/* Service Content */}
+              <div className="relative p-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 to-transparent rounded-2xl" />
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-brand-primary/20 flex items-center justify-center">
+                      <service.icon className="w-5 h-5 text-brand-primary" />
                     </div>
-                  ))}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-brand-primary font-semibold">{service.price}</span>
-                  <Link
-                    href={service.link}
-                    className="inline-flex items-center justify-center px-4 py-2 bg-brand-primary text-black rounded-xl 
+                    <h3 className="text-xl font-bold text-white group-hover:text-brand-primary transition-colors">
+                      {service.title}
+                    </h3>
+                  </div>
+                  <p className="text-gray-400 mb-4 min-h-[3rem]">{service.description}</p>
+                  <div className="space-y-2 mb-6">
+                    {service.features.map((feature) => (
+                      <div key={feature} className="flex items-center gap-2 text-sm text-gray-300">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-brand-primary font-semibold">{service.price}</span>
+                    <Link
+                      href={service.link}
+                      className="inline-flex items-center justify-center px-4 py-2 bg-brand-primary text-black rounded-xl 
                              hover:bg-brand-primary/90 transition-colors font-medium"
-                  >
-                    سفارش
-                  </Link>
+                    >
+                      سفارش
+                    </Link>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -219,6 +236,7 @@ const services = [
     icon: Code,
     title: "توسعه وب",
     description: "طراحی و توسعه وب‌سایت‌های مدرن و واکنش‌گرا با استفاده از آخرین تکنولوژی‌ها",
+    image: "/images/services/web-development.jpg",
     features: [
       "طراحی رابط کاربری مدرن",
       "توسعه فرانت‌اند با React و Next.js",
@@ -233,6 +251,7 @@ const services = [
     icon: Palette,
     title: "طراحی رابط کاربری",
     description: "طراحی رابط‌های کاربری زیبا و کاربرپسند با تمرکز بر تجربه کاربری عالی",
+    image: "/images/services/ui-design.jpg",
     features: [
       "طراحی رابط کاربری موبایل و دسکتاپ",
       "پروتوتایپ و وایرفریم",
@@ -247,6 +266,7 @@ const services = [
     icon: Globe,
     title: "سئو و دیجیتال مارکتینگ",
     description: "بهینه‌سازی سایت برای موتورهای جستجو و افزایش بازدید ارگانیک",
+    image: "/images/services/seo.jpg",
     features: ["تحقیق کلمات کلیدی", "بهینه‌سازی محتوا", "لینک‌سازی داخلی و خارجی", "بهبود سرعت سایت", "گزارش‌های تحلیلی"],
     price: "از ۷ میلیون تومان",
     link: "/cooperation",
@@ -255,6 +275,7 @@ const services = [
     icon: Cpu,
     title: "هوش مصنوعی",
     description: "پیاده‌سازی راهکارهای هوش مصنوعی و یادگیری ماشین در کسب و کار شما",
+    image: "/images/services/ai.jpg",
     features: ["چت‌بات‌های هوشمند", "پردازش زبان طبیعی", "سیستم‌های توصیه‌گر", "تشخیص تصویر", "تحلیل داده"],
     price: "از ۲۰ میلیون تومان",
     link: "/cooperation",
@@ -263,6 +284,7 @@ const services = [
     icon: Rocket,
     title: "مشاوره استارتاپ",
     description: "مشاوره تخصصی برای راه‌اندازی و توسعه استارتاپ‌های تکنولوژی محور",
+    image: "/images/services/startup.jpg",
     features: [
       "تحلیل بازار و رقبا",
       "انتخاب تکنولوژی مناسب",
@@ -277,6 +299,7 @@ const services = [
     icon: MessageSquare,
     title: "آموزش برنامه‌نویسی",
     description: "دوره‌های آموزشی تخصصی برنامه‌نویسی وب و موبایل",
+    image: "/images/services/programming.jpg",
     features: ["آموزش React و Next.js", "برنامه‌نویسی Node.js", "توسعه API", "پایگاه داده و SQL", "DevOps و استقرار"],
     price: "از ۵ میلیون تومان",
     link: "/cooperation",

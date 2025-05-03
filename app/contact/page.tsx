@@ -210,7 +210,7 @@ export default function Contact() {
 
       {/* Contact Form Section */}
       <section className="relative py-12">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4">
           <div className="w-full max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0 }}
@@ -390,7 +390,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="w-full max-w-6xl mx-auto"
+            className="w-full px-2"
           >
             <h2 className="text-2xl font-bold mb-8 text-center">سؤالات متداول</h2>
             <div className="space-y-4">

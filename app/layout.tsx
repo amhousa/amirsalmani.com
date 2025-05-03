@@ -4,7 +4,7 @@ import { Vazirmatn } from "next/font/google"
 import BottomNavbar from "@/components/BottomNavbar"
 import MovingBackground from "@/components/MovingBackground"
 import type React from "react"
-import CelebrationPopup from "@/components/CelebrationPopup"
+// import CelebrationPopup from "@/components/CelebrationPopup"
 import { Toaster } from "sonner"
 import SessionTracker from "@/components/SessionTracker"
 import DynamicChat from "@/components/DynamicChat"
@@ -183,7 +183,7 @@ export default function RootLayout({
       <body className={`${vazirmatn.className} bg-[#050301] text-dark-text`}>
         <Toaster position="top-center" expand={true} richColors />
         <MovingBackground />
-        <CelebrationPopup />
+        {/* <CelebrationPopup /> */}
         <SessionTracker />
         <main className="min-h-screen pb-16">{children}</main>
         <BottomNavbar />

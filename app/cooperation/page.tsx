@@ -97,8 +97,8 @@ export default function Cooperation() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <section className="text-center mb-16">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 overflow-x-hidden">
+      <section className="w-full text-center mb-16">
         <h1 className="text-4xl font-bold mb-4 text-brand-primary">شرایط همکاری</h1>
         <p className="text-lg mb-8 text-gray-300">
           با بیش از ۵ سال تجربه در توسعه وب و هوش مصنوعی، آماده همکاری در پروژه‌های شما هستم.
@@ -106,7 +106,7 @@ export default function Cooperation() {
       </section>
 
       {/* Packages */}
-      <section className="grid md:grid-cols-3 gap-8 mb-16">
+      <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-16">
         {packages.map((pkg, index) => (
           <motion.div
             key={pkg.name}
@@ -156,7 +156,7 @@ export default function Cooperation() {
       </section>
 
       {/* Phone Number Form */}
-      <section className="max-w-md mx-auto mb-16">
+      <section className="w-full max-w-xl mx-auto mb-16 px-4">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-4 text-brand-primary">دریافت مشاوره رایگان</h2>
           <p className="text-gray-300">شماره تماس خود را وارد کنید تا در اولین فرصت با شما تماس بگیریم.</p>
@@ -184,7 +184,7 @@ export default function Cooperation() {
       </section>
 
       {/* FAQs */}
-      <section className="max-w-2xl mx-auto">
+      <section className="w-full max-w-4xl mx-auto px-4">
         <h2 className="text-2xl font-bold mb-8 text-center text-brand-primary">سؤالات متداول</h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
@@ -208,4 +208,3 @@ export default function Cooperation() {
     </div>
   )
 }
-

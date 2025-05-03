@@ -175,7 +175,7 @@ export default function Contact() {
 
       {/* Contact Info Cards */}
       <section className="relative py-12">
-        <div className="w-full px-4">
+        <div className="w-full px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {contactMethods.map((method, index) => (
               <motion.div
@@ -210,8 +210,8 @@ export default function Contact() {
 
       {/* Contact Form Section */}
       <section className="relative py-12">
-        <div className="w-full px-6">
-          <div className="px-4">
+        <div className="w-full px-8">
+          <div>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -390,7 +390,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="w-full px-2"
+            className="w-full"
           >
             <h2 className="text-2xl font-bold mb-8 text-center">سؤالات متداول</h2>
             <div className="space-y-4">

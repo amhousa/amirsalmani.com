@@ -11,9 +11,9 @@ export default function ServicesClient() {
   const [openQuestion, setOpenQuestion] = useState<string | null>(null)
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-x-hidden">
       {/* Hero Section with 3D Animation */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden">
         {/* <ThreeScene onLoad={() => setSceneLoaded(true)} /> */}
 
         {/* Content overlay */}
@@ -80,8 +80,8 @@ export default function ServicesClient() {
       </section>
 
       {/* Rest of the services content */}
-      <div id="services" className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div id="services" className="w-full px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6 lg:gap-8">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
@@ -136,7 +136,7 @@ export default function ServicesClient() {
           </motion.h2>
 
           {/* Keep existing FAQ content */}
-          <div className="max-w-3xl mx-auto space-y-6">
+          <div className="w-full max-w-7xl mx-auto space-y-6">
             {faqs.map((category) => (
               <motion.div
                 key={category.category}

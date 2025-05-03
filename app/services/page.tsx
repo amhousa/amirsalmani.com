@@ -153,7 +153,7 @@ export default function ServicesClient() {
           </motion.h2>
 
           {/* Keep existing FAQ content */}
-          <div className="w-full max-w-7xl mx-auto space-y-6">
+          <div className="mt-24 space-y-6">
             {faqs.map((category) => (
               <motion.div
                 key={category.category}

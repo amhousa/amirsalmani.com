@@ -156,7 +156,7 @@ export default function Contact() {
 
       {/* Hero Section */}
       <section className="relative py-20">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -210,7 +210,7 @@ export default function Contact() {
 
       {/* Contact Form Section */}
       <section className="relative py-12">
-        <div className="w-full px-4">
+        <div className="w-full px-6">
           <div className="px-4">
             <motion.div
               initial={{ opacity: 0 }}

@@ -34,7 +34,7 @@ export default function ProfilePhoto({ src, alt, size = 150, className = "" }: P
       transition={{ duration: 0.5 }}
       style={{ width: size, height: size }}
     >
-      <div className="rotating-circle"></div>
+      {/* <div className="rotating-circle"></div> */}
       <div className="photo-glow"></div>
       <Image
         src={src || "/images/about/me.webp"}

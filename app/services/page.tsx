@@ -12,7 +12,7 @@ export default function ServicesClient() {
   const [openQuestion, setOpenQuestion] = useState<string | null>(null)
 
   return (
-    <div className="relative w-full overflow-x-hidden">
+    <div className="container relative w-full overflow-x-hidden">
       {/* Hero Section with 3D Animation */}
       <section className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden">
         {/* <ThreeScene onLoad={() => setSceneLoaded(true)} /> */}

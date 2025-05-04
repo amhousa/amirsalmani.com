@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-vazirmatn)"],
+        sans: ["Bon", "var(--font-vazirmatn)"],
       },
       colors: {
         brand: {
@@ -87,4 +87,3 @@ module.exports = {
   },
   plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
 }
-

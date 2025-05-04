@@ -1,0 +1,44 @@
+/**
+ *	Name:			Bon
+ *	Version:		1.0
+ *	Author:			M.Javad Jalilian
+ *	Vendor:			http://fontiran.com
+ *	Copyright:		Commercial/Proprietary Software
+ **/
+
+@font-face {
+  font-family: Bon;
+  font-style: normal;
+  font-weight: 100;
+  src: url("woff/bon-Thin.woff") format("woff"), url("woff2/bon-Thin.woff2") format("woff2");
+}
+@font-face {
+  font-family: Bon;
+  font-style: normal;
+  font-weight: 300;
+  src: url("woff/bon-Light.woff") format("woff"), url("woff2/bon-Light.woff2") format("woff2");
+}
+@font-face {
+  font-family: Bon;
+  font-style: normal;
+  font-weight: 400;
+  src: url("woff/bon-Regular.woff") format("woff"), url("woff2/bon-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: Bon;
+  font-style: normal;
+  font-weight: 500;
+  src: url("woff/bon-Medium.woff") format("woff"), url("woff2/bon-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: Bon;
+  font-style: normal;
+  font-weight: 600;
+  src: url("woff/bon-SemiBold.woff") format("woff"), url("woff2/bon-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: Bon;
+  font-style: normal;
+  font-weight: 700;
+  src: url("woff/bon-Bold.woff") format("woff"), url("woff2/bon-Bold.woff2") format("woff2");
+}

@@ -15,6 +15,9 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 }
 
+// Import Bon font
+import "app/globals.css"
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://amirsalmani.com"),
   title: {

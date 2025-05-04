@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["Bon", "var(--font-vazirmatn)"],
+        sans: ["Bon", "sans-serif"],
       },
       colors: {
         brand: {

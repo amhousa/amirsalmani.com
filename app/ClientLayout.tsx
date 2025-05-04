@@ -59,7 +59,7 @@ export default function ClientLayout({
           }}
         />
       </head>
-      <body className={`${vazirmatn.className} bg-[#050301] text-dark-text`}>
+      <body className={`font-sans bg-[#050301] text-dark-text`}>
         <Toaster position="top-center" expand={true} richColors />
         <MovingBackground />
         {/* <CelebrationPopup /> */}

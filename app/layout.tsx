@@ -16,7 +16,7 @@ export const viewport: Viewport = {
 }
 
 // Import Bon font
-import "app/globals.css"
+import "./globals.css"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://amirsalmani.com"),

@@ -20,7 +20,7 @@ export default function Home() {
         <h1 className="mb-2 text-4xl font-bold text-brand-purple">امیرحسین سلمانی</h1>
         <p className="mb-4 text-xl text-default">توسعه‌دهنده فول‌استک، تهران</p>
         <p className="mb-4 max-w-md text-default">
-          به وبسایت شخصی من خوش آمدید. من یک توسعه‌دهنده با تجربه در زمینه‌های مختلف وب و موبایل هستم.
+          
         </p>
         <Link
           href="/portfolio"

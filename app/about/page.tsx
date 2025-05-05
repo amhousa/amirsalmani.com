@@ -17,7 +17,7 @@ const skills = [
 export default function About() {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-brand-primary">درباره من</h1>
+      <h1 className="text-3xl font-bold mb-6 text-brand-primary">درباره</h1>
       <div className="flex flex-col md:flex-row items-center md:items-end gap-8">
         <div className="w-full md:w-auto">
           <Image

@@ -12,7 +12,7 @@ export default function ServicesClient() {
   const [openQuestion, setOpenQuestion] = useState<string | null>(null)
 
   return (
-    <div className="container relative w-full overflow-x-hidden">
+    <div className="container w-full overflow-x-hidden px-4 sm:px-4 lg:px-4 py-8">
       {/* Hero Section with 3D Animation */}
       <section className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden">
         {/* <ThreeScene onLoad={() => setSceneLoaded(true)} /> */}
@@ -81,7 +81,7 @@ export default function ServicesClient() {
       </section>
 
       {/* Rest of the services content */}
-      <div id="services" className="w-full px-4 sm:px-6 lg:px-8 py-16">
+      <div id="services" className="w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
             <motion.div

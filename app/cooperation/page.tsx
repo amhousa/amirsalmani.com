@@ -156,7 +156,7 @@ export default function Cooperation() {
       </section>
 
       {/* Phone Number Form */}
-      <section className="w-full max-w-4xl mx-auto mb-16 px-4">
+      <section className="w-full">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-4 text-brand-primary">دریافت مشاوره رایگان</h2>
           <p className="text-gray-300">شماره تماس خود را وارد کنید تا در اولین فرصت با شما تماس بگیریم.</p>

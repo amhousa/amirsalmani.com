@@ -97,7 +97,7 @@ export default function Cooperation() {
   }
 
   return (
-    <div className="container w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 py-8">
+    <div className="container w-full overflow-x-hidden px-4 sm:px-4 lg:px-4 py-8">
       <section className="text-center mb-16">
         <h1 className="text-4xl font-bold mb-4 text-brand-primary">شرایط همکاری</h1>
         <p className="text-lg mb-8 text-gray-300">

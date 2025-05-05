@@ -24,7 +24,7 @@ const BottomNavbar = () => {
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[#050301]/80 backdrop-blur-md border-t border-white/5 pb-3">
+    <nav className="fixed bottom-0 left-0 right-0 bg-[#050301]/80 backdrop-blur-md rounded-2xl border border-gray-800 px-1 py-1 mx-2 mb-1">
       <div className="flex justify-around items-center h-14">
         {navItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href

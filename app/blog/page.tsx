@@ -129,7 +129,7 @@ export default function Blog() {
       </div>
 
       {/* Blog posts grid - Updated padding-top */}
-      <div className="container mx-auto px-4 pt-[140px] sm:pt-[120px] pb-20">
+      <div className="container mx-auto px-4 pt-[120px] sm:pt-[185px] pb-20">
         {" "}
         {/* Adjusted padding-top */}
         <AnimatePresence mode="wait">

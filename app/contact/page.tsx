@@ -151,7 +151,7 @@ export default function Contact() {
   }
 
   return (
-    <div className="container min-h-screen overflow-x-hidden">
+    <div className="container mx-auto px-4 mb-8">
       <MovingBackground />
 
       {/* Hero Section */}

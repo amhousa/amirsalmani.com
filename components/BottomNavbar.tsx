@@ -20,7 +20,7 @@ const BottomNavbar = () => {
     { href: "/portfolio", icon: Image, label: "نمونه کارها" },
     { href: "/blog", icon: Newspaper, label: "وبلاگ" },
     { href: "/cooperation", icon: Handshake, label: "همکاری" },
-    { href: "/contact", icon: Mail, label: "تماس" },
+    // { href: "/contact", icon: Mail, label: "تماس" },
   ]
 
   return (

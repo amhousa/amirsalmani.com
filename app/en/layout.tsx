@@ -143,7 +143,7 @@ export default function EnglishLayout({
       <body className={`${vazirmatn.className} bg-[#050301] text-dark-text`}>
         <Toaster position="top-center" expand={true} richColors />
         <MovingBackground />
-        <CelebrationPopup />
+        {/* <CelebrationPopup /> */}
         <SessionTracker />
         <main className="min-h-screen pb-16">{children}</main>
         <EnBottomNavbar />

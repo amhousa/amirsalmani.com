@@ -421,7 +421,7 @@ export default function Payment() {
                         type="text"
                         value={ethAddress}
                         readOnly
-                        className="w-full bg-black/30 border border-gray-700 rounded-xl px-4 py-3 text-gray-300 font-mono text-sm"
+                        className="w-full bg-black/30 border border-gray-700 rounded-xl px-4 py-3 text-gray-300 font-mono text-sm text-left"
                       />
                       <button
                         onClick={() => copyToClipboard(ethAddress)}
@@ -452,7 +452,7 @@ export default function Payment() {
                           type="text"
                           value={cardInfo.number}
                           readOnly
-                          className="w-full bg-black/30 border border-gray-700 rounded-xl px-4 py-3 text-gray-300 font-mono text-sm"
+                          className="w-full bg-black/30 border border-gray-700 rounded-xl px-4 py-3 text-gray-300 font-mono text-sm text-left"
                         />
                         <button
                           onClick={() => copyToClipboard(cardInfo.number)}

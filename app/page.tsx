@@ -20,7 +20,7 @@ export default function Home() {
         <h1 className="mb-2 text-4xl font-bold text-brand-purple">امیرحسین سلمانی</h1>
         <p className="mb-4 text-xl text-default">توسعه‌دهنده فول‌استک، تهران</p>
         <p className="mb-4 max-w-md text-default">
-          
+          به عنوان یک توسعه‌دهنده فول‌استک، من در پیاده‌سازی مدل‌های هوش مصنوعی و طراحی وب‌سایت‌های مدرن و زیبا تخصص دارم. با من همکاری کنید تا پروژه شما را به واقعیت تبدیل کنم.
         </p>
         <Link
           href="/portfolio"

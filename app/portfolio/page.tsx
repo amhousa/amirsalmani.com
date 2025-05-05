@@ -306,7 +306,7 @@ export default function Portfolio() {
       </div>
 
       {/* Projects Grid - Updated padding-top */}
-      <div className="container mx-auto px-4 pt-[120px] sm:pt-[185px] pb-20">
+      <div className="container mx-auto px-4 pt-[185px] sm:pt-[120px] pb-20">
         {" "}
         {/* Adjusted padding-top */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

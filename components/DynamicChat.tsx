@@ -228,7 +228,7 @@ persian name: ربات امیر سلمانی
   }
 
   const ChatContent = () => (
-    <div className={`flex flex-col ${fullScreen ? "h-full" : "h-[500px]"}`}>
+    <div className={`flex flex-col ${fullScreen ? "h-full" : "h-[500px]"}`} style={{ justifyContent: 'flex-end', minHeight: 0, height: '100%' }}>
       {/* Header */}
       <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/20">
         <h3 className="font-bold text-brand-primary">{title}</h3>
@@ -252,7 +252,7 @@ persian name: ربات امیر سلمانی
       </div>
 
       {/* Messages */}
-      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
         {messages.length === 0 ? (
           <div className="text-center text-gray-400 mt-8">
             <MessageSquare className="w-12 h-12 mx-auto mb-3 text-brand-primary/50" />
@@ -300,22 +300,16 @@ persian name: ربات امیر سلمانی
       {/* Input */}
       <form onSubmit={handleSubmit} className="p-4 border-t border-white/10 bg-black/20">
         <div className="flex items-end gap-2">
-          <textarea
-            ref={inputRef}
+          <input
             id="chat-message"
             name="chat-message"
+            type="text"
             value={input}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
+            onChange={e => setInput(e.target.value)}
             placeholder={placeholder}
-            className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white resize-none min-h-[44px] focus:outline-none focus:border-brand-primary"
-            rows={1}
-            style={{ overflow: "hidden" }}
-            dir="auto"
-            inputMode="text"
-            autoCorrect="on"
-            autoCapitalize="sentences"
-            spellCheck={true}
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-primary"
+            autoComplete="off"
+            autoFocus
           />
           <button
             type="submit"

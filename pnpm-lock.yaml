@@ -174,7 +174,7 @@ importers:
         specifier: ^0.4.4
         version: 0.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nodemailer:
-        specifier: ^6.10.0
+        specifier: ^6.10.1
         version: 6.10.1
       path:
         specifier: ^0.12.7

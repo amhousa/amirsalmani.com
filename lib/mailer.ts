@@ -16,7 +16,7 @@ export async function sendEmail({ to, toName, subject, html, text }: SendEmailPa
   const recipients = [new Recipient(to, toName)]
 
   const emailParams = new EmailParams()
-    .setFrom(process.env.MAIL_FROM || "")
+    .setFrom(process.env.MAIL_FROM || "info@amirsalmani.com")
     .setFromName("امیرحسین سلمانی")
     .setRecipients(recipients)
     .setSubject(subject)

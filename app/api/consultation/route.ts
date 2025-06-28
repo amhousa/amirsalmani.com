@@ -5,7 +5,7 @@ import nodemailer from "nodemailer"
 export async function POST(request: Request) {
   const supabase = createServerClient()
   const body = await request.json()
-  const { phoneNumber, email, name } = body
+  const { phoneNumber, email, name, title, date, time, duration, type } = body
 
   try {
     // Get user session if exists
@@ -40,14 +40,20 @@ export async function POST(request: Request) {
     }
 
     // Store consultation request in database
+    // Provide defaults for required fields if not present
+    const consultationData = {
+      user_id: userId,
+      title: title || "درخواست مشاوره",
+      date: date || new Date().toISOString().slice(0, 10),
+      time: time || new Date().toISOString().slice(11, 16),
+      duration: duration || 30,
+      type: type || "general",
+      status: "pending",
+      // Optionally store extra info in notes or add custom columns if needed
+      notes: `name: ${name || ""}, phone: ${phoneNumber || ""}, email: ${email || ""}`,
+    }
     const { error: consultationError } = await supabase.from("consultations").insert([
-      {
-        user_id: userId,
-        phone_number: phoneNumber,
-        email,
-        name,
-        status: "pending",
-      },
+      consultationData
     ])
 
     if (consultationError) throw consultationError

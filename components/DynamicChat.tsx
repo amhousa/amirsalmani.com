@@ -311,6 +311,11 @@ persian name: ربات امیر سلمانی
             className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white resize-none min-h-[44px] focus:outline-none focus:border-brand-primary"
             rows={1}
             style={{ overflow: "hidden" }}
+            dir="auto"
+            inputMode="text"
+            autoCorrect="on"
+            autoCapitalize="sentences"
+            spellCheck={true}
           />
           <button
             type="submit"

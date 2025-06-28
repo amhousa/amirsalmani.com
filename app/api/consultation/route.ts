@@ -1,64 +1,15 @@
+
 import { NextResponse } from "next/server"
-import { createServerClient } from "@/lib/supabase-server"
 import nodemailer from "nodemailer"
 
 export async function POST(request: Request) {
-  const supabase = createServerClient()
-  const body = await request.json()
-  const { phoneNumber, email, name, title, date, time, duration, type } = body
-
   try {
-    // Get user session if exists
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-    let userId = session?.user?.id
-
-    // If no session, check if user exists by email
-    if (!userId && email) {
-      const { data: existingUser } = await supabase.from("profiles").select("id").eq("email", email).single()
-
-      if (existingUser) {
-        userId = existingUser.id
-      } else {
-        // Create new user profile
-        const { data: newUser, error: createError } = await supabase
-          .from("profiles")
-          .insert([
-            {
-              email,
-              phone: phoneNumber,
-              full_name: name,
-            },
-          ])
-          .select()
-          .single()
-
-        if (createError) throw createError
-        userId = newUser.id
-      }
+    const body = await request.json();
+    const { phoneNumber } = body;
+    if (!phoneNumber) {
+      return NextResponse.json({ error: "Phone number is required" }, { status: 400 });
     }
 
-    // Store consultation request in database
-    // Provide defaults for required fields if not present
-    const consultationData = {
-      user_id: userId,
-      title: title || "درخواست مشاوره",
-      date: date || new Date().toISOString().slice(0, 10),
-      time: time || new Date().toISOString().slice(11, 16),
-      duration: duration || 30,
-      type: type || "general",
-      status: "pending",
-      // Optionally store extra info in notes or add custom columns if needed
-      notes: `name: ${name || ""}, phone: ${phoneNumber || ""}, email: ${email || ""}`,
-    }
-    const { error: consultationError } = await supabase.from("consultations").insert([
-      consultationData
-    ])
-
-    if (consultationError) throw consultationError
-
-    // Send email notification
     const transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
       port: Number.parseInt(process.env.MAIL_PORT || "465"),
@@ -67,27 +18,19 @@ export async function POST(request: Request) {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD,
       },
-    })
+    });
 
     await transporter.sendMail({
       from: `"Consultation Request" <${process.env.MAIL_FROM}>`,
       to: process.env.MAIL_TO,
       subject: "New Consultation Request",
-      html: `
-        <h1>New Consultation Request</h1>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Phone Number:</strong> ${phoneNumber}</p>
-        <p><strong>Email:</strong> ${email}</p>
-      `,
-    })
+      html: `<h1>New Consultation Request</h1><p><strong>Phone Number:</strong> ${phoneNumber}</p>`,
+    });
 
-    return NextResponse.json({
-      message: "Request submitted successfully",
-      userId,
-    })
+    return NextResponse.json({ message: "Request submitted successfully" });
   } catch (error) {
-    console.error("Consultation request error:", error)
-    return NextResponse.json({ error: "Failed to submit request" }, { status: 500 })
+    console.error("Consultation request error:", error);
+    return NextResponse.json({ error: "Failed to submit request" }, { status: 500 });
   }
 }
 

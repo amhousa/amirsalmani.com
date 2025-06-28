@@ -9,7 +9,7 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     if (seconds === 0) {
-      router.push("/dashboard")
+      router.push("/login")
     }
     const timer = setTimeout(() => setSeconds((s) => s - 1), 1000)
     return () => clearTimeout(timer)
@@ -18,8 +18,8 @@ export default function AuthCallbackPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-dark-bg text-white">
       <div className="bg-brand-primary text-black rounded-xl px-8 py-6 shadow-lg text-center">
-        <h1 className="text-2xl font-bold mb-2">حساب کاربری شما با موفقیت فعال شد!</h1>
-        <p className="mb-4">در حال انتقال به داشبورد... ({seconds})</p>
+        <h1 className="text-2xl font-bold mb-2">حساب کاربری شما با موفقیت تایید شد، لطفا یکبار اطلاعات ورود خود را وارد کنید.</h1>
+        <p className="mb-4">در حال انتقال به صفحه ورود... ({seconds})</p>
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
             className="h-2 bg-brand-primary transition-all duration-1000"

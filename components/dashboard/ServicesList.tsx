@@ -136,7 +136,7 @@ export default function ServicesList({ services }: ServicesListProps) {
                     )}
 
                     {service.status === "expired" && (
-                      <button className="px-4 py-2 bg-brand-primary text-black rounded-lg text-sm font-medium">
+                      <button className="px-4 py-2 bg-brand-primary text-black rounded-xl text-sm font-medium">
                         تمدید
                       </button>
                     )}
@@ -168,7 +168,7 @@ export default function ServicesList({ services }: ServicesListProps) {
             <Package className="w-12 h-12 text-gray-500 mx-auto mb-4" />
             <h3 className="text-xl font-bold mb-2">هیچ سرویسی یافت نشد</h3>
             <p className="text-gray-400 mb-6">در حال حاضر هیچ سرویسی با معیارهای جستجوی شما وجود ندارد.</p>
-            <button className="px-6 py-2 bg-brand-primary text-black rounded-lg font-medium">خرید سرویس جدید</button>
+            <button className="px-6 py-2 bg-brand-primary text-black rounded-xl font-medium">خرید سرویس جدید</button>
           </div>
         )}
       </motion.div>

@@ -86,7 +86,7 @@ export default function OrdersList({ orders }: OrdersListProps) {
                       </div>
                       <div className="flex flex-wrap gap-2 mt-2">
                         {order.items.map((item: any, idx: number) => (
-                          <span key={idx} className="text-xs bg-white/10 px-2 py-1 rounded-lg">
+                          <span key={idx} className="text-xs bg-white/10 px-2 py-1 rounded-xl">
                             {item.name}
                           </span>
                         ))}

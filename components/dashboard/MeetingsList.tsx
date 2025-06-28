@@ -109,7 +109,7 @@ export default function MeetingsList({ meetings }: MeetingsListProps) {
                         href={meeting.meeting_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 bg-brand-primary text-black rounded-lg text-sm font-medium"
+                        className="px-4 py-2 bg-brand-primary text-black rounded-xl text-sm font-medium"
                       >
                         ورود به جلسه
                       </a>

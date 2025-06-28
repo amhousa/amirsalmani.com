@@ -137,13 +137,13 @@ export default function ConsultationsList({ consultations }: ConsultationsListPr
                     </span>
 
                     {consultation.status === "scheduled" && (
-                      <button className="px-4 py-2 bg-brand-primary text-black rounded-lg text-sm font-medium">
+                      <button className="px-4 py-2 bg-brand-primary text-black rounded-xl text-sm font-medium">
                         پیوستن
                       </button>
                     )}
 
                     {consultation.status === "pending" && (
-                      <button className="px-4 py-2 bg-white/10 text-white hover:bg-white/20 rounded-lg text-sm font-medium">
+                      <button className="px-4 py-2 bg-white/10 text-white hover:bg-white/20 rounded-xl text-sm font-medium">
                         پرداخت
                       </button>
                     )}
@@ -157,7 +157,7 @@ export default function ConsultationsList({ consultations }: ConsultationsListPr
             <Calendar className="w-12 h-12 text-gray-500 mx-auto mb-4" />
             <h3 className="text-xl font-bold mb-2">هیچ مشاوره‌ای یافت نشد</h3>
             <p className="text-gray-400 mb-6">در حال حاضر هیچ مشاوره‌ای با معیارهای جستجوی شما وجود ندارد.</p>
-            <button className="px-6 py-2 bg-brand-primary text-black rounded-lg font-medium">رزرو مشاوره جدید</button>
+            <button className="px-6 py-2 bg-brand-primary text-black rounded-xl font-medium">رزرو مشاوره جدید</button>
           </div>
         )}
       </motion.div>

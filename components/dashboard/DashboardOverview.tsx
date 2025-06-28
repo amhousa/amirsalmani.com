@@ -145,7 +145,7 @@ export default function DashboardOverview({
                 <div className="font-medium">مشاوره طراحی وب</div>
               </div>
               <div className="text-sm text-gray-400 mb-3">فردا، ساعت ۱۵:۰۰</div>
-              <button className="w-full py-2 bg-brand-primary text-black rounded-lg text-sm font-medium">
+              <button className="w-full py-2 bg-brand-primary text-black rounded-xl text-sm font-medium">
                 پیوستن به جلسه
               </button>
             </div>
@@ -156,7 +156,7 @@ export default function DashboardOverview({
                 <div className="font-medium">بررسی پروژه</div>
               </div>
               <div className="text-sm text-gray-400 mb-3">پنج‌شنبه، ساعت ۱۱:۰۰</div>
-              <button className="w-full py-2 bg-white/10 text-white hover:bg-white/20 rounded-lg text-sm font-medium">
+              <button className="w-full py-2 bg-white/10 text-white hover:bg-white/20 rounded-xl text-sm font-medium">
                 یادآوری
               </button>
             </div>

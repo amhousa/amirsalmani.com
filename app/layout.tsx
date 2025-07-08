@@ -15,44 +15,56 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 }
 
-// Import Bon font
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://amirsalmani.com"),
+  
+  // Title & Description
   title: {
-    default: "امیرحسین سلمانی | توسعه‌دهنده فول‌استک",
+    default: "امیرحسین سلمانی | توسعه‌دهنده فول‌استک و متخصص هوش مصنوعی",
     template: "%s | امیرحسین سلمانی",
   },
   description:
     "به دنبال طراحی سایتی حرفه‌ای و مدرن هستید؟ من، امیرحسین سلمانی، توسعه‌دهنده فول‌استک با تخصص در پیاده‌سازی مدل‌های هوش مصنوعی، تحویل سریع پروژه و طراحی‌های زیبا، آماده همکاری با کسب‌وکار شما هستم.",
+    
+  // Keywords (ادغام شده و بهینه)
   keywords: [
+    "امیرحسین سلمانی",
+    "توسعه‌دهنده فول‌استک",
+    "طراحی سایت تهران",
+    "خدمات هوش مصنوعی",
+    "برنامه نویسی وب",
+    "توسعه‌دهنده Next.js",
+    "توسعه‌دهنده Node.js",
     "Amirhossein Salmani",
     "Amir Salmani",
-    "مستر سلمانی",
-    "امیرحسین سلمانی",
-    "طراحی سایت",
-    "دیجیتال مارکتینگ",
-    "خدمات هوش مصنوعی",
-    "طراحی سایت تهران",
-    "توسعه‌دهنده فول‌استک",
-    "برنامه‌نویسی وب",
-    "توسعه موبایل",
-    "نمونه کار",
-    "توسعه‌دهنده وب",
-    "برنامه‌نویسی",
+    "Full-Stack Developer",
+    "AI Services",
+    "Web Development",
   ],
+
+  // Authorship (ادغام شده و کامل)
   authors: [{ name: "امیرحسین سلمانی", url: "https://amirsalmani.com" }],
   creator: "امیرحسین سلمانی",
   publisher: "امیرحسین سلمانی",
+  
+  // General
+  applicationName: "امیرحسین سلمانی",
+  generator: "Next.js",
+  referrer: "origin-when-cross-origin",
+  category: "technology",
+  classification: "Web Development, Full Stack Development, AI Services",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
+
+  // Canonical & Robots
   alternates: {
     canonical: "https://amirsalmani.com",
     languages: {
       "fa-IR": "https://amirsalmani.com",
+      "en": "https://amirsalmani.com/en"
     },
   },
   robots: {
@@ -66,6 +78,8 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+
+  // Icons & Manifest
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
@@ -77,18 +91,18 @@ export const metadata: Metadata = {
     other: [{ rel: "mask-icon", url: "/icon.svg", color: "#00DC82" }],
   },
   manifest: "/site.webmanifest",
+
+  // Social Media (Open Graph & Twitter)
   openGraph: {
     type: "website",
     locale: "fa_IR",
-    alternateLocale: "en_US",
     url: "https://amirsalmani.com",
     siteName: "امیرحسین سلمانی",
     title: "امیرحسین سلمانی | توسعه‌دهنده فول‌استک",
-    description:
-      "به دنبال طراحی سایتی حرفه‌ای و مدرن هستید؟ من، امیرحسین سلمانی، توسعه‌دهنده فول‌استک با تخصص در پیاده‌سازی مدل‌های هوش مصنوعی، تحویل سریع پروژه و طراحی‌های زیبا، آماده همکاری با کسب‌وکار شما هستم.",
+    description: "توسعه‌دهنده فول‌استک با تخصص در هوش مصنوعی، آماده همکاری برای ساخت وب‌سایت‌های حرفه‌ای و مدرن.",
     images: [
       {
-        url: "https://amirsalmani.com/og-image.jpg",
+        url: "/og-image.jpg", // Relative URL is fine if metadataBase is set
         width: 1200,
         height: 630,
         alt: "امیرحسین سلمانی - توسعه‌دهنده فول‌استک",
@@ -98,37 +112,25 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "امیرحسین سلمانی | توسعه‌دهنده فول‌استک",
-    description:
-      "به دنبال طراحی سایتی حرفه‌ای و مدرن هستید؟ من، امیرحسین سلمانی، توسعه‌دهنده فول‌استک با تخصص در پیاده‌سازی مدل‌های هوش مصنوعی، تحویل سریع پروژه و طراحی‌های زیبا، آماده همکاری با کسب‌وکار شما هستم.",
-    images: ["https://amirsalmani.com/x-image.jpg"],
+    description: "توسعه‌دهنده فول‌استک با تخصص در هوش مصنوعی، آماده همکاری برای ساخت وب‌سایت‌های حرفه‌ای و مدرن.",
+    images: ["/x-image.jpg"], // Relative URL is fine
     creator: "@amhousa",
-    creatorId: "1467726470533754880",
   },
+  
+  // Verification (کدهای خود را اینجا جایگزین کنید)
   verification: {
-    google: "your-google-site-verification",
-    yandex: "your-yandex-verification",
+    google: "YOUR-GOOGLE-VERIFICATION-CODE",
+    yandex: "YOUR-YANDEX-VERIFICATION-CODE",
     other: {
-      "norton-safeweb-site-verification":
-        "21BJFR818NHI04SL5SVNKZ2WAFQE53-ZMLANNST-M26A3EQYXDYRYKUN961FDSBCH5-EC1J0S9173CUYXAIHZA3LL83YPJ3G5B-JDXTHB6TQH791K6J99KI0B9OB5MSX",
+      "norton-safeweb-site-verification": "YOUR-NORTON-CODE",
     },
   },
+  
+  // PWA & Mobile
   appleWebApp: {
     capable: true,
     title: "امیرحسین سلمانی",
     statusBarStyle: "black-translucent",
-  },
-  applicationName: "امیرحسین سلمانی",
-  category: "technology",
-  classification: "Web Development, Full Stack Development, AI Services",
-  referrer: "origin-when-cross-origin",
-  generator: "Next.js",
-  applicationName: "امیرحسین سلمانی",
-  keywords: ["طراحی سایت", "برنامه نویسی", "هوش مصنوعی", "دیجیتال مارکتینگ"],
-  authors: [{ name: "امیرحسین سلمانی" }],
-  creator: "امیرحسین سلمانی",
-  publisher: "امیرحسین سلمانی",
-  other: {
-    "google-site-verification": "your-google-verification-code",
   },
 }
 

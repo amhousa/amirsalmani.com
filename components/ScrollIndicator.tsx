@@ -9,7 +9,7 @@ export default function ScrollIndicator() {
     const updateScrollProgress = () => {
       const scrollPx = document.documentElement.scrollTop
       const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight
-      const scrolled = `${(scrollPx / winHeightPx) * 100}%`
+      // const scrolled = `${(scrollPx / winHeightPx) * 100}%`
       setScrollProgress((scrollPx / winHeightPx) * 100)
     }
 

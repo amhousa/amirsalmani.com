@@ -16,10 +16,10 @@ const BottomNavbar = () => {
   const navItems = [
     { href: "/", icon: Home, label: "خانه" },
     { href: "/about", icon: User, label: "درباره" },
-    { href: "/services", icon: Briefcase, label: "خدمات" },
     { href: "/portfolio", icon: Image, label: "نمونه کارها" },
-    { href: "/blog", icon: Newspaper, label: "وبلاگ" },
+    { href: "/services", icon: Briefcase, label: "خدمات" },
     { href: "/cooperation", icon: Handshake, label: "همکاری" },
+    { href: "/blog", icon: Newspaper, label: "وبلاگ" },
     // { href: "/contact", icon: Mail, label: "تماس" },
   ]
 

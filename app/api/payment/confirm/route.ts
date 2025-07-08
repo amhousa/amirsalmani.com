@@ -25,6 +25,7 @@ const userEmailTemplate = (data: {
       margin: 0;
       padding: 0;
       width: 100%;
+      color: #ffffff;
     }
     
     .container {

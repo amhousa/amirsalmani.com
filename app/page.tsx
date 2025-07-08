@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import ProfilePhoto from "@/components/ProfilePhoto"
 import GitHubButton from "@/components/GitHubButton"
-import LanguageSwitcher from "@/components/LanguageSwitcher" // Import the language switcher
+import LanguageSwitcher from "@/components/LanguageSwitcher"
 
 export default function Home() {
   return (
@@ -17,20 +17,21 @@ export default function Home() {
 
       <div className="z-20 flex flex-col items-center justify-center p-4 text-center">
         <ProfilePhoto src="/images/about/me.webp" alt="امیرحسین سلمانی" size={150} className="mb-4" />
-        <h1 className="mb-2 text-4xl font-bold text-brand-purple">امیرحسین سلمانی</h1>
-        <p className="mb-4 text-xl text-default">توسعه‌دهنده فول‌استک، تهران</p>
-        <p className="mb-4 max-w-md text-default">
-          به عنوان یک توسعه‌دهنده فول‌استک، من در پیاده‌سازی مدل‌های هوش مصنوعی و طراحی وب‌سایت‌های مدرن و زیبا تخصص دارم. با من همکاری کنید تا پروژه شما را به واقعیت تبدیل کنم.
+        <h1 className="mb-2 text-4xl font-bold text-brand-primary">امیرحسین سلمانی</h1>
+        <p className="mb-4 text-xl text-default">توسعه‌دهنده فول‌استک و متخصص هوش مصنوعی</p>
+        <p className="mb-4 max-w-md text-default text-justify">
+          من به کسب‌وکارها کمک می‌کنم تا با ساخت وب‌اپلیکیشن‌های هوشمند و سریع، از رقبای خود متمایز شوند. با ترکیب کدنویسی مدرن و قدرت هوش مصنوعی، ایده‌های شما را به محصولات دیجیتال قدرتمند و کاربرپسند تبدیل می‌کنم.
         </p>
         <Link
           href="/portfolio"
-          className="mb-4 rounded-full bg-brand-purple px-8 py-3 text-white transition-colors hover:bg-opacity-90"
+          className="mb-4 bg-brand-purple px-8 py-3 text-white transition-colors hover:bg-opacity-90 rounded-full object-cover border-2 border-brand-primary/30"
         >
-          مشاهده نمونه کارها
+          پروژه های موفق من
         </Link>
 
         {/* Technology Logos Section */}
         <div className="flex items-center justify-center gap-6">
+          <p className="max-w-md text-sm">تکنولوژی های مورد استفاده:</p>
           <div className="flex flex-wrap items-center justify-center gap-6">
             {/* GitHub Logo */}
             <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="group">

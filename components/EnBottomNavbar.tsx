@@ -1,30 +1,30 @@
 "use client"
 
 import Link from "next/link"
-import { Home, User, Newspaper, Briefcase, Mail, Handshake, ImageIcon } from "lucide-react"
+import { Home, User, Newspaper, Briefcase, Mail, Handshake, Image } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
-const EnBottomNavbar = () => {
+const BottomNavbar = () => {
   const pathname = usePathname()
 
   // Hide bottom navigation in dashboard
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/en/dashboard")) {
+  if (pathname.startsWith("/dashboard")) {
     return null
   }
 
   const navItems = [
-    { href: "/en", icon: Home, label: "Home" },
-    { href: "/en/about", icon: User, label: "About" },
-    { href: "/en/services", icon: Briefcase, label: "Services" },
-    { href: "/en/portfolio", icon: ImageIcon, label: "Portfolio" },
-    { href: "/en/blog", icon: Newspaper, label: "Blog" },
-    { href: "/en/cooperation", icon: Handshake, label: "Cooperation" },
-    { href: "/en/contact", icon: Mail, label: "Contact" },
+    { href: "/", icon: Home, label: "Home" },
+    { href: "/about", icon: User, label: "About" },
+    { href: "/portfolio", icon: Image, label: "Portfolio" },
+    { href: "/services", icon: Briefcase, label: "Services" },
+    { href: "/cooperation", icon: Handshake, label: "Cooperation" },
+    { href: "/blog", icon: Newspaper, label: "Blog" },
+    // { href: "/contact", icon: Mail, label: "تماس" },
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[#050301]/80 backdrop-blur-md border-t border-white/5 pb-3">
+    <nav dir="ltr" className="fixed bottom-0 left-0 right-0 bg-[#050301]/80 backdrop-blur-md rounded-2xl border border-gray-800 px-1 py-1 mx-2 mb-1">
       <div className="flex justify-around items-center h-14">
         {navItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href
@@ -47,4 +47,5 @@ const EnBottomNavbar = () => {
   )
 }
 
-export default EnBottomNavbar
+export default BottomNavbar
+

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 import { Copy, ExternalLink, Loader2, CreditCard, Wallet, Check, ArrowLeft } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
+// ... (اینترفیس FormData و تایپ PaymentMethod بدون تغییر باقی می‌مانند) ...
 interface FormData {
   firstName: string
   lastName: string
@@ -14,21 +15,19 @@ interface FormData {
   website: string
   jobTitle: string
 }
-
 type PaymentMethod = "crypto" | "card"
+
 
 export default function Payment() {
   const searchParams = useSearchParams()
   const packageName = searchParams.get("package")
-  const amount = searchParams.get("amount") // ETH amount
   const usdAmount = searchParams.get("usd")
 
-  // Convert USD to Tomans (assuming 1 USD = 50,000 Tomans - you should update this rate)
   const baseAmountTomans = Number(usdAmount) * 91000
 
   const [step, setStep] = useState(1)
   const [copied, setCopied] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(900) // 15 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(900)
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -44,15 +43,73 @@ export default function Payment() {
   const [discountCode, setDiscountCode] = useState("")
   const [appliedDiscount, setAppliedDiscount] = useState(0)
 
-  // Example Ethereum address - replace with your actual address
-  const ethAddress = "0xCA20e9adF87541bAdc8a3e5d2f928128ea4b8d3B"
-  // Example card number - replace with your actual card info
+  // --- تغییرات اصلی ---
+  const [tonPriceInTomans, setTonPriceInTomans] = useState<number>(0)
+  const [tonAmount, setTonAmount] = useState<number>(0)
+  const [isPriceLoading, setIsPriceLoading] = useState(true)
+
+  // خواندن آدرس کیف پول از فایل .env.local
+  const tonAddress = process.env.NEXT_PUBLIC_TON_WALLET_ADDRESS || ""
+  // --- پایان تغییرات ---
+
   const cardInfo = {
     number: "6362-1410-0836-8814",
     holder: "امیرحسین سلمانی",
     bank: "بانک آینده",
-    image: "/images/payment/card.webp", // Add your card image to public/images/payment
+    image: "/images/payment/card.webp",
   }
+
+  // --- دریافت قیمت از CoinMarketCap ---
+  useEffect(() => {
+    // اطمینان از وجود آدرس کیف پول قبل از ادامه
+    if (!tonAddress) {
+      console.error("Toncoin wallet address is not set in .env.local")
+      setError("آدرس کیف پول میزبان تنظیم نشده است.")
+      setIsPriceLoading(false)
+      return
+    }
+
+    const fetchTonPrice = async () => {
+      setIsPriceLoading(true)
+      try {
+        // برای این API نیاز به ساخت یک Endpoint در Next.js دارید تا کلید API شما در سمت کلاینت لو نرود
+        // این یک route handler در مسیر /api/cmc-price خواهد بود
+        const response = await fetch('/api/get-price')
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to fetch price from server");
+        }
+        const data = await response.json();
+        setTonPriceInTomans(data.price);
+
+      } catch (error: any) {
+        console.error("Error fetching Toncoin price:", error)
+        setError(error.message);
+      } finally {
+        setIsPriceLoading(false)
+      }
+    }
+    fetchTonPrice()
+  }, [tonAddress]) // اجرای مجدد در صورت تغییر آدرس
+
+  const calculateFinalAmount = () => {
+    let amount = baseAmountTomans
+    if (paymentMethod === "crypto") {
+      amount = amount * 0.9 // 10% crypto discount
+    }
+    if (appliedDiscount > 0) {
+      amount = amount * (1 - appliedDiscount / 100)
+    }
+    return Math.round(amount)
+  }
+
+  useEffect(() => {
+    if (tonPriceInTomans > 0) {
+      const finalTomans = calculateFinalAmount()
+      const calculatedTonAmount = finalTomans / tonPriceInTomans
+      setTonAmount(Number(calculatedTonAmount.toFixed(4)))
+    }
+  }, [tonPriceInTomans, appliedDiscount, paymentMethod, baseAmountTomans])
 
   useEffect(() => {
     if (timeLeft > 0 && step === 2) {
@@ -72,8 +129,7 @@ export default function Payment() {
       await navigator.clipboard.writeText(text)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +138,7 @@ export default function Payment() {
   }
 
   const validateForm = () => {
+    // ... (بقیه کدهای این بخش بدون تغییر باقی می‌ماند)
     if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email) {
       setError("لطفاً تمام فیلدهای ضروری را پر کنید")
       return false
@@ -98,7 +155,7 @@ export default function Payment() {
   }
 
   const applyDiscountCode = () => {
-    if (discountCode.toUpperCase() === "NOWRUZ1404") {
+    if (discountCode.toUpperCase() === "ITDAY20") {
       setAppliedDiscount(20) // 20% discount
       setError("")
     } else {
@@ -107,18 +164,8 @@ export default function Payment() {
     }
   }
 
-  const calculateFinalAmount = () => {
-    let amount = baseAmountTomans
-    if (paymentMethod === "crypto") {
-      amount = amount * 0.9 // 10% crypto discount
-    }
-    if (appliedDiscount > 0) {
-      amount = amount * (1 - appliedDiscount / 100)
-    }
-    return Math.round(amount)
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
+    // ... (بقیه کدهای این بخش بدون تغییر باقی می‌ماند)
     e.preventDefault()
     setError("")
 
@@ -153,6 +200,7 @@ export default function Payment() {
   }
 
   const handlePaymentConfirmation = async () => {
+    // ... (بقیه کدهای این بخش بدون تغییر باقی می‌ماند)
     setLoading(true)
     try {
       const response = await fetch("/api/payment/confirm", {
@@ -216,7 +264,7 @@ export default function Payment() {
                     }`}
                   />
                   <div className={`text-sm ${paymentMethod === "crypto" ? "text-brand-primary" : "text-gray-300"}`}>
-                    ارز دیجیتال
+                    پرداخت با تون‌کوین
                     <span className="block text-xs text-brand-primary/70">۱۰٪ تخفیف</span>
                   </div>
                 </button>
@@ -245,19 +293,38 @@ export default function Payment() {
                 <div className="text-2xl font-bold text-white mb-2">
                   {calculateFinalAmount().toLocaleString()} تومان
                 </div>
+                 {/* --- نمایش مبلغ به تون‌کوین و قیمت لحظه‌ای --- */}
+                {paymentMethod === 'crypto' && !isPriceLoading && tonAmount > 0 && (
+                  <div className="mt-1 text-xs text-gray-400">
+                    <div>
+                      (معادل تقریبی 💎 {tonAmount.toLocaleString('fa-IR')} تون‌کوین)
+                    </div>
+                    <div className="mt-2 opacity-70">
+                      هر تون‌کوین ≈ {tonPriceInTomans.toLocaleString('fa-IR')} تومان
+                    </div>
+                  </div>
+                )}
+                {paymentMethod === 'crypto' && isPriceLoading && (
+                  <div className="flex justify-center items-center gap-2 text-xs text-gray-400">
+                    <Loader2 className="w-3 h-3 animate-spin"/>
+                    <span>در حال دریافت قیمت تون‌کوین...</span>
+                  </div>
+                )}
+                 {/* --- پایان بخش نمایش --- */}
                 {(paymentMethod === "crypto" || appliedDiscount > 0) && (
-                  <div className="text-sm text-gray-400">
+                  <div className="text-sm text-gray-400 mt-2">
                     <span className="line-through">{baseAmountTomans.toLocaleString()} تومان</span>
                     {paymentMethod === "crypto" && (
-                      <span className="text-brand-primary mr-2">۱۰٪ تخفیف ارز دیجیتال</span>
+                      <span className="text-brand-primary mr-2">۱۰٪ تخفیف کریپتو</span>
                     )}
                     {appliedDiscount > 0 && <span className="text-brand-primary mr-2">۲۰٪ تخفیف کد</span>}
                   </div>
                 )}
               </div>
 
-              {/* Discount Code */}
-              <div className="flex gap-2">
+              {/* ... (بقیه کدهای فرم بدون تغییر باقی می‌ماند) ... */}
+               {/* Discount Code */}
+               <div className="flex gap-2">
                 <input
                   type="text"
                   value={discountCode}
@@ -395,9 +462,7 @@ export default function Payment() {
                 <p className="text-gray-300">
                   {paymentMethod === "crypto" ? (
                     <>
-                      لطفاً مبلغ {amount} ETH را به آدرس زیر ارسال کنید.
-                      <br />
-                      <span className="text-sm">معادل ${usdAmount}</span>
+                      لطفاً مبلغ 💎 {tonAmount.toLocaleString('fa-IR')} تون‌کوین را به آدرس زیر واریز کنید.
                     </>
                   ) : (
                     <>لطفاً مبلغ {calculateFinalAmount().toLocaleString()} تومان را به کارت زیر واریز نمایید.</>
@@ -408,10 +473,11 @@ export default function Payment() {
               <div className="bg-dark-bg border border-gray-800 rounded-2xl p-6 mb-8">
                 {paymentMethod === "crypto" ? (
                   <>
+                  {/* --- نمایش اطلاعات پرداخت با تون‌کوین --- */}
                     <div className="flex justify-center mb-6">
                       <img
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=ethereum:${ethAddress}?amount=${amount}`}
-                        alt="QR Code"
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=ton://transfer/${tonAddress}?amount=${Math.round(tonAmount * 1_000_000_000)}`}
+                        alt="Toncoin QR Code"
                         className="w-48 h-48 bg-white p-2 rounded-xl"
                       />
                     </div>
@@ -419,12 +485,12 @@ export default function Payment() {
                     <div className="relative mb-6">
                       <input
                         type="text"
-                        value={ethAddress}
+                        value={tonAddress}
                         readOnly
                         className="w-full bg-black/30 border border-gray-700 rounded-xl px-4 py-3 text-gray-300 font-mono text-sm text-left"
                       />
                       <button
-                        onClick={() => copyToClipboard(ethAddress)}
+                        onClick={() => copyToClipboard(tonAddress)}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                       >
                         <Copy className="w-5 h-5" />
@@ -438,7 +504,8 @@ export default function Payment() {
                   </>
                 ) : (
                   <>
-                    <div className="flex justify-center mb-6">
+                    {/* ... (کد بخش کارت به کارت بدون تغییر) ... */}
+                     <div className="flex justify-center mb-6">
                       <img
                         src={cardInfo.image || "/placeholder.svg"}
                         alt="Bank Card"
@@ -474,6 +541,11 @@ export default function Payment() {
                     <p className="text-2xl font-bold text-white mb-1">
                       {calculateFinalAmount().toLocaleString()} تومان
                     </p>
+                    {paymentMethod === "crypto" && tonAmount > 0 && (
+                        <p className="text-sm text-brand-primary">
+                          💎 {tonAmount.toLocaleString('fa-IR')} TON
+                        </p>
+                    )}
                   </div>
                   <div className="w-full bg-gray-800 h-2 rounded-full mb-4">
                     <div
@@ -486,18 +558,19 @@ export default function Payment() {
                   <p className="text-sm text-gray-300 mb-4">زمان باقی‌مانده: {formatTime(timeLeft)}</p>
                   {paymentMethod === "crypto" && (
                     <a
-                      href={`https://etherscan.io/address/${ethAddress}`}
+                      href={`https://tonscan.org/address/${tonAddress}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center text-brand-primary hover:text-brand-primary/80 transition-colors"
                     >
-                      مشاهده در EtherScan
+                      مشاهده در Tonscan
                       <ExternalLink className="w-4 h-4 mr-1" />
                     </a>
                   )}
                 </div>
               </div>
 
+              {/* ... (بقیه کدهای این بخش بدون تغییر باقی می‌ماند) ... */}
               <div className="space-y-4">
                 <button
                   onClick={handlePaymentConfirmation}
@@ -539,4 +612,3 @@ export default function Payment() {
     </div>
   )
 }
-

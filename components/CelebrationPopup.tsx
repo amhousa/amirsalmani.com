@@ -103,10 +103,12 @@ export default function CelebrationPopup() {
               {/* Text Content */}
               <div className="text-center mb-8">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">
-                  جشنواره <span className="text-brand-primary">تخفیف ۲۰٪</span>
+                  به مناسبت <span className="text-brand-primary">روز فناوری اطلاعات</span>
                 </h2>
-                <p className="text-gray-300 mb-2">به مناسبت سال نو، تمامی خدمات با ۲۰٪ تخفیف ارائه می‌شوند!</p>
-                <p className="text-sm text-gray-400">این پیشنهاد فقط تا پایان فروردین معتبر است.</p>
+                <p className="text-gray-300 mb-2">
+                  برای بزرگداشت قدرت تکنولوژی، تمامی خدمات مشاوره و توسعه وب با <strong>۲۰٪ تخفیف ویژه</strong> ارائه می‌شود.
+                </p>
+                <p className="text-sm text-gray-400">این فرصت ویژه فقط تا پایان تیرماه معتبر است.</p>
               </div>
 
               {/* Buttons */}
@@ -133,7 +135,7 @@ export default function CelebrationPopup() {
               {/* Additional Info */}
               <div className="mt-6 text-center">
                 <p className="text-xs text-gray-400">
-                  کد تخفیف: <span className="text-brand-primary font-mono">NOWRUZ1404</span>
+                  کد تخفیف: <span className="text-brand-primary font-mono">ITDAY20</span>
                 </p>
               </div>
             </div>
@@ -143,4 +145,3 @@ export default function CelebrationPopup() {
     </AnimatePresence>
   )
 }
-

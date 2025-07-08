@@ -1,14 +1,14 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { Analytics } from "@vercel/analytics/react"
+// import { SpeedInsights } from "@vercel/speed-insights/next"
 import ProfilePhoto from "@/components/ProfilePhoto"
 import GitHubButton from "@/components/GitHubButton"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
 
 export default function EnglishHome() {
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center">
+    <div dir="ltr" className="relative flex min-h-screen flex-col items-center justify-center">
       {/* Add the GitHub button only on the main page */}
       <GitHubButton />
 
@@ -17,20 +17,21 @@ export default function EnglishHome() {
 
       <div className="z-20 flex flex-col items-center justify-center p-4 text-center">
         <ProfilePhoto src="/images/about/me.webp" alt="Amirhossein Salmani" size={150} className="mb-4" />
-        <h1 className="mb-2 text-4xl font-bold text-brand-purple">Amirhossein Salmani</h1>
-        <p className="mb-4 text-xl text-default">Full Stack Developer, Tehran</p>
-        <p className="mb-4 max-w-md text-default">
-          Welcome to my personal website. I am an experienced developer in various web and mobile technologies.
+        <h1 className="mb-2 text-4xl font-bold text-brand-primary">Amirhossein Salmani</h1>
+        <p className="mb-4 text-xl text-default">Full-Stack Developer and AI Specialist</p>
+        <p className="mb-4 max-w-md text-default text-justify">
+        I help businesses stand out from their competition by building smart and fast web applications. By combining modern coding with the power of artificial intelligence, I turn your ideas into powerful and user-friendly digital products.
         </p>
         <Link
-          href="/en/portfolio"
-          className="mb-4 rounded-full bg-brand-purple px-8 py-3 text-white transition-colors hover:bg-opacity-90"
+          href="/portfolio"
+          className="mb-4 bg-brand-purple px-8 py-3 text-white transition-colors hover:bg-opacity-90 rounded-full object-cover border-2 border-brand-primary/30"
         >
-          View Portfolio
+          My Successful Projects
         </Link>
 
         {/* Technology Logos Section */}
         <div className="flex items-center justify-center gap-6">
+          <p className="max-w-md text-sm">Tech Stack:</p>
           <div className="flex flex-wrap items-center justify-center gap-6">
             {/* GitHub Logo */}
             <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="group">
@@ -89,8 +90,8 @@ export default function EnglishHome() {
           </div>
         </div>
       </div>
-      <Analytics />
-      <SpeedInsights />
+      {/* <Analytics />
+      <SpeedInsights /> */}
     </div>
   )
 }

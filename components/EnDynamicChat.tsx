@@ -22,13 +22,13 @@ interface DynamicChatProps {
 
 export default function EnDynamicChat({
   initialSystemPrompt = `Provide information and assistance related to amirsalmani.com, including its purpose, services, and content, while maintaining a professional and approachable tone, and direct users to the Contact page for inquiries outside the scope of the website‛s content.
-english name: Amir Salmani Dev Bot
-persian name: ربات امیر سلمانی
+english name: amhousa
+persian name: امحوسا
 # Steps
 
 1. **Understand the Query**: Determine the nature of the user‛s inquiry to provide a relevant response.
 2. **Respond Based on Website Content**: If the query pertains to the website‛s sections (Home, About, Portfolio, Blog, Contact), provide accurate and concise information.
-3. **Direct to Contact Page**: For queries outside the scope of the website‛s content, politely suggest contacting Amir Salmani directly via the Contact page.
+3. **Direct to Contact Page**: For queries outside the scope of the website‛s content, politely suggest contacting Amirhossein Salmani directly via the Contact page.
 4. **Maintain Professional Tone**: Ensure all responses are friendly, approachable, and professional.
 
 # Output Format
@@ -40,15 +40,15 @@ persian name: ربات امیر سلمانی
 
 ### Example 1
 **Query**: What is the purpose of amirsalmani.com?
-**Response**: amirsalmani.com is a platform showcasing Amir Salmani‛s portfolio in web development and technology insights.
+**Response**: amirsalmani.com is a platform showcasing Amirhossein Salmani‛s portfolio in web development and technology insights.
 
 ### Example 2
-**Query**: How can I get in touch with Amir Salmani for a custom web development project?
-**Response**: For inquiries about custom projects or services not listed on the website, please visit the Contact page to reach out directly to Amir Salmani.
+**Query**: How can I get in touch with Amirhossein Salmani for a custom web development project?
+**Response**: For inquiries about custom projects or services not listed on the website, please visit the Contact page to reach out directly to Amirhossein Salmani.
 
 ### Example 3
 **Query**: What are the key sections of amirsalmani.com?
-**Response**: The key sections of amirsalmani.com include Home, About, Portfolio, Blog, and Contact, each providing unique insights into Amir Salmani‛s work and services.
+**Response**: The key sections of amirsalmani.com include Home, About, Portfolio, Blog, and Contact, each providing unique insights into Amirhossein Salmani‛s work and services.
 
 # Notes
 
@@ -244,7 +244,7 @@ persian name: ربات امیر سلمانی
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
           <div className="text-center text-gray-400 mt-8">
-            <MessageSquare className="w-12 h-12 mx-auto mb-3 text-brand-primary/50" />
+            <img src="/images/astronaut.webp" className="w-10 h-10" />
             <p>How can I help you today?</p>
           </div>
         ) : (
@@ -328,7 +328,7 @@ persian name: ربات امیر سلمانی
       {/* Chat Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 left-4 z-50 w-12 h-12 rounded-full bg-brand-primary text-black shadow-lg flex items-center justify-center hover:bg-brand-primary-dark transition-colors duration-300"
+        className="fixed bottom-20 right-4 z-50 w-12 h-12 rounded-full bg-brand-primary text-black shadow-lg flex items-center justify-center hover:bg-brand-primary-dark transition-colors duration-300"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         initial={{ opacity: 0, y: 20 }}
@@ -343,6 +343,7 @@ persian name: ربات امیر سلمانی
         {isOpen && (
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            dir="ltr"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

@@ -22,6 +22,18 @@ interface Project {
 
 const projects: Project[] = [
   {
+    id: 0,
+    title: "Dev tools",
+    image: "/images/portfolio/dev-mode.webp",
+    description: "My personal portfolio showcasing my projects and skills.",
+    highlights: ["Responsive Design", "Modern UI", "Performance Optimized", "SEO Friendly"],
+    fullViewUrl: "https://dev.amirsalmani.com",
+    category: "Web Application",
+    tags: ["Next.js", "Tailwind CSS", "TypeScript"],
+    date: "1404/03/14",
+    client: "Amir Salmani",
+  },
+  {
     id: 1,
     title: "Sheriff - FACILITY CONTROL SYSTEM",
     image: "/images/portfolio/sheriff.webp",

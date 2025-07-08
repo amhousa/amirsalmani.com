@@ -14,17 +14,17 @@ const BottomNavbar = () => {
   }
 
   const navItems = [
-    { href: "/", icon: Home, label: "Home" },
-    { href: "/about", icon: User, label: "About" },
-    { href: "/portfolio", icon: Image, label: "Portfolio" },
-    { href: "/services", icon: Briefcase, label: "Services" },
-    { href: "/cooperation", icon: Handshake, label: "Cooperation" },
-    { href: "/blog", icon: Newspaper, label: "Blog" },
+    { href: "/en", icon: Home, label: "Home" },
+    { href: "#", icon: User, label: "About" },
+    { href: "#", icon: Image, label: "Portfolio" },
+    { href: "#", icon: Briefcase, label: "Services" },
+    { href: "#", icon: Handshake, label: "Cooperation" },
+    { href: "#", icon: Newspaper, label: "Blog" },
     // { href: "/contact", icon: Mail, label: "تماس" },
   ]
 
   return (
-    <nav dir="ltr" className="fixed bottom-0 left-0 right-0 bg-[#050301]/80 backdrop-blur-md rounded-2xl border border-gray-800 px-1 py-1 mx-2 mb-1">
+    <nav dir="ltr" className="fixed bottom-0 left-0 right-0 bg-[#050301]/80 backdrop-blur-md rounded-2xl border border-gray-800 px-1 py-1 mx-2 mb-1 z-10">
       <div className="flex justify-around items-center h-14">
         {navItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href

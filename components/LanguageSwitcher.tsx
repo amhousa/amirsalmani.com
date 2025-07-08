@@ -21,12 +21,12 @@ const languages: Language[] = [
     flag: "/images/flags/ir.svg",
     dir: "rtl",
   },
-  {
-    code: "en",
-    name: "English",
-    flag: "/images/flags/us.svg",
-    dir: "ltr",
-  },
+  // {
+  //   code: "en",
+  //   name: "English",
+  //   flag: "/images/flags/us.svg",
+  //   dir: "ltr",
+  // },
 ]
 
 export default function LanguageSwitcher() {

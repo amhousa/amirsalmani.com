@@ -1,19 +1,19 @@
 import "../globals.css"
 import type { Metadata, Viewport } from "next"
-import { Vazirmatn } from "next/font/google"
+// import { Vazirmatn } from "next/font/google"
 import EnBottomNavbar from "@/components/EnBottomNavbar"
 import MovingBackground from "@/components/MovingBackground"
 import type React from "react"
 // import CelebrationPopup from "@/components/CelebrationPopup"
 import { Toaster } from "sonner"
 import SessionTracker from "@/components/SessionTracker"
-import EnDynamicChat from "@/components/EnDynamicChat"
+// import EnDynamicChat from "@/components/EnDynamicChat"
 
-const vazirmatn = Vazirmatn({
-  subsets: ["latin"],
-  display: "swap",
-  preload: true,
-})
+// const vazirmatn = Vazirmatn({
+//   subsets: ["latin"],
+//   display: "swap",
+//   preload: true,
+// })
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://amirsalmani.com"),
+  metadataBase: new URL("https://amirsalmani.com/en"),
   title: {
     default: "Amirhossein Salmani | Full Stack Developer",
     template: "%s | Amirhossein Salmani",
@@ -110,45 +110,45 @@ export default function EnglishLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" dir="ltr" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-        {/* Schema.org JSON-LD */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Amirhossein Salmani",
-              url: "https://amirsalmani.com/en",
-              image: "https://amirsalmani.com/images/about/me.svg",
-              sameAs: [
-                "https://github.com/amhousa",
-                "https://linkedin.com/in/amirhosseinsalmani",
-                "https://x.com/amhousa",
-              ],
-              jobTitle: "Full Stack Developer",
-              worksFor: {
-                "@type": "Organization",
-                name: "Amirhossein Salmani Development Team",
-              },
-              description: "Full Stack Developer specializing in AI model implementation",
-            }),
-          }}
-        />
-      </head>
-      <body className={`${vazirmatn.className} bg-[#050301] text-dark-text`}>
+    // <html lang="en" dir="ltr" className="dark">
+    //   <head>
+    //     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    //     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+    //     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    //     {/* Schema.org JSON-LD */}
+    //     <script
+    //       type="application/ld+json"
+    //       dangerouslySetInnerHTML={{
+    //         __html: JSON.stringify({
+    //           "@context": "https://schema.org",
+    //           "@type": "Person",
+    //           name: "Amirhossein Salmani",
+    //           url: "https://amirsalmani.com/en",
+    //           image: "https://amirsalmani.com/images/about/me.svg",
+    //           sameAs: [
+    //             "https://github.com/amhousa",
+    //             "https://linkedin.com/in/amirhosseinsalmani",
+    //             "https://x.com/amhousa",
+    //           ],
+    //           jobTitle: "Full Stack Developer",
+    //           worksFor: {
+    //             "@type": "Organization",
+    //             name: "Amirhossein Salmani Development Team",
+    //           },
+    //           description: "Full Stack Developer specializing in AI model implementation",
+    //         }),
+    //       }}
+    //     />
+    //   </head>
+      <main dir="ltr" className={`bg-[#050301] text-dark-text`}>
         <Toaster position="top-center" expand={true} richColors />
         <MovingBackground />
         {/* <CelebrationPopup /> */}
         <SessionTracker />
         <main className="min-h-screen pb-16">{children}</main>
         <EnBottomNavbar />
-        <EnDynamicChat />
-      </body>
-    </html>
+        {/* <EnDynamicChat /> */}
+      </main>
+    // </html>
   )
 }

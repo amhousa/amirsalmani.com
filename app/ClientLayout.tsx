@@ -64,7 +64,7 @@ export default function ClientLayout({
         <MovingBackground />
         <CelebrationPopup />
         <SessionTracker />
-        <main className={`min-h-screen ${currentPathname === "/" ? "" : "pb-16"}`}>{children}</main>
+        <main className={`min-h-screen ${currentPathname === "/" ? "" : "mb-16"}`}>{children}</main>
         <BottomNavbar />
         <DynamicChat />
       </body>

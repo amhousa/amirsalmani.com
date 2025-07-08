@@ -8,7 +8,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher"
 
 export default function EnglishHome() {
   return (
-    <div dir="ltr" className="relative flex min-h-screen flex-col items-center justify-center">
+    <div className="relative flex min-h-screen flex-col items-center justify-center">
       {/* Add the GitHub button only on the main page */}
       <GitHubButton />
 

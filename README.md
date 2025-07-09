@@ -49,7 +49,7 @@
 ## 🚀 About The Project
 
  <div align="center">
-  <img src="https://amirsalmani.com/images/demo2.webp" alt="Amir Salmani Logo" width="1920" heigt="1080" style="max-width: 100%;border-radius: 14px;" />
+  <img src="https://amirsalmani.com/images/demo3.webp" alt="Amir Salmani Logo" width="1920" heigt="1080" style="max-width: 100%;border-radius: 14px;" />
  </div>
 **amirsalmani.com** is a professional portfolio and blog website built with modern web technologies. It showcases a full-stack application with features including authentication, blog functionality, AI-powered chat, and a comprehensive client dashboard.
 

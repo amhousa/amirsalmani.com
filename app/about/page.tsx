@@ -44,11 +44,11 @@ export default function About() {
           <h2 className="text-2xl font-bold mt-6 mb-4 text-brand-primary">مهارت‌ها</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {skills.map((skill) => (
-              <div key={skill.name} className="flex items-center">
+              <div key={skill.name} dir="ltr" className="flex items-center">
                 <div className="w-12 h-12 rounded-full bg-brand-primary/20 flex items-center justify-center mr-4">
                   <skill.icon className="w-6 h-6 text-brand-primary" />
                 </div>
-                <div className="flex-grow">
+                <div className="flex-grow pr-2">
                   <div className="flex justify-between mb-1">
                     <span className="font-semibold text-default">{skill.name}</span>
                     <span className="text-brand-primary">{skill.level}%</span>

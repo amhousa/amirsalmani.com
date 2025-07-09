@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { Analytics } from "@vercel/analytics/react"
+// import { SpeedInsights } from "@vercel/speed-insights/next"
 import ProfilePhoto from "@/components/ProfilePhoto"
 import GitHubButton from "@/components/GitHubButton"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
@@ -90,8 +90,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Analytics />
-      <SpeedInsights />
+      {/* <Analytics />
+      <SpeedInsights /> */}
     </div>
   )
 }

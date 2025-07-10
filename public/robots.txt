@@ -1,6 +1,10 @@
 # Allow all crawlers
 User-agent: *
 Allow: /
+Allow: /api/session
+Allow: /api/blog/search?
+Allow: /api/blog/search
+Allow: /api/blog
 
 # Protect sensitive routes
 Disallow: /api/

@@ -45,6 +45,7 @@
     "@tailwindcss/typography": "latest",
     "@types/nodemailer": "^6.4.17",
     "@upstash/redis": "^1.35.0",
+    "@vercel/analytics": "^1.5.0",
     "autoprefixer": "^10.4.21",
     "canvas-confetti": "1.9.2",
     "class-variance-authority": "^0.7.1",

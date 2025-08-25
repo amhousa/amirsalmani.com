@@ -21,8 +21,20 @@ interface Project {
 }
 
 const projects: Project[] = [
-  {
+    {
     id: 0,
+    title: "Amhousa.ART",
+    image: "/images/portfolio/Amhousa.webp",
+    description: "My personal portfolio showcasing my projects and skills.",
+    highlights: ["Responsive Design", "Modern UI", "Performance Optimized", "SEO Friendly"],
+    fullViewUrl: "https://amhousa.art",
+    category: "Web Application",
+    tags: ["Next.js", "Tailwind CSS", "TypeScript"],
+    date: "1404/05/29",
+    client: "Amir Salmani",
+  },
+  {
+    id: 1,
     title: "Dev tools",
     image: "/images/portfolio/dev-mode.webp",
     description: "My personal portfolio showcasing my projects and skills.",
@@ -34,7 +46,7 @@ const projects: Project[] = [
     client: "Amir Salmani",
   },
   {
-    id: 1,
+    id: 2,
     title: "Sheriff - FACILITY CONTROL SYSTEM",
     image: "/images/portfolio/sheriff.webp",
     description: "Advanced Command Center for Secure Facility Operations.",
@@ -46,7 +58,7 @@ const projects: Project[] = [
     client: "Sheriff Security Solutions",
   },
   {
-    id: 2,
+    id: 3,
     title: "Alalam Jamel",
     image: "/images/portfolio/alalamjamel-dubai.webp",
     description: "Start Your Business in Dubai!",

@@ -22,6 +22,7 @@ interface Post {
 export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), "posts")
   const fileNames = fs.readdirSync(postsDirectory)
+    .filter(fileName => fileName.endsWith('.md'))
 
   return fileNames.map((fileName) => ({
     slug: fileName.replace(/\.md$/, ""),
@@ -56,6 +57,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 function getAllPosts(): Post[] {
   const postsDirectory = path.join(process.cwd(), "posts")
   const fileNames = fs.readdirSync(postsDirectory)
+    .filter(fileName => fileName.endsWith('.md'))
 
   return fileNames
     .map((fileName) => {
@@ -124,7 +126,6 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             src={data.image || "/placeholder.svg"}
             alt={data.title}
             className="aspect-video w-full rounded-lg z-0"
-            style={{ width: "100%" }}
           />
         </div>
 

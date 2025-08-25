@@ -82,6 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     const fileNames = fs.readdirSync(postsDirectory)
+      .filter(fileName => fileName.endsWith('.md'))
 
     const blogPosts = await Promise.all(
       fileNames.map(async (fileName) => {

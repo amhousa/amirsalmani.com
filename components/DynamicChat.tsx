@@ -323,9 +323,9 @@ persian name: امحوسا
   }
 
   const ChatContent = () => (
-    <div className={`flex flex-col ${fullScreen ? "h-full" : "h-[500px]"}`} style={{ justifyContent: 'flex-end', minHeight: 0, height: '100%' }}>
+    <div className={`flex flex-col ${fullScreen ? "h-full" : "max-h-[85vh] h-[500px]"}`} style={{ justifyContent: 'flex-end', minHeight: 0, height: '100%' }}>
       {/* Header */}
-      <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/20">
+      <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/20 shrink-0">
         <h3 className="font-bold text-brand-primary">{title}</h3>
         <div className="flex items-center space-x-2">
           <button
@@ -347,7 +347,7 @@ persian name: امحوسا
       </div>
 
       {/* Messages */}
-      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
           <div className="text-center text-gray-400 mt-8">
             <MessageSquare className="w-12 h-12 mx-auto mb-3 text-brand-primary/50" />
@@ -396,7 +396,7 @@ persian name: امحوسا
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-white/10 bg-black/20">
+      <form onSubmit={handleSubmit} className="p-4 border-t border-white/10 bg-black/20 shrink-0">
         <div className="flex items-end gap-2">
           <input
             id="chat-message"
@@ -450,7 +450,7 @@ persian name: امحوسا
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -459,6 +459,10 @@ persian name: امحوسا
 
             <motion.div
               className={`relative w-full max-w-md bg-dark-bg border border-white/10 rounded-2xl shadow-xl overflow-hidden ${className}`}
+              style={{
+                maxHeight: '85vh',  // Limit height to 85% of viewport height
+                margin: '2rem auto', // Add margin for better positioning
+              }}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}

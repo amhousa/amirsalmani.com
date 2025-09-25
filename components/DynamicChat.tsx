@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -18,6 +18,55 @@ interface DynamicChatProps {
   buttonText?: string
   fullScreen?: boolean
   className?: string
+}
+
+// Function to convert URLs in text to clickable links
+const convertLinksToAnchors = (text: string): React.ReactNode[] => {
+  if (!text) return []
+  
+  // Regex to match URLs (with or without http/https)
+  const urlRegex = /(https?:\/\/[^\s]+)|(\b(www\.)[^\s]+\b)/g
+  
+  // Split the text by URLs
+  const parts = text.split(urlRegex)
+  
+  // Filter out undefined/empty parts and process each part
+  const result: React.ReactNode[] = []
+  let index = 0
+  
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i]
+    if (!part) continue
+    
+    // If this part matches a URL, make it a link
+    if (part.match(urlRegex) || part.startsWith('www.') || part.startsWith('http')) {
+      let url = part
+      
+      // Add protocol if missing
+      if (url.startsWith('www.') && !url.startsWith('http')) {
+        url = 'https://' + url
+      }
+      
+      result.push(
+        <a 
+          key={index++}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand-primary underline hover:text-brand-primary-dark"
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
+        >
+          {part}
+        </a>
+      )
+    } else {
+      result.push(<span key={index++}>{part}</span>)
+    }
+  }
+  
+  return result
 }
 
 export default function DynamicChat({
@@ -227,6 +276,52 @@ persian name: امحوسا
     }
   }
 
+  // New: helper function to parse markdown links [title](url) from text
+  const parseMarkdownLinks = (text: string): React.ReactNode[] => {
+    if (!text) return []
+    
+    // Regex for Markdown links [text](url)
+    const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
+    const parts = text.split(markdownLinkRegex)
+    
+    const result: React.ReactNode[] = []
+    let index = 0
+    
+    for (let i = 0; i < parts.length; i += 3) {
+      // Regular text
+      if (parts[i]) {
+        // Process regular text for URLs
+        const textNodes = convertLinksToAnchors(parts[i])
+        textNodes.forEach(node => result.push(React.cloneElement(node as React.ReactElement, { key: `text-${index++}` })))
+      }
+      
+      // If we have a markdown link (linkText, url)
+      if (parts[i + 1] && parts[i + 2]) {
+        result.push(
+          <a
+            key={`link-${index++}`}
+            href={parts[i + 2]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand-primary underline hover:text-brand-primary-dark"
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          >
+            {parts[i + 1]}
+          </a>
+        )
+      }
+    }
+    
+    return result
+  }
+
+  const renderMessageContent = (content: string) => {
+    // Process both markdown links and regular URLs
+    return parseMarkdownLinks(content)
+  }
+
   const ChatContent = () => (
     <div className={`flex flex-col ${fullScreen ? "h-full" : "h-[500px]"}`} style={{ justifyContent: 'flex-end', minHeight: 0, height: '100%' }}>
       {/* Header */}
@@ -277,17 +372,20 @@ persian name: امحوسا
                         <Bot className="w-4 h-4 text-brand-primary" />
                       )}
                     </div>
-                    <div
+                                          <div
                       className={`rounded-xl p-3 ${
                         message.role === "user" ? "bg-brand-primary text-black" : "bg-white/10 text-white"
                       }`}
                     >
-                      <p className="whitespace-pre-wrap text-sm">
-                        {message.content ||
-                          (isLoading && message.role === "assistant" ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : null)}
-                      </p>
+                      {message.content ? (
+                        <div className="whitespace-pre-wrap text-sm">
+                          {renderMessageContent(message.content)}
+                        </div>
+                      ) : (
+                        isLoading && message.role === "assistant" ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : null
+                      )}
                     </div>
                   </div>
                 </div>

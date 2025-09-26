@@ -6,7 +6,7 @@ import { Code, Palette, Globe, Cpu, Rocket, MessageSquare, ChevronDown, ChevronU
 import Link from "next/link"
 import Image from "next/image"
 // import ThreeScene from "@/components/ThreeScene"
-import CelebrationPopup from "@/components/CelebrationPopup"
+// import CelebrationPopup from "@/components/CelebrationPopup"
 
 
 const services = [
@@ -375,7 +375,7 @@ export default function ServicesClient() {
           </div>
         </div>
       </div>
-        <CelebrationPopup />
+        {/* <CelebrationPopup /> */}
     </div>
   )
 }
